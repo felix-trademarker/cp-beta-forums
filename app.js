@@ -46,9 +46,9 @@ app.use(expressLayouts);
 
 // APP  CONTAINER =========== >> 
 let conn = require('./config/DbConnect');
-conn.connectToServer( function( err, client ) { // MAIN MONGO START
+// conn.connectToServer( function( err, client ) { // MAIN MONGO START
   console.log("connecting to server....");
-  if (err) console.log(err);
+  // if (err) console.log(err);
   // start the rest of your app here
   
   // Create our number formatter.
@@ -104,7 +104,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
     }
   });
 
-}); // MAIN MONGO CLOSE
+// }); // MAIN MONGO CLOSE
 // APP  CONTAINER =========== << 
 
 
