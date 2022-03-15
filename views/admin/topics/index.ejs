@@ -1,0 +1,68 @@
+<section class="cprecap-info" id="about">
+    <div class="container-xl" style="min-height:65vh">
+        <div class="row justify-content-center box-bg-container">
+
+			<% if(message) { %>
+				<div class="alert alert-<%= message && message.status ? 'success':'error' %>" role="alert">
+					<%= message.message %>
+				</div>
+			<% } %>
+			<div class="col-md-12">
+				<h2>Topics</h2>
+				<% if(topics && topics.length > 0) { %>
+					<table class="table">
+						<tr>
+							<th>Topics</th>
+							<th>Notes</th>
+							<th>Status</th>
+						</tr>
+						<% topics.forEach(function(topic,key) {  %>
+							<tr>
+								<td><%= topic.name %></td>
+								<td><%= topic.notes %></td>
+								<td><%= topic.status %></td>
+							</tr>
+						<% }) %>
+					</table>
+				<% } else { %>
+					<p>Sorry, no topics found!</p>
+				<% } %>
+			</div>
+
+			<div class="col-md-12">
+				<hr>
+				<h2>Add Topic</h2>
+
+
+				
+				<form method="post">
+					<div class="form-group">
+						<label>Topic</label>
+						<input type="text" name="name" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<label>Notes</label>
+						<textarea class="form-control" name="notes" rows="3"></textarea>
+					</div>
+
+					<div class="form-group">
+						<label>Status</label>
+						<select name="status" class="form-control">
+						  <option value="publish">Publish</option>
+						  <option value="draft">Draft</option>
+						  <option value="archive">Archive</option>
+						</select>
+					  </div>
+
+					<div class="form-group">
+						<input type="submit" value="Add">
+					</div>
+
+				</form>
+			</div>
+
+		
+		</div>
+    </div>
+</section>

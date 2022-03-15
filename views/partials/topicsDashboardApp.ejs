@@ -1,0 +1,221 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+    
+<script>
+    var topicsDashboardApp = new Vue({
+    el: "#topicsDashboardApp",
+    data: {
+        topicId: '',
+        topic: null,
+        comments: null,
+        searchState: '',
+        searchLoader: false,
+        message: '',
+        media: '',
+        testerName: ''
+    },
+    methods: {
+
+        setTopic: function(id) {
+            this.topicId = id
+            console.log("set topic ",this.topicId);
+            this.fetchTopic
+            this.fetchComments
+        },
+
+        async submitForm(form) {
+            var frmData = new FormData();
+
+            frmData.append('message',this.message)
+            console.log(frmData);
+            const res = await fetch('/api/v1/add-comment/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'multipart/form-data' },
+
+                // pass in the information from our form
+                body: frmData
+            });
+
+        },
+
+        addComment: function() {
+            var xmlhttp = new XMLHttpRequest();
+            var this_ = this;
+
+            xmlhttp.open("POST", "/api/v1/add-comment/", true);
+
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.status == 200) {
+                        var res = JSON.parse(xmlhttp.response)
+                        // this_.topic = res.results
+
+                        
+
+                    } else if (xmlhttp.status == 400) {
+                        this_.searchState = "Sorry, There was an error 400."
+                    }
+                    else {
+                        this_.searchState = "Sorry, Something went wrong."
+                    }
+
+                    this_.searchLoader = false;
+
+                } else {
+                    this_.searchLoader = true;
+                }
+            };
+
+            var params = [
+                'message='+this.message,
+                'testerName='+this.testerName,
+                'topicId='+this.topicId
+            ]
+            // var formData = new FormData();
+            // formData.append("media", this.media);
+            // formData.append("topicId", this.topicId);
+
+            
+            xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xmlhttp.send(params.join('&'));
+
+            this.message = ''
+            // this.fetchComments
+            this.updateComments()
+        },
+        updateComments: function() {
+
+            var xmlhttp = new XMLHttpRequest();
+            console.log('fetching comments.....');
+            var this_ = this;
+            this_.searchLoader = true;
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.status == 200) {
+                        var res = JSON.parse(xmlhttp.response)
+                        this_.comments = res.results
+                    } else if (xmlhttp.status == 400) {
+                        this_.searchState = "Sorry, There was an error 400."
+                    }
+                    else {
+                        this_.searchState = "Sorry, Something went wrong."
+                    }
+
+                    this_.searchLoader = false;
+
+                } else {
+                    this_.searchLoader = true;
+                }
+            };
+
+            if(this.topicId) {
+                console.log('fetching comments');
+                xmlhttp.open("GET", "/api/v1/comments/"+this.topicId, true);
+                xmlhttp.send();
+            } else {
+                this.comments = null
+            }
+
+        },
+
+        dateFormat: function(dateCreated) {
+            // console.log(dateCreated)
+            return moment(dateCreated).format('MMMM Do YYYY, h:mm:ss')
+        }
+
+
+    },
+    
+    computed: {
+
+        fetchTopic: function() {
+
+            var xmlhttp = new XMLHttpRequest();
+
+            var this_ = this;
+            this_.searchLoader = true;
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.status == 200) {
+                        var res = JSON.parse(xmlhttp.response)
+                        this_.topic = res.results
+                    } else if (xmlhttp.status == 400) {
+                        this_.searchState = "Sorry, There was an error 400."
+                    }
+                    else {
+                        this_.searchState = "Sorry, Something went wrong."
+                    }
+
+                    this_.searchLoader = false;
+
+                } else {
+                    this_.searchLoader = true;
+                }
+            };
+
+            if(this.topicId) {
+                console.log('fetching topic');
+                xmlhttp.open("GET", "/api/v1/topics/"+this.topicId, true);
+                xmlhttp.send();
+            } else {
+                this.topic = null
+            }
+
+            return []
+        },
+
+        fetchComments: function() {
+
+            var xmlhttp = new XMLHttpRequest();
+            console.log('fetching comments.....');
+            var this_ = this;
+            this_.searchLoader = true;
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.status == 200) {
+                        var res = JSON.parse(xmlhttp.response)
+                        this_.comments = res.results
+                    } else if (xmlhttp.status == 400) {
+                        this_.searchState = "Sorry, There was an error 400."
+                    }
+                    else {
+                        this_.searchState = "Sorry, Something went wrong."
+                    }
+
+                    this_.searchLoader = false;
+
+                } else {
+                    this_.searchLoader = true;
+                }
+            };
+
+            if(this.topicId) {
+                console.log('fetching comments');
+                xmlhttp.open("GET", "/api/v1/comments/"+this.topicId, true);
+                xmlhttp.send();
+            } else {
+                this.comments = null
+            }
+
+            return []
+        },
+        
+
+    }
+
+    })
+
+    // set initial topic id
+    // if (!topicsDashboardApp.topicId && topicsDashboardApp.topics && topicsDashboardApp.topics[0].sub) {
+    //     topicsDashboardApp.topicId = topicsDashboardApp.topics[0].sub[0]._id
+    // }
+
+    // script to fetch comments interval 5sec
+    // var interval = setInterval(function(){
+    //     if (topicsDashboardApp.topicId) {
+    //         topicsDashboardApp.updateComments();
+    //     }
+    // }, 5000);
+
+
+
+</script>
