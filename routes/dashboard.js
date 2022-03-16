@@ -10,6 +10,8 @@ var router = express.Router();
 // ====================================
 
 router.get('/',dashboardController.home);
+router.get('/forums',dashboardController.forumId);
+router.get('/forums/:id',dashboardController.forumId);
 // router.get('/dashboard-topics/:topics',dashboardController.topics);
 
 // ADMIN ==============================

@@ -10,7 +10,7 @@
         searchState: '',
         searchLoader: false,
         message: '',
-        media: '',
+        files: [],
         testerName: ''
     },
     methods: {
@@ -40,8 +40,10 @@
         addComment: function() {
             var xmlhttp = new XMLHttpRequest();
             var this_ = this;
+            var formData = new FormData()
 
             xmlhttp.open("POST", "/api/v1/add-comment/", true);
+            xmlhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
@@ -65,18 +67,20 @@
                 }
             };
 
-            var params = [
-                'message='+this.message,
-                'testerName='+this.testerName,
-                'topicId='+this.topicId
-            ]
+            // var params = [
+            //     'message='+this.message,
+            //     'testerName='+this.testerName,
+            //     'topicId='+this.topicId
+            // ]
             // var formData = new FormData();
-            // formData.append("media", this.media);
-            // formData.append("topicId", this.topicId);
+            formData.append("file", this.files);
+            formData.append("message", this.message);
+            formData.append("testerName", this.testerName);
+            formData.append("topicId", this.topicId);
 
             
-            xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xmlhttp.send(params.join('&'));
+            
+            xmlhttp.send(formData);
 
             this.message = ''
             // this.fetchComments
@@ -85,7 +89,7 @@
         updateComments: function() {
 
             var xmlhttp = new XMLHttpRequest();
-            console.log('fetching comments.....');
+            // console.log('fetching comments.....');
             var this_ = this;
             this_.searchLoader = true;
             xmlhttp.onreadystatechange = function() {
@@ -108,7 +112,7 @@
             };
 
             if(this.topicId) {
-                console.log('fetching comments');
+                // console.log('fetching comments');
                 xmlhttp.open("GET", "/api/v1/comments/"+this.topicId, true);
                 xmlhttp.send();
             } else {
@@ -120,6 +124,20 @@
         dateFormat: function(dateCreated) {
             // console.log(dateCreated)
             return moment(dateCreated).format('MMMM Do YYYY, h:mm:ss')
+        },
+
+        getFiles: function(e){
+            this.files = e.target.files || e.dataTransfer.files;
+            if(this.files.length > 0) {
+
+                this.files.forEach(previewFile)
+            }
+            // console.log(this.files);
+        },
+
+        removeFile: function(key) {
+            console.log(key)
+            this.files.splice(key, 1)
         }
 
 
@@ -153,7 +171,7 @@
             };
 
             if(this.topicId) {
-                console.log('fetching topic');
+                // console.log('fetching topic');
                 xmlhttp.open("GET", "/api/v1/topics/"+this.topicId, true);
                 xmlhttp.send();
             } else {
@@ -166,7 +184,7 @@
         fetchComments: function() {
 
             var xmlhttp = new XMLHttpRequest();
-            console.log('fetching comments.....');
+            // console.log('fetching comments.....');
             var this_ = this;
             this_.searchLoader = true;
             xmlhttp.onreadystatechange = function() {
@@ -189,7 +207,7 @@
             };
 
             if(this.topicId) {
-                console.log('fetching comments');
+                // console.log('fetching comments');
                 xmlhttp.open("GET", "/api/v1/comments/"+this.topicId, true);
                 xmlhttp.send();
             } else {
@@ -198,16 +216,21 @@
 
             return []
         },
+
+        previewImages: function(){
+            this.files.forEach(previewFile)
+        }
         
 
     }
 
     })
 
+    topicsDashboardApp.setTopic("<%= selectedTopic %>")
     // set initial topic id
-    // if (!topicsDashboardApp.topicId && topicsDashboardApp.topics && topicsDashboardApp.topics[0].sub) {
-    //     topicsDashboardApp.topicId = topicsDashboardApp.topics[0].sub[0]._id
-    // }
+    if (!topicsDashboardApp.topicId && topicsDashboardApp.topics && topicsDashboardApp.topics[0].sub) {
+        topicsDashboardApp.setTopic(topicsDashboardApp.topics[0].sub[0]._id)
+    }
 
     // script to fetch comments interval 5sec
     // var interval = setInterval(function(){
@@ -216,6 +239,112 @@
     //     }
     // }, 5000);
 
+    // test drag and drop functions
+    // ************************ Drag and drop ***************** //
+let dropArea = document.getElementById("drop-area");
+
+// Prevent default drag behaviors
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  dropArea.addEventListener(eventName, preventDefaults, false)   
+  document.body.addEventListener(eventName, preventDefaults, false)
+});
+
+// // Highlight drop area when item is dragged over it
+['dragenter', 'dragover'].forEach(eventName => {
+  dropArea.addEventListener(eventName, highlight, false)
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+  dropArea.addEventListener(eventName, unhighlight, false)
+});
+
+// // Handle dropped files
+dropArea.addEventListener('drop', handleDrop, false);
+
+function preventDefaults (e) {
+  e.preventDefault()
+  e.stopPropagation()
+}
+
+function highlight(e) {
+  dropArea.classList.add('highlight')
+}
+
+function unhighlight(e) {
+  dropArea.classList.remove('active')
+}
+
+function handleDrop(e) {
+  var dt = e.dataTransfer
+  var files = dt.files
+
+  handleFiles(files)
+}
+
+let uploadProgress = []
+let progressBar = document.getElementById('progress-bar')
+
+function initializeProgress(numFiles) {
+  progressBar.value = 0
+  uploadProgress = []
+
+  for(let i = numFiles; i > 0; i--) {
+    uploadProgress.push(0)
+  }
+}
+
+function updateProgress(fileNumber, percent) {
+  uploadProgress[fileNumber] = percent
+  let total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length
+  progressBar.value = total
+}
+
+function handleFiles(files) {
+
+  files = [...files]
+  initializeProgress(files.length)
+  files.forEach(uploadFile)
+//   files.forEach(previewFile)
+}
+
+function previewFile(file) {
+  let reader = new FileReader()
+  reader.readAsDataURL(file)
+  reader.onloadend = function() {
+    let img = document.createElement('img')
+    img.src = reader.result
+    document.getElementById('gallery').appendChild(img)
+  }
+}
+
+function uploadFile(file, i) {
+  var url = '/api/v1/add-comment/upload-image'
+  var xhr = new XMLHttpRequest()
+  var formData = new FormData()
+  xhr.open('POST', url, true)
+  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+
+  // Update progress (can be used to show progress indicator)
+  xhr.upload.addEventListener("progress", function(e) {
+    updateProgress(i, (e.loaded * 100.0 / e.total) || 100)
+  })
+
+  xhr.addEventListener('readystatechange', function(e) {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      updateProgress(i, 100) // <- Add this
+      var res = JSON.parse(xhr.response)
+    //   console.log(res);
+        if (res.results) {
+            topicsDashboardApp.files.push(res.results)
+        }
+    }
+    else if (xhr.readyState == 4 && xhr.status != 200) {
+      // Error. Inform the user
+    }
+  })
+  formData.append('file', file)
+  xhr.send(formData)
+}
 
 
 </script>

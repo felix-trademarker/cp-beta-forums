@@ -1,17 +1,35 @@
-<section class="cprecap-info" id="topicsDashboardApp">
-    <div class="container-fluid" style="min-height:65vh">
-        <div class="row justify-content-center box-bg-container">
+<section class="cprecap-banner">
+	<div class="jumbotron jumbotron-fluid">
+		<div class="row justify-content-center">
+			<div class="cprecap-banner-body col-11">
+				<h1><span>Welcome to the BETA APP -</span><br>
+					Enjoy quick recap segments FROM your latest ChinesePod lessons</h1>
+				<p class="button-comb"><a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/store/apps/details?id=llc.chinesepod.recap">TRY IT OUT!</a><br>
+					<strong>TRY OUT</strong> Our Beta APP</p>
+			</div>
+		</div>
+	</div>
+</section>
 
-			<div class="col-md-3">
-				<h2>Topics</h2>
-				
-				<ul>
+<section class="cprecap-info" id="about">
+	<div class="container-xl">
+		<div class="row pl-3 pr-3">
+			<div class="col-lg-6 text-center">
+				<img src="/images/app-in-devices.png" alt="" class="img-fluid">
+			</div>
+			<div class="col-lg-6 text-center mb-5">
+			  <h3 class="mb-3">ChinesePod Beta APP<br>
+				  <small>offers access to short review segments based on full-length ChinesePod lessons.</small></h3>
+				<p>These are aimed explicitly at solidifying previously studied material and extend long-term retention.</p>
+
+				<h4 class="text-left">Beta Feedback</h4>
+				<ul class="text-left">
 					<% topics.forEach(function(topic,key) {  %>
 						<li><%= topic.name %></li>
 						<% if(topic.sub) { %>
 						<ul>
 							<% for(let cnt=0; cnt < topic.sub.length; cnt++) {  %>
-								<li v-on:click="setTopic('<%= topic.sub[cnt]._id %>')" ><%= topic.sub[cnt].name %></li>
+								<li><a href="/forums/<%= topic.sub[cnt]._id %>"><%= topic.sub[cnt].name %></a></li>
 							<% } %>
 						</ul>
 						<% } %>
@@ -19,58 +37,29 @@
 					
 				</ul>
 			</div>
-
-			<div class="col-md-9">
-				<div class="" v-if="topic">
-					<h4>{{ topic.parentName }} - {{ topic.name }}</h4>
-
-					<div class="" v-if="comments">
-						<ul class="message-blocks">
-							<li v-for="comment in comments">
-								<div class="message-data text-left">
-									<span class="message-data-name">{{ comment.testerName }}</span>
-									<span class="message-data-time">{{ dateFormat(comment.created_at) }}</span>
-								</div>
-								<div class="message"> {{ comment.message }} </div>
-								
-							</li>
-						</ul>
-					</div>
-	
-					<div class="" v-if="!comments">
-						<p>No Comments Yet</p>
-					</div>
-
-					<!-- form add comments -->
-					<form @submit.prevent="addComment()" enctype="multipart/form-data">
-	
-						<div class="form-group">
-							<label>Name</label>
-							<input type="text" v-model="testerName" class="form-control" required>
-						</div>
-
-						<div class="form-group">
-							<label>message</label>
-							<textarea class="form-control" v-model="message" name="notes" rows="3" required></textarea>
-						</div>
-					
-						<div class="form-group">
-							<input type="submit" value="Add">
-						</div>
-		
-					</form>
-
-				</div>
-
-				<div class="" v-if="!topic">
-					<p>please select topic</p>
-				</div>
-
-				
-			</div>
-		
 		</div>
-    </div>
+	</div>
 </section>
 
-<%- include('../partials/topicsDashboardApp'); %>
+<section class="cprecap-actions-banner">
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-11 text-center">
+				<h3>Save time by watching concise summaries instead of browsing for long lessons.</h3>
+				<p>If you only have a few minutes to spare, jump right back into relevant content and ensure long-term retention.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="cprecap-actions">
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-11 text-center mb-5">
+				<h3>Install ChinesePod Beta APP</h3>
+				<p>Enjoy quick recap segments from your latest ChinesePod lessons.</p>
+				<p><a class="m-2" href="https://play.google.com/store/apps/details?id=llc.chinesepod.recap"><img src="/images/get-it-on-googleplay-color.png" width="353" height="105" alt="Get it on GooglePlay" class="img-fluid"></a></p>
+			</div>
+		</div>
+	</div>
+</section>

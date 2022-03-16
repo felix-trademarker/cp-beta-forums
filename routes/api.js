@@ -8,6 +8,7 @@ var router = express.Router();
 router.get('/topics/:topicId', genericController.fetchSubTopic);
 router.get('/comments/:topicId', genericController.fetchComments);
 router.post('/add-comment/', genericController.addComments);
+router.post('/add-comment/upload-image', genericController.addImageComments);
 
 
 // USERS

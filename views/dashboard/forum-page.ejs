@@ -1,0 +1,117 @@
+<section class="cprecap-info" id="topicsDashboardApp">
+    <div class="container-fluid" style="min-height:65vh">
+        <div class="row justify-content-center box-bg-container">
+
+			<div class="col-md-3">
+				<h2>Topics</h2>
+				
+				<ul>
+					<% topics.forEach(function(topic,key) {  %>
+						<li><%= topic.name %></li>
+						<% if(topic.sub) { %>
+						<ul>
+							<% for(let cnt=0; cnt < topic.sub.length; cnt++) {  %>
+								<li v-on:click="setTopic('<%= topic.sub[cnt]._id %>')" ><%= topic.sub[cnt].name %></li>
+							<% } %>
+						</ul>
+						<% } %>
+					<% }) %>
+					
+				</ul>
+			</div>
+
+			<div class="col-md-9">
+				<div class="" v-if="topic">
+					<h4>{{ topic.parentName }} - {{ topic.name }}</h4>
+
+					<div class="" v-if="comments.length > 0">
+						<ul class="message-blocks">
+							<li v-for="comment in comments">
+								<div class="message-data text-left">
+									<span class="message-data-name">{{ comment.testerName }}</span>
+									<span class="message-data-time">{{ dateFormat(comment.created_at) }}</span>
+								</div>
+								<div class="message"> {{ comment.message }} </div>
+
+								<div class="message-attachments" v-if="comment.file.length > 0" >
+									<div v-for="(key, file) in comment.file">
+										
+										<img :src="'/uploads/comments/'+file">
+									</div>
+								</div>
+								
+							</li>
+						</ul>
+					</div>
+	
+					<div class="" v-if="comments.length == 0">
+						<p>No Comments Yet</p>
+					</div>
+
+					
+
+					
+					 
+
+				</div>
+
+				<div class="" v-if="!topic">
+					<p>please select topic</p>
+
+					<!-- <div id="drop-area" style="display: none;">
+						<label>File</label>
+						<input type="file" v-model="files" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+						<label class="button" for="fileElem">Select some files</label>
+					
+						<div id="progress-bar" max=100 value=0></div>
+						<div id="gallery"></div>
+					</div> -->
+
+				</div>
+
+				<!-- form add comments -->
+				<form @submit.prevent="addComment()" enctype="multipart/form-data">
+	
+					<div class="form-group">
+						<label>Name</label>
+						<input type="text" v-model="testerName" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<label>message</label>
+						<textarea class="form-control" v-model="message" name="notes" rows="3" required></textarea>
+					</div>
+
+					<div id="drop-area">
+							<label>File</label>
+						  <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+						  <label class="button" for="fileElem">Select some files</label>
+					
+						<div id="progress-bar" max=100 value=0></div>
+						<div id="gallery">
+							<div class="" v-if="files" >
+								<div v-for="(key, file) in files">
+									<i @click="removeFile(key)" class="fa fa-times">x</i>
+									<img :src="'/uploads/comments/'+file">
+								</div>
+							</div>
+						</div>
+					</div>
+
+				
+					<div class="form-group">
+						<input type="submit" value="Add">
+					</div>
+	
+				</form>
+
+				
+
+				
+			</div>
+		
+		</div>
+    </div>
+</section>
+
+<%- include('../partials/topicsDashboardApp'); %>
