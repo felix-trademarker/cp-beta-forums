@@ -9,7 +9,7 @@ var router = express.Router();
 // TESTERS ============================
 // ====================================
 
-router.get('/',dashboardController.home);
+router.get('/',dashboardController.forumId);
 router.get('/forums',dashboardController.forumId);
 router.get('/forums/:id',dashboardController.forumId);
 // router.get('/dashboard-topics/:topics',dashboardController.topics);

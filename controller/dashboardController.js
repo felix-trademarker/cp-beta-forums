@@ -71,7 +71,7 @@ exports.forumId = async function(req, res, next) {
 
   }
     
-  res.render('dashboard/forum-page', { 
+  res.render('dashboard/', { 
     title: '',
     description: '',
     keywords: '',

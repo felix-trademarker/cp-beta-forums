@@ -5,6 +5,15 @@ const { toInteger } = require('lodash');
 
 exports.fetchSubTopic = async function(req, res, next) {
   let results = await rpoSubTopics.find(req.params.topicId)
+  let result = results[0]
+  if (result) {
+    
+    let updateData = {
+      viewCount: (result.viewCount ? result.viewCount : 0) + 1
+    }
+    await rpoSubTopics.update(result._id,updateData)
+  }
+
   res.json({results:results[0]});
 }
 
@@ -12,6 +21,7 @@ exports.fetchComments = async function(req, res, next) {
   let query = {
     topicId: req.params.topicId
   }
+
   let results = await rpoComments.findQuery(query)
   res.json({results:results});
 }

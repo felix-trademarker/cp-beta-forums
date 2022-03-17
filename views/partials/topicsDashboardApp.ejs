@@ -83,6 +83,7 @@
             xmlhttp.send(formData);
 
             this.message = ''
+            this.files = []
             // this.fetchComments
             this.updateComments()
         },
@@ -138,6 +139,20 @@
         removeFile: function(key) {
             console.log(key)
             this.files.splice(key, 1)
+        },
+
+        imageClick: function(fileName) {
+            var modal = document.getElementById("imageModal")
+            var modalImg = document.getElementById("img01");
+
+            modalImg.src = "/uploads/comments/"+fileName;
+            modal.style.display = "block";
+        },
+
+        closeImageModal: function() {
+            var modal = document.getElementById("imageModal")
+
+            modal.style.display = "none";
         }
 
 
@@ -345,6 +360,26 @@ function uploadFile(file, i) {
   formData.append('file', file)
   xhr.send(formData)
 }
+
+
+// Get the modal
+// var modal = document.getElementById("imageModal");
+
+// // Get the image and insert it inside the modal - use its "alt" text as a caption
+// var img = document.getElementById("myImg");
+// var modalImg = document.getElementById("img01");
+// img.onclick = function(){
+//   modal.style.display = "block";
+//   modalImg.src = this.src;
+// }
+
+// // Get the <span> element that closes the modal
+// var span = document.getElementsByClassName("close")[0];
+
+// // When the user clicks on <span> (x), close the modal
+// span.onclick = function() { 
+//   modal.style.display = "none";
+// }
 
 
 </script>

@@ -4,13 +4,15 @@
 			<div class="cprecap-banner-body col-11">
 				<h1><span>Welcome to the BETA APP -</span><br>
 					Enjoy quick recap segments FROM your latest ChinesePod lessons</h1>
-				<p class="button-comb"><a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/store/apps/details?id=llc.chinesepod.recap">TRY IT OUT!</a><br>
+				<p class="button-comb">
+					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/store/apps/details?id=com.chinesepod.express">Mobile APP</a>&nbsp;
+					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/apps/testing/com.chinesepod.express">Web APP</a><br>
 					<strong>TRY OUT</strong> Our Beta APP</p>
 			</div>
 		</div>
 	</div>
 </section>
-
+<!-- 
 <section class="cprecap-info" id="about">
 	<div class="container-xl">
 		<div class="row pl-3 pr-3">
@@ -62,4 +64,136 @@
 			</div>
 		</div>
 	</div>
+</section> -->
+
+<section class="mt-5" id="topicsDashboardApp">
+    <div class="container-fluid" style="min-height:65vh">
+        <div class="row justify-content-center box-bg-container">
+
+			<div class="col-md-3">
+				<h2>Topics</h2>
+				
+				<ul class="side-nav">
+					<% topics.forEach(function(topic,key) {  %>
+						
+						<% if(topic.sub && topic.sub.length > 0) { %>
+						<li><%= topic.name %></li>
+						<ul>
+							<% for(let cnt=0; cnt < topic.sub.length; cnt++) {  %>
+								<li v-bind:class="topicId == topic.sub[cnt]._id ? 'active':'d'" v-on:click="setTopic('<%= topic.sub[cnt]._id %>')" ><%= topic.sub[cnt].name %></li>
+							<% } %>
+						</ul>
+						<% } %>
+					<% }) %>
+					
+				</ul>
+			</div>
+
+			<div class="col-md-9">
+				<div class="" v-if="topic">
+					<h4><img src="/images/app-device.png" style="width:150px; margin-right:20px"> This topic ({{ topic.parentName }}) is all about {{ topic.name }}</h4>
+					<div class="commentHead">
+						<table class="table">
+							<tr>
+								<td style="width:90%">Last Comment: {{ dateFormat(comments[(comments.length -1)].created_at) }}</td>
+								<td><i class="fa fa-comments" style="margin-right: 5px;"></i>{{ comments.length }}</td>
+								<td><i class="fa fa-eye" style="margin-right: 5px;"></i>{{ topic.viewCount ? topic.viewCount : 0 }}</td>
+							</tr>
+						</table>
+					</div>
+					<div class="" v-if="comments.length > 0">
+						<ul class="message-blocks">
+							<li v-for="comment in comments">
+								<div class="message-data text-left">
+									<span class="message-data-name">{{ comment.testerName }}</span>
+									<span class="message-data-time">{{ dateFormat(comment.created_at) }}</span>
+								</div>
+								<div class="message"> {{ comment.message }} 
+									<div class="message-attachments" v-if="comment.file.length > 0" >
+										<div v-for="(key, file) in comment.file">
+											
+											<img @click="imageClick(file)" :src="'/uploads/comments/'+file">
+										</div>
+									</div>
+								</div>
+
+								
+								
+							</li>
+						</ul>
+					</div>
+	
+					<div class="" v-if="comments.length == 0">
+						<p>No Comments Yet</p>
+					</div>
+
+					
+
+					
+					 
+
+				</div>
+
+				<div class="" v-if="!topic">
+					<p>please select topic</p>
+
+					<!-- <div id="drop-area" style="display: none;">
+						<label>File</label>
+						<input type="file" v-model="files" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+						<label class="button" for="fileElem">Select some files</label>
+					
+						<div id="progress-bar" max=100 value=0></div>
+						<div id="gallery"></div>
+					</div> -->
+
+				</div>
+
+				<!-- form add comments -->
+				<form style="border: 1px dashed #ccc;padding: 20px;margin-top:50px; font-size: 14px;" @submit.prevent="addComment()" enctype="multipart/form-data">
+					<h6>Add Comment</h6><hr>
+					<div class="form-group-inline">
+						<label>Name</label>
+						<input type="text" v-model="testerName" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<label>message</label>
+						<textarea class="form-control" v-model="message" name="notes" rows="3" required></textarea>
+					</div>
+
+					<div id="drop-area" >
+						  <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+						  <label class="button btn btn-info" for="fileElem">Add Attachments</label>
+							<p>Drag & Drop Images HERE</p>
+						<div id="progress-bar" max=100 value=0></div>
+						<div id="gallery">
+							<div class="" v-if="files" >
+								<div v-for="(key, file) in files">
+									<i @click="removeFile(key)" class="fa fa-times"></i>
+									<img :src="'/uploads/comments/'+file">
+								</div>
+							</div>
+						</div>
+					</div>
+
+				
+					<div class="form-group text-center">
+						<input class="btn btn-primary" type="submit" value="Submit">
+					</div>
+	
+				</form>
+
+			</div>
+		
+		</div>
+
+		<!-- The Modal -->
+		<div id="imageModal" class="custom-modal">
+			<span @click="closeImageModal()" class="close">&times;</span>
+			<img class="custom-modal-content" id="img01">
+		</div>
+
+    </div>
 </section>
+
+<%- include('../partials/topicsDashboardApp'); %>

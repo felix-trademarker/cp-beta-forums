@@ -67,7 +67,7 @@ class Model{
 
             let query = { _id: ObjectID(id) };
 
-            conn.getDb().collection(_table).updateOne(query,{$set: data }, 
+            this_.db.getDb().collection(this_.table).updateOne(query,{$set: data }, 
                 function(err, result) {
                 
                 if (err) reject(err);
