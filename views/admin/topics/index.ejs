@@ -1,5 +1,13 @@
 <section class="cprecap-info" id="about">
-    <div class="container-xl" style="min-height:65vh">
+	<div class="container-xl" style="min-height:65vh">
+		
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/admin-dashboard/">Dashboard</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Topics</li>
+			</ol>
+		</nav>
+
         <div class="row justify-content-center box-bg-container">
 
 			<% if(message) { %>
@@ -13,14 +21,21 @@
 					<table class="table">
 						<tr>
 							<th>Topics</th>
+							<th>Description</th>
 							<th>Notes</th>
 							<th>Status</th>
+							<th>Actions</th>
 						</tr>
 						<% topics.forEach(function(topic,key) {  %>
 							<tr>
 								<td><%= topic.name %></td>
+								<td><%= topic.description %></td>
 								<td><%= topic.notes %></td>
 								<td><%= topic.status %></td>
+								<td>
+									<a href="/admin-dashboard/topics/edit/<%= topic._id %>"><i class="fa fa-pen"></i></a>&nbsp;
+									<a href="/admin-dashboard/topics/delete/<%= topic._id %>"><i class="fa fa-trash"></i></a>
+								</td>
 							</tr>
 						<% }) %>
 					</table>

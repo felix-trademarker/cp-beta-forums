@@ -1,5 +1,14 @@
 <section class="cprecap-info" id="about">
-    <div class="container-xl" style="min-height:65vh">
+	<div class="container-xl" style="min-height:65vh">
+		
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/admin-dashboard/">Dashboard</a></li>
+				<li class="breadcrumb-item"><a href="/admin-dashboard/topics">Topics</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Edit</li>
+			</ol>
+		</nav>
+
         <div class="row justify-content-center box-bg-container">
 
 			<% if(message) { %>
@@ -8,58 +17,43 @@
 				</div>
 			<% } %>
 			<div class="col-md-12">
-				<h2>Topics</h2>
-				<% if(topics && topics.length > 0) { %>
-					<table class="table">
-						<tr>
-							<th>Topics</th>
-							<th>Notes</th>
-							<th>Status</th>
-						</tr>
-						<% topics.forEach(function(topic,key) {  %>
-							<tr>
-								<td><%= topic.name %></td>
-								<td><%= topic.notes %></td>
-								<td><%= topic.status %></td>
-							</tr>
-						<% }) %>
-					</table>
-				<% } else { %>
-					<p>Sorry, no topics found!</p>
-				<% } %>
+				<h2>Edit Topic: <%= topic.name %></h2>
+				
 			</div>
 
 			<div class="col-md-12">
-				<hr>
-				<h2>Add Topic</h2>
 
-
-				
 				<form method="post">
 					<div class="form-group">
 						<label>Topic</label>
-						<input type="text" name="name" class="form-control" required>
+						<input type="text" name="name" class="form-control" value="<%= topic.name %>" required>
+					</div>
+
+					<div class="form-group">
+						<label>Description</label>
+						<textarea class="form-control" name="description" rows="3"><%= topic.description %></textarea>
 					</div>
 
 					<div class="form-group">
 						<label>Notes</label>
-						<textarea class="form-control" name="notes" rows="3"></textarea>
+						<textarea class="form-control" name="notes" rows="3"><%= topic.notes %></textarea>
 					</div>
 
 					<div class="form-group">
 						<label>Status</label>
 						<select name="status" class="form-control">
-						  <option value="publish">Publish</option>
-						  <option value="draft">Draft</option>
-						  <option value="archive">Archive</option>
+						  <option value="publish" <%= topic.status == 'publish' ? 'selected' : '' %>>Publish</option>
+						  <option value="draft" <%= topic.status == 'draft' ? 'selected' : '' %>>Draft</option>
+						  <option value="archive" <%= topic.status == 'archive' ? 'selected' : '' %>>Archive</option>
 						</select>
-					  </div>
+					</div>
 
-					<div class="form-group">
-						<input type="submit" value="Add">
+					<div class="form-group text-center">
+						<input type="submit" class="btn btn-primary" value="Update">
 					</div>
 
 				</form>
+
 			</div>
 
 		

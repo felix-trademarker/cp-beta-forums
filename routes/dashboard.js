@@ -20,10 +20,14 @@ router.get('/forums/:id',dashboardController.forumId);
 // ************** TOPICS **************
 router.get('/admin-dashboard/topics',dashboardController.addTopics);
 router.post('/admin-dashboard/topics',dashboardController.addTopics);
+router.get('/admin-dashboard/topics/edit/:id',dashboardController.editTopics);
+router.post('/admin-dashboard/topics/edit/:id',dashboardController.editTopics);
 
 // ************** SUB TOPICS **************
 router.get('/admin-dashboard/sub-topics',dashboardController.addSubTopics);
 router.post('/admin-dashboard/sub-topics',dashboardController.addSubTopics);
+router.get('/admin-dashboard/sub-topics/edit/:id',dashboardController.editSubTopics);
+router.post('/admin-dashboard/sub-topics/edit/:id',dashboardController.editSubTopics);
 
 
 

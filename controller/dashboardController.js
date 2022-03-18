@@ -125,32 +125,29 @@ exports.editTopics = async function(req, res, next) {
 
   let message;
 
+  let topicId = req.params.id
+
+  
+
   if (req.body && req.body.name) {
-    
-    let findDuplicate = await rpoTopics.findQuery({name:req.body.name})
+    // update
+    await rpoTopics.update(topicId,req.body);
 
-    if (findDuplicate && findDuplicate.length > 0) {
-      message = {
-        status: false,
-        message: "Topic Already Exist!"
-      }
-    } else {
-      await rpoTopics.put(req.body)
-      message = {
-        status: true,
-        message: "Added Successfully!"
-      }
+    message = {
+      status: true,
+      message: "Updated Successfully!"
     }
-
   }
 
-  let topics = await rpoTopics.get();
+  let topics = await rpoTopics.find(topicId);
+
+  if (!topics) res.redirect('/admin-dashboard/topics') 
     
-  res.render('admin/topics/', { 
+  res.render('admin/topics/edit', { 
     title: '',
     description: '',
     keywords: '',
-    topics: topics,
+    topic: topics[0],
     message: message
 
   });
@@ -193,6 +190,40 @@ exports.addSubTopics = async function(req, res, next) {
     keywords: '',
     topics: topics,
     subtopics: subtopics,
+    message: message
+
+  });
+
+     
+}
+
+exports.editSubTopics = async function(req, res, next) {
+
+  let message;
+
+  let topicId = req.params.id
+
+  
+
+  if (req.body && req.body.name) {
+    // update
+    await rpoTopics.update(topicId,req.body);
+
+    message = {
+      status: true,
+      message: "Updated Successfully!"
+    }
+  }
+
+  let topics = await rpoTopics.find(topicId);
+
+  if (!topics) res.redirect('/admin-dashboard/sub-topics') 
+    
+  res.render('admin/sub-topics/edit', { 
+    title: '',
+    description: '',
+    keywords: '',
+    topic: topics[0],
     message: message
 
   });

@@ -1,5 +1,13 @@
 <section class="cprecap-info" id="about">
-    <div class="container-xl" style="min-height:65vh">
+	<div class="container-xl" style="min-height:65vh">
+		
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/admin-dashboard/">Dashboard</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Sub Topics</li>
+			</ol>
+		</nav>
+
         <div class="row justify-content-center box-bg-container">
 
 			<% if(message) { %>
@@ -14,15 +22,22 @@
 						<tr>
 							<th>Topics</th>
 							<th>Sub Topic</th>
+							<th>Description</th>
 							<th>Notes</th>
 							<th>Status</th>
+							<th>Action</th>
 						</tr>
 						<% subtopics.forEach(function(subtopic,key) {  %>
 							<tr>
 								<td><%= subtopic.parentName %></td>
 								<td><%= subtopic.name %></td>
+								<td><%= subtopic.description %></td>
 								<td><%= subtopic.notes %></td>
 								<td><%= subtopic.status %></td>
+								<td>
+									<a href="/admin-dashboard/sub-topics/edit/<%= subtopic._id %>"><i class="fa fa-pen"></i></a>&nbsp;
+									<a href="/admin-dashboard/sub-topics/delete/<%= subtopic._id %>"><i class="fa fa-trash"></i></a>
+								</td>
 							</tr>
 						<% }) %>
 					</table>
@@ -51,6 +66,11 @@
 					<div class="form-group">
 						<label>Sub Topic</label>
 						<input type="text" name="name" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<label>Description</label>
+						<textarea class="form-control" name="description" rows="3"></textarea>
 					</div>
 
 					<div class="form-group">
