@@ -10,8 +10,10 @@ var lessMiddleware = require('less-middleware');
 var logger = require('morgan');
 const fileUpload = require('express-fileupload');
 const expressLayouts = require('express-ejs-layouts');
-
+var cron = require('node-cron');
 var flash = require('express-flash-2');
+
+let migrationService = require('./services/migrationService')
 
 var app = express();
 
@@ -78,6 +80,16 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   app.use('/api/v1', apiRouter);
 
   // ROUTE HANDLER ============ <<
+  cron.schedule('0 */1 * * * *', () => {
+    // migrationService.contents()
+    migrationService.default('vocabulary')
+    migrationService.default('comments')
+    migrationService.default('content_rates')
+    migrationService.default('contents_notes')
+    migrationService.default('contents_series')
+    
+  });
+  
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
