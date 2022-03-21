@@ -26,6 +26,12 @@ exports.fetchComments = async function(req, res, next) {
   res.json({results:results});
 }
 
+exports.findComments = async function(req, res, next) {
+
+  let results = await rpoComments.find(req.params.commentId)
+  res.json({results:results[0]});
+}
+
 exports.addComments = async function(req, res, next) {
   
 
@@ -42,6 +48,10 @@ exports.addComments = async function(req, res, next) {
   //     console.log(file);
   //   };
   // }
+  if (data.replyTo) {
+    let results = await rpoComments.find(data.replyTo)
+    data.replyToData = results[0]
+  }
 
   data.created_at = req.app.locals.moment().format()
 

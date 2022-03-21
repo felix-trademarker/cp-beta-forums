@@ -2,49 +2,104 @@
     margin: 0;
     padding: 0;
     li {
-        list-style: none;
-        display: flex;
+      list-style: none;
 
-        border: 1px solid #ccc;
-        margin-bottom: 10px;
-        padding: 10px;
-        border-radius: 4px;
+        .message-wrapper{
+          
+          display: flex;
 
-        .message-data{
-            margin-right: 30px;
-            min-width: 150px;
+          border: 1px solid #ccc;
+          margin-bottom: 10px;
+          padding: 10px;
+          border-radius: 4px;
+          position: relative;
 
-            .message-data-name{
-                display: block;
-                font-weight: 400;
-            }
+          .message-data{
+              margin-right: 30px;
+              min-width: 150px;
 
-            .message-data-time{
-                font-size: 10px;
-                font-style: italic;
-            }
-
-        }
-
-        .message{
-          font-size: 16px;
-
-          .message-attachments{
-            width: 100%;
-
-            & > div{
-              width: 100px;
-              padding : 5px;
-
-              img{
-                width: 100%;
+              .message-data-name{
+                  display: block;
+                  font-weight: 400;
               }
-            }
+
+              .message-data-time{
+                  font-size: 10px;
+                  font-style: italic;
+              }
+
           }
 
+          .message{
+            font-size: 16px;
+            width: 100%;
+
+            .message-attachments{
+              width: 100%;
+
+              & > div{
+                width: 100px;
+                padding : 5px;
+
+                img{
+                  width: 100%;
+                }
+              }
+            }
+
+          }
+
+          .message-reply{
+            font-size: 12px;
+            margin: 0;
+          }
+
+          
         }
+
+        .replyBox{
+          position: relative;
+          // max-height: 50px;
+          
+        }
+
+      &.hasComment{
+        
+
+        .message-wrapper{
+          margin-left: 10px;
+          top: -10px;
+          background: #f7fafc;
+        }
+      }
+        
     }
 
+}
+
+.replyBox{
+  font-size: 10px;
+  padding: 10px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  display: block;
+  position: relative;
+
+  p{
+    margin: 0;
+  }
+
+  span{
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    border: 1px solid #000;
+    border-radius: 9px;
+    background: #f0f0f0;
+  }
 }
 
 

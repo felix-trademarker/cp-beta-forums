@@ -11,7 +11,9 @@
         searchLoader: false,
         message: '',
         files: [],
-        testerName: ''
+        testerName: '',
+        replyTo: '',
+        replyToData: null
     },
     methods: {
 
@@ -76,6 +78,7 @@
             formData.append("file", this.files);
             formData.append("message", this.message);
             formData.append("testerName", this.testerName);
+            formData.append("replyTo", this.replyTo);
             formData.append("topicId", this.topicId);
 
             
@@ -84,6 +87,8 @@
 
             this.message = ''
             this.files = []
+            this.replyTo = ''
+            this.replyToData = null
             // this.fetchComments
             this.updateComments()
         },
@@ -153,6 +158,36 @@
             var modal = document.getElementById("imageModal")
 
             modal.style.display = "none";
+        },
+
+        setReply: function(replyId) {
+            this.replyTo = replyId
+
+            this.fetchReplyTo()
+
+            console.log(this.replyToData);
+        },
+
+        fetchReplyTo: async function() {
+
+            let this_ = this
+            fetch('/api/v1/find-comment/'+this.replyTo).then(function (response) {
+                // The API call was successful!
+                return response.json();
+            }).then(function (data) {
+                // This is the JSON from our response
+                console.log(data);
+                this_.replyToData = data.results
+            }).catch(function (err) {
+                // There was an error
+                console.warn('Something went wrong.', err);
+            });
+           
+        },
+
+        removeReply: function() {
+            this.replyToData = null
+            this.replyTo = ''
         }
 
 
@@ -235,6 +270,8 @@
         previewImages: function(){
             this.files.forEach(previewFile)
         },
+
+        
         
 
     }

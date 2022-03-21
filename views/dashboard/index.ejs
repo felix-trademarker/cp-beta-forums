@@ -107,20 +107,36 @@
 					</div>
 					<div class="" v-if="comments.length > 0">
 						<ul class="message-blocks">
-							<li v-for="comment in comments">
-								<div class="message-data text-left">
-									<span class="message-data-name">{{ comment.testerName }}</span>
-									<span class="message-data-time">{{ dateFormat(comment.created_at) }}</span>
-								</div>
-								<div class="message"> {{ comment.message }} 
-									<div class="message-attachments" v-if="comment.file.length > 0" >
-										<div v-for="(key, file) in comment.file">
-											
-											<img @click="imageClick(file)" :src="'/uploads/comments/'+file">
+							<li :id="comment._id" v-for="comment in comments" :class="comment.replyToData ? 'hasComment': ''">
+
+								<a v-if="comment.replyToData" class="replyBox">
+									<p><b>REPLY TO</b></p>
+									<p>Name: {{ comment.replyToData.testerName }}</p>
+									<p> {{ comment.replyToData.message }} </p>
+								</a>
+
+								<div class="message-wrapper">
+									
+
+									<div class="message-data text-left">
+										<span class="message-data-name">{{ comment.testerName }}</span>
+										<span class="message-data-time">{{ dateFormat(comment.created_at) }}</span>
+									</div>
+									<div class="message"> {{ comment.message }} 
+										<div class="message-attachments" v-if="comment.file.length > 0" >
+											<div v-for="(key, file) in comment.file">
+												
+												<img v-if="file" @click="imageClick(file)" :src="'/uploads/comments/'+file">
+											</div>
 										</div>
+
+										<p @click="setReply(comment._id)" class="message-reply btn btn-primary" style="font-size: 12px;margin: 0;">
+											Reply
+										</p>
 									</div>
 								</div>
 
+								
 								
 								
 							</li>
@@ -154,9 +170,17 @@
 
 				<!-- form add comments -->
 				<form style="border: 1px dashed #ccc;padding: 20px;margin-top:50px; font-size: 14px;" @submit.prevent="addComment()" enctype="multipart/form-data">
-					<h6>Add Comment</h6><hr>
+					<h6 v-if="!replyTo">Add Comment</h6>
+					<h6 v-if="replyTo">Reply to </h6>
+					<div v-if="replyToData" @click="removeReply" class="replyBox">
+						<span><i class="fa fa-times"></i></span>
+						<p>Name: {{ replyToData.testerName }}</p>
+						<p> {{ replyToData.message }} </p>
+					</div>
+					<hr>
 					<div class="form-group-inline">
 						<label>Name</label>
+						<input type="hidden" v-model="replyTo" class="form-control">
 						<input type="text" v-model="testerName" class="form-control" required>
 					</div>
 
