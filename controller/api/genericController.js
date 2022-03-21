@@ -33,21 +33,10 @@ exports.findComments = async function(req, res, next) {
 }
 
 exports.addComments = async function(req, res, next) {
-  
-
-  console.log("form submit",req.body);
-  // console.log("form submit",req.files);
 
   let data = req.body
-  // let files = decode(data.file)
-  // console.log(...data.file);
   data.file = data.file.split(',')
-  // if (data.files) {
-  //   for ( let i=0; i < data.files.length; i++ ) {
-  //     let file = data.files[i]
-  //     console.log(file);
-  //   };
-  // }
+
   if (data.replyTo) {
     let results = await rpoComments.find(data.replyTo)
     data.replyToData = results[0]
@@ -56,17 +45,13 @@ exports.addComments = async function(req, res, next) {
   data.created_at = req.app.locals.moment().format()
 
   await rpoComments.put(data)
-  // let data = {
-  //   results: {
-  //     status: true;
-  //   }
-  // }
 
   res.json({results:true})
 }
 
 exports.addImageComments = async function(req, res, next) {
   
+  console.log("current path", __dirname);
   var file = req.files.file
   var extName = path.extname(file.name)
   var filename = toInteger(req.app.locals.moment().format('YYMMDDHHMMSS')) + '.' + extName;
