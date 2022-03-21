@@ -47,7 +47,7 @@ module.exports = {
             conn.getDb().collection(_table)
                 .find(query)
                 .limit(1)
-				.sort({"created_at": -1})
+				.sort({"page": -1})
 				.toArray(function(err, result) {
 					
 				if (err) {
