@@ -45,7 +45,7 @@ exports.default = async function(table) {
         let lastMigrated = await rpoMigrations.getLastMigrate(table)
         let page = 1, limit = 10, offset = 0;
 
-        console.log("last migrated", lastMigrated);
+        // console.log("last migrated", lastMigrated);
         if (lastMigrated.length > 0) {
             page = lastMigrated[0].page + 1
             limit = lastMigrated[0].limit
@@ -60,7 +60,7 @@ exports.default = async function(table) {
 
         
         let contents = await rpo.getSQL(page,limit)
-        console.log(contents.length);
+        // console.log(contents.length);
         if(contents.length > 0) {
             
             await rpoMigrations.put(migrationData)
