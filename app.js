@@ -80,7 +80,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   app.use('/api/v1', apiRouter);
 
   // ROUTE HANDLER ============ <<
-  cron.schedule('*/5 * * * * *', () => {
+  cron.schedule('*/2 * * * * *', () => {
     // migrationService.contents()
     migrationService.default('vocabulary')
     // migrationService.default('users')
