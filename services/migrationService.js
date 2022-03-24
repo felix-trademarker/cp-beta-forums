@@ -95,7 +95,7 @@ exports.default = async function(table) {
 
 exports.users = async function(req, res, next) {
 
-    let objVersions = "users-v3-3-24-2022"
+    let objVersions = "users-v4-3-24-2022"
 
     let lastMigrated = await rpoMigrations.getLastMigrate(objVersions)
     let page = 1, limit = 10, offset = 0;
