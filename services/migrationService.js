@@ -3,7 +3,6 @@ let rpoUsers = require('../repositories/mysql/_users');
 let rpoUserOptions = require('../repositories/mysql/_user_options');
 let rpoUserAddresses = require('../repositories/mysql/_user_addresses');
 let rpoUserSettings = require('../repositories/mysql/_user_settings');
-let rpoUserSettings = require('../repositories/mysql/_user_settings');
 let rpoUserPreferences = require('../repositories/mysql/_user_preferences');
 
 let rpoMigrations = require('../repositories/mysql/_migrations');
