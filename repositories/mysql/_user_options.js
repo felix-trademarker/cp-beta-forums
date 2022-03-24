@@ -51,6 +51,18 @@ module.exports = {
                 resolve(result)
             });
         });
+    },
+
+    getUserData : async function(userId){
+        return new Promise(function(resolve, reject) {
+            var sql = "SELECT * FROM " + tableName
+            sql += " WHERE user_id=" + userId
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
     }
     
 }
