@@ -3,7 +3,8 @@ let rpoUsers = require('../repositories/mysql/_users');
 let rpoUserOptions = require('../repositories/mysql/_user_options');
 let rpoUserAddresses = require('../repositories/mysql/_user_addresses');
 let rpoUserSettings = require('../repositories/mysql/_user_settings');
-let rpoUserVocabulary = require('../repositories/mysql/_user_vocabulary');
+let rpoUserSettings = require('../repositories/mysql/_user_settings');
+let rpoUserPreferences = require('../repositories/mysql/_user_preferences');
 
 let rpoMigrations = require('../repositories/mysql/_migrations');
 let moment = require('moment');
@@ -136,6 +137,9 @@ exports.users = async function(req, res, next) {
 
             let userVocabulary = await rpoUserVocabulary.getUserData(user.id)
             user.userVocabulary = userVocabulary
+
+            let userPreferences = await rpoUserPreferences.getUserData(user.id)
+            user.userPreferences = userPreferences
 
             if(dupl.length <= 0 ) {
                 console.log("**************** Added new record ********************");
