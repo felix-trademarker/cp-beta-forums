@@ -155,6 +155,19 @@ exports.editTopics = async function(req, res, next) {
      
 }
 
+exports.deleteTopics = async function(req, res, next) {
+
+  let message;
+
+  let topicId = req.params.id
+
+  let topics = await rpoTopics.remove(topicId);
+
+  res.write("delete")
+
+     
+}
+
 exports.addSubTopics = async function(req, res, next) {
 
   let message;

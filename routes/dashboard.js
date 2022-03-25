@@ -22,6 +22,7 @@ router.get('/admin-dashboard/topics',dashboardController.addTopics);
 router.post('/admin-dashboard/topics',dashboardController.addTopics);
 router.get('/admin-dashboard/topics/edit/:id',dashboardController.editTopics);
 router.post('/admin-dashboard/topics/edit/:id',dashboardController.editTopics);
+router.get('/admin-dashboard/topics/delete/:id',dashboardController.deleteTopics);
 
 // ************** SUB TOPICS **************
 router.get('/admin-dashboard/sub-topics',dashboardController.addSubTopics);

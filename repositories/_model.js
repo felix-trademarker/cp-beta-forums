@@ -93,6 +93,28 @@ class Model{
 
         });
     }
+
+    remove(id) {
+
+        var this_ = this
+
+		return new Promise(function(resolve, reject) {
+            let ObjectID = require('mongodb').ObjectID;
+			let query = { _id: ObjectID(id) };
+            
+
+			this_.db.getDb().collection(this_.table).deleteOne(query, function(err, result) {
+				if (result) {
+					console.log('ok');
+					resolve(result)
+				} else {
+					console.log('err', err.message);
+					reject(err);
+				}
+			});
+		});
+
+    }
 }
 
 module.exports = Model;

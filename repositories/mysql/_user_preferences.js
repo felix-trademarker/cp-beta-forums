@@ -36,6 +36,9 @@ module.exports = {
 	put : async function(data) {
         return await defaultModel.put(data)
     },
+    remove : async function(id) {
+        return await defaultModel.remove(id)
+    },
 
     // ADD CUSTOM FUNCTION BELOW ========================
     // ==================================================
