@@ -95,7 +95,7 @@
 
 			<div class="col-md-9">
 				<div class="" v-if="topic">
-					<h4><img src="/images/app-device.png" style="width:150px; margin-right:20px"> This topic ({{ topic.parentName }}) is all about {{ topic.name }}</h4>
+					<h4><img src="/beta/images/app-device.png" style="width:150px; margin-right:20px"> This topic ({{ topic.parentName }}) is all about {{ topic.name }}</h4>
 					<div class="commentHead">
 						<table class="table">
 							<tr>
@@ -126,7 +126,7 @@
 										<div class="message-attachments" v-if="comment.file.length > 0" >
 											<div v-for="(key, file) in comment.file">
 												
-												<img v-if="file" @click="imageClick(file)" :src="'/uploads/comments/'+file">
+												<img v-if="file" @click="imageClick(file)" :src="'/beta/uploads/comments/'+file">
 											</div>
 										</div>
 
@@ -198,7 +198,7 @@
 							<div class="" v-if="files" >
 								<div v-for="(key, file) in files">
 									<i @click="removeFile(key)" class="fa fa-times"></i>
-									<img :src="'/uploads/comments/'+file">
+									<img :src="'/beta/uploads/comments/'+file">
 								</div>
 							</div>
 						</div>
