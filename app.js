@@ -83,8 +83,8 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   cron.schedule('*/2 * * * * *', () => {
     // migrationService.contents()
 
-    migrationService.default('vocabulary')
-    migrationService.users()
+    // migrationService.default('vocabulary')
+    // migrationService.users()
 
     // migrationService.default('user_options')
     // migrationService.default('user_addresses')
