@@ -285,138 +285,118 @@
     }
 
     // script to fetch comments interval 5sec
-    // var interval = setInterval(function(){
-    //     if (topicsDashboardApp.topicId) {
-    //         topicsDashboardApp.updateComments();
-    //     }
-    // }, 5000);
+    var interval = setInterval(function(){
+        if (topicsDashboardApp.topicId) {
+            topicsDashboardApp.updateComments();
+        }
+    }, 5000);
 
     // test drag and drop functions
     // ************************ Drag and drop ***************** //
-let dropArea = document.getElementById("drop-area");
+    let dropArea = document.getElementById("drop-area");
 
-// Prevent default drag behaviors
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-  dropArea.addEventListener(eventName, preventDefaults, false)   
-  document.body.addEventListener(eventName, preventDefaults, false)
-});
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false)   
+        document.body.addEventListener(eventName, preventDefaults, false)
+    });
 
-// // Highlight drop area when item is dragged over it
-['dragenter', 'dragover'].forEach(eventName => {
-  dropArea.addEventListener(eventName, highlight, false)
-});
+    // // Highlight drop area when item is dragged over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, highlight, false)
+    });
 
-['dragleave', 'drop'].forEach(eventName => {
-  dropArea.addEventListener(eventName, unhighlight, false)
-});
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, unhighlight, false)
+    });
 
-// // Handle dropped files
-dropArea.addEventListener('drop', handleDrop, false);
+    // // Handle dropped files
+    dropArea.addEventListener('drop', handleDrop, false);
 
-function preventDefaults (e) {
-  e.preventDefault()
-  e.stopPropagation()
-}
+    function preventDefaults (e) {
+        e.preventDefault()
+        e.stopPropagation()
+    }
 
-function highlight(e) {
-  dropArea.classList.add('highlight')
-}
+    function highlight(e) {
+        dropArea.classList.add('highlight')
+    }
 
-function unhighlight(e) {
-  dropArea.classList.remove('active')
-}
+    function unhighlight(e) {
+        dropArea.classList.remove('active')
+    }
 
-function handleDrop(e) {
-  var dt = e.dataTransfer
-  var files = dt.files
+    function handleDrop(e) {
+        var dt = e.dataTransfer
+        var files = dt.files
 
-  handleFiles(files)
-}
+        handleFiles(files)
+    }
 
-let uploadProgress = []
-let progressBar = document.getElementById('progress-bar')
+    let uploadProgress = []
+    let progressBar = document.getElementById('progress-bar')
 
-function initializeProgress(numFiles) {
-  progressBar.value = 0
-  uploadProgress = []
+    function initializeProgress(numFiles) {
+        progressBar.value = 0
+        uploadProgress = []
 
-  for(let i = numFiles; i > 0; i--) {
-    uploadProgress.push(0)
-  }
-}
-
-function updateProgress(fileNumber, percent) {
-  uploadProgress[fileNumber] = percent
-  let total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length
-  progressBar.value = total
-}
-
-function handleFiles(files) {
-
-  files = [...files]
-  initializeProgress(files.length)
-  files.forEach(uploadFile)
-//   files.forEach(previewFile)
-}
-
-function previewFile(file) {
-  let reader = new FileReader()
-  reader.readAsDataURL(file)
-  reader.onloadend = function() {
-    let img = document.createElement('img')
-    img.src = reader.result
-    document.getElementById('gallery').appendChild(img)
-  }
-}
-
-function uploadFile(file, i) {
-  var url = '/beta/api/v1/add-comment/upload-image'
-  var xhr = new XMLHttpRequest()
-  var formData = new FormData()
-  xhr.open('POST', url, true)
-  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
-
-  // Update progress (can be used to show progress indicator)
-  xhr.upload.addEventListener("progress", function(e) {
-    updateProgress(i, (e.loaded * 100.0 / e.total) || 100)
-  })
-
-  xhr.addEventListener('readystatechange', function(e) {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      updateProgress(i, 100) // <- Add this
-      var res = JSON.parse(xhr.response)
-    //   console.log(res);
-        if (res.results) {
-            topicsDashboardApp.files.push(res.results)
+        for(let i = numFiles; i > 0; i--) {
+            uploadProgress.push(0)
         }
     }
-    else if (xhr.readyState == 4 && xhr.status != 200) {
-      // Error. Inform the user
+
+    function updateProgress(fileNumber, percent) {
+        uploadProgress[fileNumber] = percent
+        let total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length
+        progressBar.value = total
     }
-  })
-  formData.append('file', file)
-  xhr.send(formData)
-}
 
+    function handleFiles(files) {
 
-// Get the modal
-// var modal = document.getElementById("imageModal");
+        files = [...files]
+        initializeProgress(files.length)
+        files.forEach(uploadFile)
 
-// // Get the image and insert it inside the modal - use its "alt" text as a caption
-// var img = document.getElementById("myImg");
-// var modalImg = document.getElementById("img01");
-// img.onclick = function(){
-//   modal.style.display = "block";
-//   modalImg.src = this.src;
-// }
+    }
 
-// // Get the <span> element that closes the modal
-// var span = document.getElementsByClassName("close")[0];
+    function previewFile(file) {
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onloadend = function() {
+            let img = document.createElement('img')
+            img.src = reader.result
+            document.getElementById('gallery').appendChild(img)
+        }
+    }
 
-// // When the user clicks on <span> (x), close the modal
-// span.onclick = function() { 
-//   modal.style.display = "none";
-// }
+    function uploadFile(file, i) {
+        var url = '/beta/api/v1/add-comment/upload-image'
+        var xhr = new XMLHttpRequest()
+        var formData = new FormData()
+        xhr.open('POST', url, true)
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+
+        // Update progress (can be used to show progress indicator)
+        xhr.upload.addEventListener("progress", function(e) {
+            updateProgress(i, (e.loaded * 100.0 / e.total) || 100)
+        })
+
+        xhr.addEventListener('readystatechange', function(e) {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+            updateProgress(i, 100) 
+            var res = JSON.parse(xhr.response)
+   
+                if (res.results) {
+                    topicsDashboardApp.files.push(res.results)
+                }
+            }
+            else if (xhr.readyState == 4 && xhr.status != 200) {
+            // Error. Inform the user
+            }
+        })
+        formData.append('file', file)
+        xhr.send(formData)
+    }
 
 
 </script>
