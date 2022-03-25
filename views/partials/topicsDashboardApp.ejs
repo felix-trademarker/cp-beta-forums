@@ -29,7 +29,7 @@
 
             frmData.append('message',this.message)
             console.log(frmData);
-            const res = await fetch('/api/v1/add-comment/', {
+            const res = await fetch('/beta/api/v1/add-comment/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'multipart/form-data' },
 
@@ -44,7 +44,7 @@
             var this_ = this;
             var formData = new FormData()
 
-            xmlhttp.open("POST", "/api/v1/add-comment/", true);
+            xmlhttp.open("POST", "/beta/api/v1/add-comment/", true);
             xmlhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             xmlhttp.onreadystatechange = function() {
@@ -119,7 +119,7 @@
 
             if(this.topicId) {
                 // console.log('fetching comments');
-                xmlhttp.open("GET", "/api/v1/comments/"+this.topicId, true);
+                xmlhttp.open("GET", "/beta/api/v1/comments/"+this.topicId, true);
                 xmlhttp.send();
             } else {
                 this.comments = null
@@ -171,7 +171,7 @@
         fetchReplyTo: async function() {
 
             let this_ = this
-            fetch('/api/v1/find-comment/'+this.replyTo).then(function (response) {
+            fetch('/beta/api/v1/find-comment/'+this.replyTo).then(function (response) {
                 // The API call was successful!
                 return response.json();
             }).then(function (data) {
@@ -222,7 +222,7 @@
 
             if(this.topicId) {
                 // console.log('fetching topic');
-                xmlhttp.open("GET", "/api/v1/topics/"+this.topicId, true);
+                xmlhttp.open("GET", "/beta/api/v1/topics/"+this.topicId, true);
                 xmlhttp.send();
             } else {
                 this.topic = null
@@ -258,7 +258,7 @@
 
             if(this.topicId) {
                 // console.log('fetching comments');
-                xmlhttp.open("GET", "/api/v1/comments/"+this.topicId, true);
+                xmlhttp.open("GET", "/beta/api/v1/comments/"+this.topicId, true);
                 xmlhttp.send();
             } else {
                 this.comments = null
@@ -370,7 +370,7 @@ function previewFile(file) {
 }
 
 function uploadFile(file, i) {
-  var url = '/api/v1/add-comment/upload-image'
+  var url = '/beta/api/v1/add-comment/upload-image'
   var xhr = new XMLHttpRequest()
   var formData = new FormData()
   xhr.open('POST', url, true)
