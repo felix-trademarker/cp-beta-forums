@@ -77,7 +77,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   // app.use('/', publicRouter);
   // app.use('/', authRouter);
   app.use('/', dashboardRouter);
-  app.use('/api/v1', apiRouter);
+  app.use(['/api/v1','/beta/api/v1'], apiRouter);
 
   // ROUTE HANDLER ============ <<
   cron.schedule('*/2 * * * * *', () => {
