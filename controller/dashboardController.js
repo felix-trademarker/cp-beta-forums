@@ -60,6 +60,7 @@ exports.forumId = async function(req, res, next) {
   // let subtopics = await rpoSubTopics.get();
 
   // let combinedTopics;
+  console.log("cookies >> ",req.cookies);
 
   for(let i=0; i < topics.length; i++) {
     let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })
