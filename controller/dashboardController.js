@@ -236,7 +236,7 @@ exports.editSubTopics = async function(req, res, next) {
 
   if (req.body && req.body.name) {
     // update
-    await rpoTopics.update(topicId,req.body);
+    await rpoSubTopics.update(topicId,req.body);
 
     message = {
       status: true,
@@ -244,7 +244,9 @@ exports.editSubTopics = async function(req, res, next) {
     }
   }
 
-  let topics = await rpoTopics.find(topicId);
+  let topics = await rpoSubTopics.find(topicId);
+
+  console.log(topics);
 
   if (!topics) res.redirect('/admin-dashboard/sub-topics') 
     
