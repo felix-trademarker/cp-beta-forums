@@ -56,7 +56,7 @@ exports.addImageComments = async function(req, res, next) {
   var extName = path.extname(file.name)
   var filename = toInteger(req.app.locals.moment().format('YYMMDDHHMMSS')) + '.' + extName;
   filename = filename.toLowerCase()
-  uploadPath = __dirname + '/../../public/uploads/comments/'+filename;
+  uploadPath = __dirname + '/../../public/beta/uploads/comments/'+filename;
   file.mv(uploadPath, function(err) {
     console.log("==================== ERROR FILE UPLOAD =======================");
     console.log(err);
