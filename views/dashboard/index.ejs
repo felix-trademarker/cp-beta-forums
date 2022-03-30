@@ -89,7 +89,21 @@
 				<h3>This is the ChinesePod Express App beta Test Forum, a space to become a tester and share your experiences, suggestions, and be part of a growing community.</h3>
 			</div>
 
-			<div class="col-md-3">
+			<% topics.forEach(function(topic,key) {  %>
+				<div class="col-md-3 topic-block">
+					<h4 class=""><%= topic.name %></h4>
+					<img class="img-responsive" src="/beta/images/<%= topic.name.replace(' ','-').toLowerCase() %>.png">
+					
+					<% if(topic.sub && topic.sub.length > 0) { %>
+						<ul>
+							<% for(let cnt=0; cnt < topic.sub.length; cnt++) {  %>
+								<li class="topic" v-on:click="setTopic('<%= topic.sub[cnt]._id %>')" ><%= topic.sub[cnt].name %></li>
+							<% } %>
+						</ul>
+					<% } %>
+				</div>
+			<% }) %>
+			<div class="col-md-3" style="display:none">
 				<h2>Topics</h2>
 				
 				<ul class="side-nav">
@@ -108,9 +122,20 @@
 				</ul>
 			</div>
 
-			<div class="col-md-9">
-				<div class="" v-if="topic">
-					<h4><img src="/beta/images/app-device.png" style="width:150px; margin-right:20px"> This topic ({{ topic.parentName }}) is all about <strong>{{ topic.name }}</strong></h4>
+			<div class="col-md-12">
+				<div class="topic-block-comments" v-if="topic">
+
+					<div class="row mb-3 mt-3" style="align-items: center;">
+						<div class="col-md-2 text-center">
+							<h4>{{ topic.parentName }}</h4>
+							<img class="img-responsive" :src="'/beta/images/'+topic.parentName.replace(' ','-').toLowerCase()+'.png'">
+						</div>
+						<div class="col-md-10">
+							<h4> This topic is all about <strong>{{ topic.name }}</strong></h4>
+							<p>{{ topic.description }}</p>
+						</div>
+					</div>
+
 					<div class="commentHead">
 						<table class="table">
 							<tr>
