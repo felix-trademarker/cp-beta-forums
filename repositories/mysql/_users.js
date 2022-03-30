@@ -54,6 +54,18 @@ module.exports = {
                 resolve(result)
             });
         });
+    },
+
+    getUserByEmailSQL : async function(email){
+        return new Promise(function(resolve, reject) {
+            var sql = "SELECT * FROM " + tableName;
+            sql += " WHERE email='" + email+"'";
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
     }
     
 }

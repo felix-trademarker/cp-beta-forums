@@ -1,31 +1,20 @@
 const jwt = require('jsonwebtoken');
+const rpouser = require('./repositories/users')
+var store = require('store')
 
-exports.getLoginUser = function(req) {
-    let decode = jwt.decode(req.cookies.jwt, {complete: true});
-    let accessToken = req.cookies.jwt
-    let user;
-    
+exports.getLoginUser = async function(req) {
+    // let email = req.cookies.email
+    // let user;
 
-    let payload
-    try{
+    // if (userEmail) {
+    //     user = await rpouser.findQuery({email: userEmail})
+    // }
+    // return user ? user[0] : null;
 
-        payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
-        
-        if (decode && decode.payload.user) {
-            user = JSON.parse(decode.payload.user);
-    
-            if ( user && user._id ) {
-                user._id = ObjectID(user._id)
-            }
-    
-        }
-    }
-    catch(e){
-        console.log(e.message);
-    }
- 
+    // get from local storage if it has vuex and registered token
+    let vuex = store.get('vuex')
 
-    return user
+    console.log(vuex);
 }
 
 

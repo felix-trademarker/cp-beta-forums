@@ -12,6 +12,7 @@
         message: '',
         files: [],
         testerName: '',
+        testerAvatar: '',
         replyTo: '',
         replyToData: null
     },
@@ -78,6 +79,7 @@
             formData.append("file", this.files);
             formData.append("message", this.message);
             formData.append("testerName", this.testerName);
+            formData.append("testerAvatar", this.testerAvatar);
             formData.append("replyTo", this.replyTo);
             formData.append("topicId", this.topicId);
 
@@ -272,24 +274,24 @@
         },
 
         
-        
-
     }
 
     })
 
     topicsDashboardApp.setTopic("<%= selectedTopic %>")
+
+    console.log(topicsDashboardApp.userData);
     // set initial topic id
     if (!topicsDashboardApp.topicId && topicsDashboardApp.topics && topicsDashboardApp.topics[0].sub) {
         topicsDashboardApp.setTopic(topicsDashboardApp.topics[0].sub[0]._id)
     }
 
     // script to fetch comments interval 5sec
-    var interval = setInterval(function(){
-        if (topicsDashboardApp.topicId) {
-            topicsDashboardApp.updateComments();
-        }
-    }, 5000);
+    // var interval = setInterval(function(){
+    //     if (topicsDashboardApp.topicId) {
+    //         topicsDashboardApp.updateComments();
+    //     }
+    // }, 5000);
 
     // test drag and drop functions
     // ************************ Drag and drop ***************** //

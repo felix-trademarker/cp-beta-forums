@@ -30,6 +30,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
+// app.use(lessMiddleware({
+//   src: path.join(__dirname, 'public'),
+//   dest: __dirname+"public/beta/stylesheets/",
+//   force: true,
+//   debug: true
+// }));
 
 
 if ( process.env.ENVIRONMENT != "dev" ) {
