@@ -52,7 +52,14 @@ Thumbs.db
 .package-lock.json
 public/pdf/*
 public/uploads/*
+public/uploads/*
 public/activities-csv/*
+
+public/beta/pdf/*
+public/beta/uploads/*
+public/beta/uploads/*
+public/beta/activities-csv/*
+
 package-lock.json
 
 public/robots.txt
