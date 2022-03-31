@@ -9,9 +9,9 @@ var router = express.Router();
 // TESTERS ============================
 // ====================================
 
-router.get(['/', '/beta'],dashboardController.forumId);
-router.get('/forums',dashboardController.forumId);
-router.get('/forums/:id',dashboardController.forumId);
+router.get(['/', '/beta'],dashboardController.landing);
+router.get(['/forums', '/beta/forums'],dashboardController.forum);
+router.get('/forums/:id',dashboardController.forum);
 // router.get('/dashboard-topics/:topics',dashboardController.topics);
 
 // ADMIN ==============================

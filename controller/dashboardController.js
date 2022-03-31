@@ -6,75 +6,19 @@ const { ConnectContactLens } = require('aws-sdk');
 let helpers = require('../helpers');
 const { json } = require('stream/consumers');
 
-exports.home = async function(req, res, next) {
-
-  let topics = await rpoTopics.get();
-  // let subtopics = await rpoSubTopics.get();
-
-  // let combinedTopics;
-
-  for(let i=0; i < topics.length; i++) {
-    let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })
-    topics[i].sub = listSubTopics
-    console.log(listSubTopics);
-  }
-
-  // console.log(topics);
-    
-  res.render('dashboard/', { 
-    title: '',
-    description: '',
-    keywords: '',
-    topics: topics
-  });
-
-     
-}
-
-exports.forum = async function(req, res, next) {
-
-  let topics = await rpoTopics.get();
-  // let subtopics = await rpoSubTopics.get();
-
-  // let combinedTopics;
-
-  for(let i=0; i < topics.length; i++) {
-    let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })
-    topics[i].sub = listSubTopics
-    console.log(listSubTopics);
-  }
-
-  // console.log(topics);
-    
-  res.render('dashboard/forum', { 
-    title: '',
-    description: '',
-    keywords: '',
-    topics: topics
-  });
-
-     
-}
-
-exports.forumId = async function(req, res, next) {
+exports.landing = async function(req, res, next) {
 
   let topics = await rpoTopics.get();
   let selectedTopic = req.params.id
-  // console.log(selectedTopic);
-  // let subtopics = await rpoSubTopics.get();
-  // helpers.getLoginUser(req)
-  // let combinedTopics;
-  console.log("cookies >> ",req.cookies);
+
   let userData;
 
 
   if (req.cookies.email) {
-    userData = await rpoUsers.getUserByEmailSQL("felix@bigfoot.com")
+    userData = await rpoUsers.getUserByEmailSQL(req.cookies.email)
   }
-  userData = await rpoUsers.getUserByEmailSQL("felix@bigfoot.com")
 
-  userData = userData.length > 0 ? userData[0] : null
-  console.log(userData);
+  userData = userData && userData.length > 0 ? userData[0] : null
 
   for(let i=0; i < topics.length; i++) {
     let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })
@@ -95,7 +39,43 @@ exports.forumId = async function(req, res, next) {
     userData: userData
   });
 
-     
+}
+
+exports.forum = async function(req, res, next) {
+
+  let topics = await rpoTopics.get();
+  let selectedTopic = req.params.id
+
+  let userData;
+
+
+  if (req.cookies.email) {
+    userData = await rpoUsers.getUserByEmailSQL("felix@bigfoot.com")
+  }
+  userData = await rpoUsers.getUserByEmailSQL("felix@bigfoot.com")
+
+  userData = userData && userData.length > 0 ? userData[0] : null
+  console.log(userData);
+
+  for(let i=0; i < topics.length; i++) {
+    let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })
+    topics[i].sub = listSubTopics
+    
+    if (i == 0 && !selectedTopic) {
+      selectedTopic = topics[i].sub[0]._id
+    }
+
+  }
+    
+  res.render('dashboard/forum', { 
+    title: '',
+    description: '',
+    keywords: '',
+    selectedTopic: selectedTopic,
+    topics: topics,
+    userData: userData
+  });
+
 }
 
 
