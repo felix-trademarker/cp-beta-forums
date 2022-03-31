@@ -43,7 +43,7 @@ exports.landing = async function(req, res, next) {
 
 exports.forum = async function(req, res, next) {
 
-  let topics = await rpoTopics.get();
+  let topics = await rpoSubTopics.get();
   let selectedTopic = req.params.id
 
   let userData;
@@ -52,10 +52,30 @@ exports.forum = async function(req, res, next) {
   if (req.cookies.email) {
     userData = await rpoUsers.getUserByEmailSQL("felix@bigfoot.com")
   }
-  userData = await rpoUsers.getUserByEmailSQL("felix@bigfoot.com")
+
+  res.render('dashboard/forum', { 
+    title: '',
+    description: '',
+    keywords: '',
+    topics: topics,
+    userData: userData
+  });
+
+}
+
+exports.forumPage = async function(req, res, next) {
+
+  let topics = await rpoTopics.get();
+  let selectedTopic = req.params.id
+
+  let userData;
+
+
+  if (req.cookies.email) {
+    userData = await rpoUsers.getUserByEmailSQL(req.cookies.email)
+  }
 
   userData = userData && userData.length > 0 ? userData[0] : null
-  console.log(userData);
 
   for(let i=0; i < topics.length; i++) {
     let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })
@@ -67,7 +87,7 @@ exports.forum = async function(req, res, next) {
 
   }
     
-  res.render('dashboard/forum', { 
+  res.render('dashboard/forum-page', { 
     title: '',
     description: '',
     keywords: '',
@@ -78,6 +98,56 @@ exports.forum = async function(req, res, next) {
 
 }
 
+
+exports.downloadPage = async function(req, res, next) {
+    
+  res.render('pages/download', { 
+    title: '',
+    description: '',
+    keywords: '',
+  });
+
+}
+
+exports.weNeedYou = async function(req, res, next) {
+    
+  res.render('pages/weneedyou', { 
+    title: '',
+    description: '',
+    keywords: '',
+  });
+
+}
+
+exports.ourMission = async function(req, res, next) {
+    
+  res.render('pages/ourmission', { 
+    title: '',
+    description: '',
+    keywords: '',
+  });
+
+}
+
+exports.enroll = async function(req, res, next) {
+    
+  res.render('pages/enroll', { 
+    title: '',
+    description: '',
+    keywords: '',
+  });
+
+}
+
+exports.about = async function(req, res, next) {
+    
+  res.render('pages/about', { 
+    title: '',
+    description: '',
+    keywords: '',
+  });
+
+}
 
 // ============================ ADMIN FUNCTIONS
 exports.addTopics = async function(req, res, next) {

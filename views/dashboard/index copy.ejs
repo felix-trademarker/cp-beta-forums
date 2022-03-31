@@ -1,0 +1,182 @@
+<div id="topicsDashboardApp">
+<section class="cprecap-banner">
+	<div class="jumbotron jumbotron-fluid">
+		<div class="row justify-content-center">
+			<div class="cprecap-banner-body col-11">
+				<h1><span>Welcome to the BETA Version of the ChinesePod Express App Forum -</span><br>
+					The Community you deserve, help us make it better for you!</h1>
+				<p class="button-comb">
+					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/store/apps/details?id=com.chinesepod.express">Mobile APP</a>&nbsp;
+					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/apps/testing/com.chinesepod.express">Web APP</a><br>
+					<strong>TRY OUT</strong> Our Beta APP</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="cprecap-info" id="about">
+	<div class="container-xl">
+		<div class="row pl-3 pr-3">
+			<div class="col-lg-6 text-center">
+				<img src="/beta/images/app-in-devices.png" alt="" class="img-fluid">
+			</div>
+			<div class="col-lg-6 text-center mb-5">
+			  <h3 class="mb-3">ChinesePod Beta APP<br>
+				  <small>offers access to short review segments based on full-length ChinesePod lessons.</small></h3>
+				<p>These are aimed explicitly at solidifying previously studied material and extend long-term retention.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="cprecap-info" id="weneedyou">
+	<div class="container-xl">
+		<div class="row pl-3 pr-3">
+			<div class="col-lg-12 text-center mb-5">
+			  <h3 class="mb-3">We Need You<br>
+				  <small>Help us build the best website to learn Mandarin Chinese. Help us test our Beta and receive free premium access.</small></h3>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="cprecap-info" id="mission">
+	<div class="container-xl">
+		<div class="row pl-3 pr-3">
+			<div class="col-lg-12 text-center mb-5">
+			  <h3 class="mb-3">Our Mission<br>
+				  <small>Our mission is to build the best APP to learn Mandarin Chinese</small></h3>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="cprecap-info" id="enroll">
+	<div class="container-xl">
+		<div class="row pl-3 pr-3">
+			<div class="col-lg-12 text-center mb-5">
+			  <h3 class="mb-3">Become a Beta Tester<br>
+				  <small>Test our Beta and receive a premium access</small></h3>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="mt-5 mb-5" id="forum">
+    <div class="container" style="min-height:65vh">
+        <div class="row justify-content-center box-bg-container">
+
+			<div class="col-11 text-center mb-5">
+				<h3>This is the ChinesePod Express App beta Test Forum, a space to become a tester and share your experiences, suggestions, and be part of a growing community.</h3>
+			</div>
+
+			<% topics.forEach(function(topic,key) {  %>
+				<div class="col-md-3 topic-block">
+					<h4 class=""><%= topic.name %></h4>
+					<img class="img-responsive" src="/beta/images/<%= topic.name.replace(' ','-').toLowerCase() %>.png">
+					
+					<% if(topic.sub && topic.sub.length > 0) { %>
+						<ul>
+							<% for(let cnt=0; cnt < topic.sub.length; cnt++) {  %>
+								<li class="topic" v-on:click="setTopic('<%= topic.sub[cnt]._id %>')" ><%= topic.sub[cnt].name %></li>
+							<% } %>
+						</ul>
+					<% } %>
+				</div>
+			<% }) %>
+
+			<div class="col-md-12">
+				<div class="topic-block-comments" v-if="topic">
+
+					<div class="row mb-3 mt-3" style="align-items: center;">
+						<div class="col-md-2 text-center">
+							<h4>{{ topic.parentName }}</h4>
+							<img class="img-responsive" :src="'/beta/images/'+topic.parentName.replace(' ','-').toLowerCase()+'.png'">
+						</div>
+						<div class="col-md-10">
+							<h4> This topic is all about <strong>{{ topic.name }}</strong></h4>
+							<p>{{ topic.description }}</p>
+						</div>
+					</div>
+
+					<div class="commentHead">
+						<table class="table">
+							<tr>
+								<td style="width:90%">Last Comment: {{ dateFormat(comments[(comments.length -1)].created_at) }}</td>
+								<td><i class="fa fa-comments" style="margin-right: 5px;"></i>{{ comments.length }}</td>
+								<td><i class="fa fa-eye" style="margin-right: 5px;"></i>{{ topic.viewCount ? topic.viewCount : 0 }}</td>
+							</tr>
+						</table>
+					</div>
+					<div class="" v-if="comments.length > 0">
+						<ul class="message-blocks">
+							<li :id="comment._id" v-for="comment in comments" :class="comment.replyToData ? 'hasComment': ''">
+
+								<a v-if="comment.replyToData" class="replyBox">
+									<p><b>REPLY TO</b></p>
+									<p><img class="profilePicReply" :src="comment.testerAvatar ? comment.testerAvatar : 'https://www.chinesepod.com/home/img/brand/symbol-black-center.svg'"> {{ comment.replyToData.testerName }}</p>
+									<p> {{ comment.replyToData.message }} </p>
+								</a>
+
+								<div class="message-wrapper">
+									
+
+									<div class="message-data text-left">
+										<span class="message-data-name"><img class="profilePic" :src="comment.testerAvatar ? comment.testerAvatar : 'https://www.chinesepod.com/home/img/brand/symbol-black-center.svg'"> {{ comment.testerName }}</span>
+										<span class="message-data-time">{{ dateFormat(comment.created_at) }}</span>
+									</div>
+									<div class="message"> {{ comment.message }} 
+										<div class="message-attachments" v-if="comment.file.length > 0" >
+											<div v-for="(key, file) in comment.file">
+												
+												<img v-if="file" @click="imageClick(file)" :src="'/beta/uploads/comments/'+file">
+											</div>
+										</div>
+
+										<p @click="setReply(comment._id)" class="message-reply btn btn-primary" style="font-size: 12px;margin: 0;">
+											Reply
+										</p>
+									</div>
+								</div>
+
+								
+								
+								
+							</li>
+						</ul>
+					</div>
+	
+					<div class="" v-if="comments.length == 0">
+						<p>No Comments Yet</p>
+					</div>
+
+					
+
+					
+					 
+
+				</div>
+
+				<div class="" v-if="!topic">
+					<p>Please select topic</p>
+				</div>
+
+				<!-- <div class="form-group text-center">
+					<a href="/beta/forums" class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3">Enter Forum Page</a>
+				</div> -->
+
+			</div>
+		
+		</div>
+
+		<!-- The Modal -->
+		<div id="imageModal" class="custom-modal">
+			<span @click="closeImageModal()" class="close">&times;</span>
+			<img class="custom-modal-content" id="img01">
+		</div>
+
+    </div>
+</section>
+
+</div>
+

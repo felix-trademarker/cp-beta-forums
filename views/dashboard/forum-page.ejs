@@ -1,5 +1,5 @@
 <section class="mt-5" id="topicsDashboardApp">
-    <div class="container-fluid" style="min-height:65vh">
+    <div class="container" style="min-height:65vh">
         <div class="row justify-content-center box-bg-container">
 
 			<div class="col-md-3">
@@ -23,7 +23,17 @@
 
 			<div class="col-md-9">
 				<div class="" v-if="topic">
-					<h4><img src="/images/app-device.png" style="width:150px; margin-right:20px"> This topic ({{ topic.parentName }}) is all about {{ topic.name }}</h4>
+					<div class="row mb-3 mt-3 topic-block" style="align-items: center;">
+						<div class="col-md-2 text-left">
+							<h4>{{ topic.parentName }}</h4>
+							<img class="img-responsive" :src="'/beta/images/'+topic.parentName.replace(' ','-').toLowerCase()+'.png'">
+						</div>
+						<div class="col-md-10 text-left">
+							<h4> This topic is all about <strong>{{ topic.name }}</strong></h4>
+							<p>{{ topic.description }}</p>
+						</div>
+					</div>
+					
 					<div class="commentHead">
 						<table class="table">
 							<tr>
@@ -56,7 +66,7 @@
 					</div>
 	
 					<div class="" v-if="comments.length == 0">
-						<p>No Comments Yet</p>
+						<p>Be the first to send a feedback</p>
 					</div>
 
 					
@@ -81,40 +91,52 @@
 				</div>
 
 				<!-- form add comments -->
-				<br>Add Comment<hr>
-				<form id="drop-area" @submit.prevent="addComment()" enctype="multipart/form-data">
+				<% if(userData) { %>
+					<!-- form add comments -->
+					<form style="border: 1px dashed #ccc;padding: 20px;margin-top:50px; font-size: 14px;" @submit.prevent="addComment()" enctype="multipart/form-data">
+						<h6 v-if="!replyTo">Add Comment</h6>
+						<h6 v-if="replyTo">Reply to </h6>
+						<div v-if="replyToData" @click="removeReply" class="replyBox">
+							<span><i class="fa fa-times"></i></span>
+							<p>Name: {{ replyToData.testerName }}</p>
+							<p> {{ replyToData.message }} </p>
+						</div>
+						<hr>
+						<div class="form-group-inline">
+							<input type="hidden" v-model="replyTo" class="form-control">
+							<input type="hidden" v-model="testerName" value="<%= userData.username %>" class="form-control" required>
+							<input type="hidden" v-model="testerAvatar" value="<%= userData.avatar_url %>" class="form-control" required>
+						</div>
 	
-					<div class="form-group">
-						<label>Name</label>
-						<input type="text" v-model="testerName" class="form-control" required>
-					</div>
-
-					<div class="form-group">
-						<label>message</label>
-						<textarea class="form-control" v-model="message" name="notes" rows="3" required></textarea>
-					</div>
-
-					<div >
-						  <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
-						  <label class="button" for="fileElem">Attachments</label>
-					
-						<div id="progress-bar" max=100 value=0></div>
-						<div id="gallery">
-							<div class="" v-if="files" >
-								<div v-for="(key, file) in files">
-									<i @click="removeFile(key)" class="fa fa-times">x</i>
-									<img :src="'/uploads/comments/'+file">
+						<div class="form-group">
+							<label>Feedback</label>
+							<textarea class="form-control" v-model="message" name="notes" rows="3" required></textarea>
+						</div>
+	
+						<div id="drop-area" >
+							  <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+							  <label class="button btn btn-info" for="fileElem">Add Attachments</label>
+								<p>Drag & Drop Images HERE</p>
+							<div id="progress-bar" max=100 value=0></div>
+							<div id="gallery">
+								<div class="" v-if="files" >
+									<div v-for="(key, file) in files">
+										<i @click="removeFile(key)" class="fa fa-times"></i>
+										<img :src="'/beta/uploads/comments/'+file">
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-
-				
-					<div class="form-group text-center">
-						<input class="btn btn-primary" type="submit" value="Submit">
-					</div>
 	
-				</form>
+					
+						<div class="form-group text-center">
+							<input class="btn btn-primary" type="submit" value="Submit Feedback as <%= userData.username %>">
+						</div>
+		
+					</form>
+					<% } else { %>
+						<p style="font-style: italic;">Please login and send us your FeedBack <a class="btn btn-primary" href="https://www.chinesepod.com/login">Login</a></p>
+					<% } %>
 
 			</div>
 		

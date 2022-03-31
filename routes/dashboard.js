@@ -11,7 +11,13 @@ var router = express.Router();
 
 router.get(['/', '/beta'],dashboardController.landing);
 router.get(['/forums', '/beta/forums'],dashboardController.forum);
-router.get('/forums/:id',dashboardController.forum);
+router.get(['/forums/:id','/beta/forums/:id'],dashboardController.forumPage);
+
+router.get(['/download','/beta/download'],dashboardController.downloadPage);
+router.get(['/we-need-you','/beta/we-need-you'],dashboardController.weNeedYou);
+router.get(['/our-mission','/beta/our-mission'],dashboardController.ourMission);
+router.get(['/become-a-beta-tester','/beta/become-a-beta-tester'],dashboardController.enroll);
+router.get(['/about','/beta/about'],dashboardController.about);
 // router.get('/dashboard-topics/:topics',dashboardController.topics);
 
 // ADMIN ==============================

@@ -342,9 +342,16 @@ p {
 
 .topic-block {
   text-align: center;
+  position: relative;
   .img-responsive{
     width: 100%;
     max-width: 150px;
+  }
+
+  .author{
+    font-size: 12px;
+    margin: 0;
+    font-style: italic;
   }
 
   ul{
@@ -355,14 +362,28 @@ p {
       list-style: none;
       margin: 0;
       padding: 0;
-      cursor: pointer;
-      color: #000;
 
-      &:hover{
-        color: #e1001e;
+      a{
+        color: #000;
+        &:hover{
+          color: #e1001e;
+        }
       }
     }
   }
+
+  .block-link{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    &:hover{
+      background: rgba(0,0,0,0.2);
+    }
+  }
+
 }
 
 .topic-block-comments{
