@@ -18,37 +18,8 @@
 				<h2>This is the ChinesePod Express App beta Test Forum, a space to become a tester and share your experiences, suggestions, and be part of a growing community.</h2>
 			</div>
 
-			<div class="col-md-6">
-				
-				<% subTopics.forEach(function(topic,key) {  %>
-					
-					<div class="row topic-block text-left mb-3">
-						
-						<div class="col-md-2">
-							<img class="img-responsive" src="/beta/images/<%= topic.parentName.replace(' ','-').toLowerCase() %>.png">
-						</div>
-						<div class="col-md-10">
-							<h4 class=""><%= topic.name %></h4>
-							<p class=""><%= topic.description %></p>
-							
-						</div>
-						<div class="col-md-12">
-							<p class="author"><%= topic.parentName %> <%= moment(topic.created_at).format('MMM D, YYYY') %></p>
-						</div>
-
-						<a class="block-link" href="/beta/forums/<%= topic._id %>"></a>
-						
-					</div>
-
-				<% }) %>
-			</div>
-
-			<div class="col-md-6">
-				latest comments here
-			</div>
-
-			<div class="col-md-12">
-				<h3>Add New Topic</h3>
+			<div class="col-md-12 mb-5">
+				<h4>Add New Topic</h4>
 				<% if(userData) { %>
 				<form method="post" enctype="multipart/form-data">
 
@@ -89,7 +60,44 @@
 					<p style="font-style: italic;">Please login and send us your FeedBack <br><a class="btn btn-primary" href="https://www.chinesepod.com/login">Login</a></p>
 				<% } %>
 
+				<hr>
 			</div>
+
+			<div class="col-md-6">
+				
+				<% subTopics.forEach(function(topic,key) {  %>
+					
+					<div class="row topic-block text-left mb-3">
+						
+						<div class="col-md-2">
+							<img class="img-responsive" src="/beta/images/<%= topic.parentName.replace(' ','-').toLowerCase() %>.png">
+						</div>
+						<div class="col-md-10">
+							<h4 class=""><%= topic.name %></h4>
+							<p class=""><%= topic.description %></p>
+							
+						</div>
+						<div class="col-md-12">
+							<p class="author"><%= topic.parentName %> <%= moment(topic.created_at).format('MMM D, YYYY') %></p>
+						</div>
+
+						<a class="block-link" href="/beta/forums/<%= topic._id %>"></a>
+						
+					</div>
+
+				<% }) %>
+			</div>
+
+			<div class="col-md-6">
+				<% if(latestComments && latestComments.length > 0) { %>
+					Get Latest Comments - ONGOING
+				<% } else { %>
+					<p style="font-style: italic;">No Comments Found</p>
+				<% } %>
+				
+			</div>
+
+			
 
 
 			

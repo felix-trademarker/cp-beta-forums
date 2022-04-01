@@ -1,5 +1,6 @@
 let rpoTopics = require('../repositories/topics');
 let rpoSubTopics = require('../repositories/subTopics');
+let rpoComments = require('../repositories/comments');
 let rpoUsers = require('../repositories/mysql/_users');
 var path = require('path')
 const { toInteger } = require('lodash'); 
@@ -46,13 +47,18 @@ exports.forum = async function(req, res, next) {
   let subTopics = await rpoSubTopics.getLatestTopics();
   let userData = await helpers.getLoginUser(req)
 
+  let latestComments = await rpoComments.getLatestComments()
+
+  console.log(latestComments);
+
   res.render('dashboard/forum', { 
     title: '',
     description: '',
     keywords: '',
     topics: topics,
     subTopics: subTopics,
-    userData: userData
+    userData: userData,
+    latestComments: latestComments
   });
 
 }
