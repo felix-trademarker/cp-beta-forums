@@ -55,7 +55,7 @@
 					<% if(topic.sub && topic.sub.length > 0) { %>
 						<ul>
 							<% for(let cnt=0; cnt < topic.sub.length; cnt++) {  %>
-								<li class="topic"><a href="/beta/forums/<%= topic._id %>"><%= topic.sub[cnt].name %></a></li>
+								<li class="topic"><a href="/beta/forums/<%= topic.sub[cnt]._id %>"><%= topic.sub[cnt].name %></a></li>
 							<% } %>
 						</ul>
 					<% } %>

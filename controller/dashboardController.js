@@ -113,6 +113,8 @@ exports.forumPage = async function(req, res, next) {
     }
 
   }
+
+  console.log("selected", selectedTopic);
     
   res.render('dashboard/forum-page', { 
     title: '',

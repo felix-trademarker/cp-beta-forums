@@ -15,6 +15,8 @@ exports.fetchSubTopic = async function(req, res, next) {
     await rpoSubTopics.update(result._id,updateData)
   }
 
+  console.log(req.params.topicId,"===================",results);
+
   res.json({results:results[0]});
 }
 
@@ -55,6 +57,27 @@ exports.addComments = async function(req, res, next) {
   data.created_at = req.app.locals.moment().format()
 
   await rpoComments.put(data)
+
+  // Update topic counters
+  let topics = await rpoSubTopics.find(data.topicId)
+  topics = topics.length > 0 ? topics[0]:null
+
+  if (topics) {
+
+    console.log("update topics");
+    // topics.lastCommentDate = data.created_at
+
+    let comments = await rpoComments.findQuery({topicId:topics._id+"" })
+    console.log(comments.length, topics._id)
+    // topics.numberOfComments = comments.length
+
+    let topicsData = {
+      lastCommentDate: data.created_at,
+      numberOfComments: comments.length
+    }
+
+    rpoSubTopics.update(topics._id, topicsData)
+  }
 
   res.json({results:true})
 }

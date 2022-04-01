@@ -19,7 +19,7 @@
     methods: {
 
         setTopic: function(id) {
-            this.topicId = id
+            this.topicId = id+''
             console.log("set topic ",this.topicId);
             this.fetchTopic
             this.fetchComments
@@ -223,7 +223,7 @@
             };
 
             if(this.topicId) {
-                // console.log('fetching topic');
+                console.log('fetching topic');
                 xmlhttp.open("GET", "/beta/api/v1/topics/"+this.topicId, true);
                 xmlhttp.send();
             } else {

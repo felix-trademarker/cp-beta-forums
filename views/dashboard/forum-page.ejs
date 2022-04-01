@@ -12,7 +12,9 @@
 						<li><%= topic.name %></li>
 						<ul>
 							<% for(let cnt=0; cnt < topic.sub.length; cnt++) {  %>
-								<li v-bind:class="topicId == topic.sub[cnt]._id ? 'active':'d'" v-on:click="setTopic('<%= topic.sub[cnt]._id %>')" ><%= topic.sub[cnt].name %></li>
+								<li v-bind:class="topicId == topic.sub[cnt]._id ? 'active':'d'" v-on:click="setTopic('<%= topic.sub[cnt]._id %>')" ><%= topic.sub[cnt].name %> 
+									<span style="float: right;"><%= topic.sub[cnt].numberOfComments ? '('+topic.sub[cnt].numberOfComments+')':'(0)' %></span>
+								</li>
 							<% } %>
 						</ul>
 						<% } %>
@@ -45,20 +47,34 @@
 					</div>
 					<div class="" v-if="comments.length > 0">
 						<ul class="message-blocks">
-							<li v-for="comment in comments">
-								<div class="message-data text-left">
-									<span class="message-data-name">{{ comment.testerName }}</span>
-									<span class="message-data-time">{{ dateFormat(comment.created_at) }}</span>
-								</div>
-								<div class="message"> {{ comment.message }} 
-									<div class="message-attachments" v-if="comment.file.length > 0" >
-										<div v-for="(key, file) in comment.file">
-											
-											<img @click="imageClick(file)" :src="'/beta/uploads/comments/'+file">
+							<li :id="comment._id" v-for="comment in comments" :class="comment.replyToData ? 'hasComment': ''">
+
+								<a v-if="comment.replyToData" class="replyBox">
+									<p><b>REPLY TO</b></p>
+									<p><img class="profilePicReply" :src="comment.testerAvatar ? comment.testerAvatar : 'https://www.chinesepod.com/home/img/brand/symbol-black-center.svg'"> {{ comment.replyToData.testerName }}</p>
+									<p> {{ comment.replyToData.message }} </p>
+								</a>
+
+								<div class="message-wrapper">
+									<div class="message-data text-left">
+										<span class="message-data-name"><img class="profilePic" :src="comment.testerAvatar ? comment.testerAvatar : 'https://www.chinesepod.com/home/img/brand/symbol-black-center.svg'"> {{ comment.testerName }}</span>
+										<span class="message-data-time">{{ dateFormat(comment.created_at) }}</span>
+									</div>
+									<div class="message"> 
+										<p>{{ comment.message }} </p>
+										<div class="message-attachments" v-if="comment.file.length > 0" >
+											<div v-for="(key, file) in comment.file">
+												
+												<img v-if="file" @click="imageClick(file)" :src="'/beta/uploads/comments/'+file">
+											</div>
 										</div>
 									</div>
+									<p @click="setReply(comment._id)" class="message-reply btn btn-primary" style="font-size: 12px;margin: 0;align-self: flex-end;">
+										Reply
+									</p>
 								</div>
 
+								
 								
 								
 							</li>
@@ -129,8 +145,11 @@
 						</div>
 	
 					
-						<div class="form-group text-center">
+						<div v-if="topic" class="form-group text-center">
 							<input class="btn btn-primary" type="submit" value="Submit Feedback as <%= userData.username %>">
+						</div>
+						<div v-if="!topic" class="form-group text-center">
+							<input class="btn btn-primary" type="submit" value="Submit Feedback as <%= userData.username %>" disabled>
 						</div>
 		
 					</form>
