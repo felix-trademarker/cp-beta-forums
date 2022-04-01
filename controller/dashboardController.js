@@ -12,13 +12,7 @@ exports.landing = async function(req, res, next) {
   let topics = await rpoTopics.get();
   let selectedTopic = req.params.id
 
-  let userData;
-
-  if (req.cookies.email) {
-    userData = await rpoUsers.getUserByEmailSQL(req.cookies.email)
-  }
-
-  userData = userData && userData.length > 0 ? userData[0] : null
+  let userData = await helpers.getLoginUser(req)
 
   for(let i=0; i < topics.length; i++) {
     let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })

@@ -6,18 +6,12 @@ let rpoUsers = require('./repositories/mysql/_users');
 exports.getLoginUser = async function(req) {
     let userData;
 
-    if (!store.get('userData')) {
-        // req.cookies.email = "felix@bigfoot.com"
-        if (req.cookies.email) {
-            userData = await rpoUsers.getUserByEmailSQL(req.cookies.email)
-        }
-        
-        userData = userData && userData.length > 0 ? userData[0] : null
-        store.set('userData', userData )
-
-    } else {
-        userData = store.get('userData')
+    if (req.cookies.email) {
+        userData = await rpoUsers.getUserByEmailSQL(req.cookies.email)
     }
+    
+    userData = userData && userData.length > 0 ? userData[0] : null
+    
     return userData
 }
 
