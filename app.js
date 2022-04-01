@@ -9,6 +9,8 @@ var cookieParser = require('cookie-parser');
 var lessMiddleware = require('less-middleware');
 var logger = require('morgan');
 const fileUpload = require('express-fileupload');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const expressLayouts = require('express-ejs-layouts');
 var cron = require('node-cron');
 var flash = require('express-flash-2');
@@ -48,9 +50,20 @@ if ( process.env.ENVIRONMENT != "dev" ) {
 }
 
 
+app.use(session({
+  secret: 'secretshhhhhh',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+      maxAge: 1000 * 60 * 60 * 24
+  }
+}))
+// SESSION STORE ============ <<
+
+app.use(flash());
+
 app.use(expressLayouts);
 // app.use(cors())
-
 
 // APP  CONTAINER =========== >> 
 let conn = require('./config/DbConnect');
@@ -69,7 +82,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   app.locals.moment = require('moment');
   app.locals.helpers = require('./helpers');
   
-  // app.use(flash());
+  // 
 
   app.set('layout', 'layouts/public-layout');
   

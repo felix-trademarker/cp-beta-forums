@@ -1,6 +1,7 @@
 var rpoSubTopics = require('../../repositories/subTopics');
 var rpoComments = require('../../repositories/comments');
 var path = require('path')
+var helpers = require('../../helpers')
 const { toInteger } = require('lodash'); 
 
 exports.fetchSubTopic = async function(req, res, next) {
@@ -35,12 +36,21 @@ exports.findComments = async function(req, res, next) {
 exports.addComments = async function(req, res, next) {
 
   let data = req.body
-  data.file = data.file.split(',')
+
+  // console.log(data.file);
+  if (data.file) {
+    data.file = data.file.split(',')
+  }
+  
 
   if (data.replyTo) {
     let results = await rpoComments.find(data.replyTo)
     data.replyToData = results[0]
   }
+
+  let userData = await helpers.getLoginUser(req)
+
+  data.userData = userData
 
   data.created_at = req.app.locals.moment().format()
 

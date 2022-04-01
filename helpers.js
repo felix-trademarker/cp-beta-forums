@@ -1,20 +1,24 @@
 const jwt = require('jsonwebtoken');
-const rpouser = require('./repositories/users')
 var store = require('store')
 
+let rpoUsers = require('./repositories/mysql/_users');
+
 exports.getLoginUser = async function(req) {
-    // let email = req.cookies.email
-    // let user;
+    let userData;
 
-    // if (userEmail) {
-    //     user = await rpouser.findQuery({email: userEmail})
-    // }
-    // return user ? user[0] : null;
+    if (!store.get('userData')) {
+        req.cookies.email = "felix@bigfoot.com"
+        if (req.cookies.email) {
+            userData = await rpoUsers.getUserByEmailSQL("felix@bigfoot.com")
+        }
+        
+        userData = userData && userData.length > 0 ? userData[0] : null
+        store.set('userData', userData )
 
-    // get from local storage if it has vuex and registered token
-    let vuex = store.get('vuex')
-
-    console.log(vuex);
+    } else {
+        userData = store.get('userData')
+    }
+    return userData
 }
 
 

@@ -20,6 +20,9 @@ router.get(['/become-a-beta-tester','/beta/become-a-beta-tester'],dashboardContr
 router.get(['/about','/beta/about'],dashboardController.about);
 // router.get('/dashboard-topics/:topics',dashboardController.topics);
 
+router.post(['/forums', '/beta/forums'],dashboardController.addSubTopicsClient);
+
+
 // ADMIN ==============================
 // ====================================
 

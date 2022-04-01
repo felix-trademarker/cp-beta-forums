@@ -1,10 +1,10 @@
 let rpoTopics = require('../repositories/topics');
 let rpoSubTopics = require('../repositories/subTopics');
 let rpoUsers = require('../repositories/mysql/_users');
-const { ConnectContactLens } = require('aws-sdk');
+var path = require('path')
+const { toInteger } = require('lodash'); 
 
 let helpers = require('../helpers');
-const { json } = require('stream/consumers');
 
 exports.landing = async function(req, res, next) {
 
@@ -12,7 +12,6 @@ exports.landing = async function(req, res, next) {
   let selectedTopic = req.params.id
 
   let userData;
-
 
   if (req.cookies.email) {
     userData = await rpoUsers.getUserByEmailSQL(req.cookies.email)
@@ -43,24 +42,59 @@ exports.landing = async function(req, res, next) {
 
 exports.forum = async function(req, res, next) {
 
-  let topics = await rpoSubTopics.get();
-  let selectedTopic = req.params.id
-
-  let userData;
-
-
-  if (req.cookies.email) {
-    userData = await rpoUsers.getUserByEmailSQL("felix@bigfoot.com")
-  }
+  let topics = await rpoTopics.get();
+  let subTopics = await rpoSubTopics.getLatestTopics();
+  let userData = await helpers.getLoginUser(req)
 
   res.render('dashboard/forum', { 
     title: '',
     description: '',
     keywords: '',
     topics: topics,
+    subTopics: subTopics,
     userData: userData
   });
 
+}
+
+
+exports.addSubTopicsClient = async function(req, res, next) {
+
+  let userData = await helpers.getLoginUser(req)
+
+
+  if (req.body && req.body.name) {
+    let data = req.body
+
+    let findDuplicate = await rpoTopics.findQuery({name:req.body.name})
+
+    if (findDuplicate && findDuplicate.length > 0) {
+      data.topic_id = findDuplicate[0]._id
+    }
+
+    data.userData = userData
+
+    // check if it has image attached
+    var file = req.files.topicImage
+    if (file) {
+      var extName = path.extname(file.name)
+      var filename = toInteger(req.app.locals.moment().format('YYMMDDHHMMSS')) + '.' + extName;
+      filename = filename.toLowerCase()
+      uploadPath = __dirname + '/../public/beta/uploads/comments/'+filename;
+      file.mv(uploadPath, function(err) {
+        console.log(err);
+      });
+    }
+    // add date created
+    data.created_at = req.app.locals.moment().format()
+    console.log("add flash message");
+    res.flash('success', 'Added successfully!, Topic has been sent to admin for approval');
+    await rpoSubTopics.put(data)
+
+  }
+
+  res.redirect('/beta/forums')
+     
 }
 
 exports.forumPage = async function(req, res, next) {
@@ -68,14 +102,7 @@ exports.forumPage = async function(req, res, next) {
   let topics = await rpoTopics.get();
   let selectedTopic = req.params.id
 
-  let userData;
-
-
-  if (req.cookies.email) {
-    userData = await rpoUsers.getUserByEmailSQL(req.cookies.email)
-  }
-
-  userData = userData && userData.length > 0 ? userData[0] : null
+  let userData = await helpers.getLoginUser(req)
 
   for(let i=0; i < topics.length; i++) {
     let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })

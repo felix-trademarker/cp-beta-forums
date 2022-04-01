@@ -28,7 +28,23 @@ module.exports = {
 
     // ADD CUSTOM FUNCTION BELOW ========================
     // ==================================================
+    getLatestTopics : async function() {
+		return new Promise(function(resolve, reject) {
 
+			let query = { status: {$ne: 'draft'} };
+			
+			conn.getDb().collection(_table).find(query).sort( { "created_at": -1 } ).toArray(function(err, result) {
+					
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result);
+				}
+
+			});
+
+		});
+	},
 	
 
 }
