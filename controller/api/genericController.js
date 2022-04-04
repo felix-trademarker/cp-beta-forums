@@ -1,5 +1,6 @@
 var rpoSubTopics = require('../../repositories/subTopics');
 var rpoComments = require('../../repositories/comments');
+// var rpoComments = require('../../repositories/comments');
 var path = require('path')
 var helpers = require('../../helpers')
 const { toInteger } = require('lodash'); 
@@ -98,6 +99,14 @@ exports.addImageComments = async function(req, res, next) {
   res.json({results:filename})
 }
 
+
+exports.getAuth = async function(req, res, next) {
+  
+  console.log(req.params.email);
+  console.log(req.params);
+  res.cookie('email',req.params.email);
+  res.json({results:true});
+}
 
 
 

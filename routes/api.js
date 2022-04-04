@@ -12,7 +12,9 @@ router.post('/add-comment/', genericController.addComments);
 router.post('/add-comment/upload-image', genericController.addImageComments);
 
 
-// USERS
 
+
+// USERS
+router.get('/check-auth/:email', genericController.getAuth);
 
 module.exports = router;

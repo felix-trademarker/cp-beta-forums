@@ -42,7 +42,7 @@ exports.forum = async function(req, res, next) {
   let userData = await helpers.getLoginUser(req)
   let isBetaTester = await helpers.isBetaTester(req)
   let latestComments = await rpoComments.getLatestComments()
-  console.log(userData);
+  // console.log(userData);
   // console.log(latestComments);
 
   res.render('dashboard/forum', { 
@@ -104,7 +104,7 @@ exports.forumPage = async function(req, res, next) {
   let selectedTopic = req.params.id
 
   let userData = await helpers.getLoginUser(req)
-  let isBetaTester = userData.isBetaTester
+  let isBetaTester = userData && userData.isBetaTester ? true : false;
 
   for(let i=0; i < topics.length; i++) {
     let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })
@@ -135,15 +135,14 @@ exports.downloadPage = async function(req, res, next) {
     
   let userData = await helpers.getLoginUser(req)
   let isBeta = await helpers.isBetaTester(req)
-  console.log(req.cookies.email);
-  console.log(userData);
+  // console.log(req.cookies.email);
+  // console.log(userData);
 
   res.render('pages/download', { 
     title: '',
     description: '',
     keywords: '',
     userData: userData,
-    isBeta: isBeta
   });
 
 }
