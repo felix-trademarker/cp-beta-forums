@@ -1,4 +1,4 @@
-let _table = process.env.TBLEXT + "sub_topics";
+let _table = process.env.TBLEXT + "beta_users";
 var Model = require('./_model')
 var defaultModel = new Model(_table)
 
@@ -28,23 +28,6 @@ module.exports = {
 
     // ADD CUSTOM FUNCTION BELOW ========================
     // ==================================================
-    getLatestTopics : async function() {
-		return new Promise(function(resolve, reject) {
 
-			let query = { status: {$ne: 'draft'} };
-			
-			conn.getDb().collection(_table).find(query).sort( { "created_at": -1 } ).limit(15).toArray(function(err, result) {
-					
-				if (err) {
-					reject(err);
-				} else {
-					resolve(result);
-				}
-
-			});
-
-		});
-	},
-	
 
 }

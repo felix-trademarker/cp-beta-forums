@@ -21,6 +21,7 @@ router.get(['/about','/beta/about'],dashboardController.about);
 // router.get('/dashboard-topics/:topics',dashboardController.topics);
 
 router.post(['/forums', '/beta/forums'],dashboardController.addSubTopicsClient);
+router.post(['/forums/participate', '/beta/forums/participate'],dashboardController.participate);
 
 
 // ADMIN ==============================

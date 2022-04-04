@@ -2,6 +2,7 @@ let rpoTopics = require('../repositories/topics');
 let rpoSubTopics = require('../repositories/subTopics');
 let rpoComments = require('../repositories/comments');
 let rpoUsers = require('../repositories/mysql/_users');
+let rpoBetaUsers = require('../repositories/betaUsers');
 var path = require('path')
 const { toInteger } = require('lodash'); 
 
@@ -40,10 +41,10 @@ exports.forum = async function(req, res, next) {
   let topics = await rpoTopics.get();
   let subTopics = await rpoSubTopics.getLatestTopics();
   let userData = await helpers.getLoginUser(req)
-
+  let isBetaTester = await helpers.isBetaTester(req)
   let latestComments = await rpoComments.getLatestComments()
 
-  console.log(latestComments);
+  // console.log(latestComments);
 
   res.render('dashboard/forum', { 
     title: '',
@@ -52,7 +53,8 @@ exports.forum = async function(req, res, next) {
     topics: topics,
     subTopics: subTopics,
     userData: userData,
-    latestComments: latestComments
+    latestComments: latestComments,
+    isBetaTester: isBetaTester
   });
 
 }
@@ -103,6 +105,7 @@ exports.forumPage = async function(req, res, next) {
   let selectedTopic = req.params.id
 
   let userData = await helpers.getLoginUser(req)
+  let isBetaTester = await helpers.isBetaTester(req)
 
   for(let i=0; i < topics.length; i++) {
     let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })
@@ -122,7 +125,8 @@ exports.forumPage = async function(req, res, next) {
     keywords: '',
     selectedTopic: selectedTopic,
     topics: topics,
-    userData: userData
+    userData: userData,
+    isBetaTester: isBetaTester
   });
 
 }
@@ -130,11 +134,40 @@ exports.forumPage = async function(req, res, next) {
 
 exports.downloadPage = async function(req, res, next) {
     
+  let userData = await helpers.getLoginUser(req)
+  let isBeta = await helpers.isBetaTester(req)
+
   res.render('pages/download', { 
     title: '',
     description: '',
     keywords: '',
+    userData: userData,
+    isBeta: isBeta
   });
+
+}
+
+exports.participate = async function(req, res, next) {
+    
+  let userData = await helpers.getLoginUser(req)
+
+  let userAgree = req.body.agreement
+
+  if (userAgree) {
+    // put 
+
+    userData.dateJoined = req.app.locals.moment().format()
+    rpoBetaUsers.put(userData)
+
+    res.flash('success', 'Thank you for participating with our Beta App.');
+    res.redirect("/beta/download")
+  } else {
+    // redirect
+    res.flash('error', 'You need to agree with the terms and conditions');
+    res.redirect("/beta/download")
+  }
+
+  
 
 }
 
