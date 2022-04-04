@@ -11,7 +11,7 @@ exports.getLoginUser = async function(req) {
     if (req.cookies.CPODSESSID) {
         console.log("===================== FOUND CPODSESSID");
         userData = await rpoUsersMySQL.getUserBySession(req.cookies.CPODSESSID)
-
+        console.log("******************",req.cookies.CPODSESSID,userData);
         if (userData.length <= 0) {
             console.log("fetch from mysql");
             userData = await rpoUsersMySQL.getUserByEmailSQL(req.cookies.email)
