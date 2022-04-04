@@ -18,12 +18,14 @@ exports.getLoginUser = async function(req) {
             
             // ADD IN MONGO
             if (userData && userData.length > 0) {
+                console.log("FROM CPODSESSID EMAIL", userData[0].email);
+                req.cookies.email = userData[0].email
                 rpoUsers.put(userData[0])
             }
         }
     }
 
-    if (req.cookies.email) {
+    if (req.cookies.email && !userData) {
         console.log("===================== FOUND email");
         console.log("helpers email");
         // find user in mongo if not fetch in mysql and store in mongo
