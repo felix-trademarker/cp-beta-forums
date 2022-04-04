@@ -9,6 +9,7 @@ exports.getLoginUser = async function(req) {
     let userData;
 
     if (req.cookies.CPODSESSID) {
+        console.log("===================== FOUND CPODSESSID");
         userData = await rpoUsersMySQL.getUserBySession(req.cookies.CPODSESSID)
 
         if (!req.cookies.email && userData && userData.length > 0) {
@@ -17,6 +18,7 @@ exports.getLoginUser = async function(req) {
     }
 
     if (req.cookies.email) {
+        console.log("===================== FOUND EMAMIL");
         console.log("helpers email");
         // find user in mongo if not fetch in mysql and store in mongo
         userData = await rpoUsers.findEmail(req.cookies.email)
