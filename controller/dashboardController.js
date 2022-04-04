@@ -1,8 +1,7 @@
 let rpoTopics = require('../repositories/topics');
 let rpoSubTopics = require('../repositories/subTopics');
 let rpoComments = require('../repositories/comments');
-let rpoUsers = require('../repositories/mysql/_users');
-let rpoBetaUsers = require('../repositories/betaUsers');
+let rpoUsers = require('../repositories/users');
 var path = require('path')
 const { toInteger } = require('lodash'); 
 
@@ -43,7 +42,7 @@ exports.forum = async function(req, res, next) {
   let userData = await helpers.getLoginUser(req)
   let isBetaTester = await helpers.isBetaTester(req)
   let latestComments = await rpoComments.getLatestComments()
-
+  console.log(userData);
   // console.log(latestComments);
 
   res.render('dashboard/forum', { 
@@ -105,7 +104,7 @@ exports.forumPage = async function(req, res, next) {
   let selectedTopic = req.params.id
 
   let userData = await helpers.getLoginUser(req)
-  let isBetaTester = await helpers.isBetaTester(req)
+  let isBetaTester = userData.isBetaTester
 
   for(let i=0; i < topics.length; i++) {
     let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })
@@ -136,6 +135,8 @@ exports.downloadPage = async function(req, res, next) {
     
   let userData = await helpers.getLoginUser(req)
   let isBeta = await helpers.isBetaTester(req)
+  console.log(req.cookies.email);
+  console.log(userData);
 
   res.render('pages/download', { 
     title: '',
@@ -157,7 +158,14 @@ exports.participate = async function(req, res, next) {
     // put 
 
     userData.dateJoined = req.app.locals.moment().format()
-    rpoBetaUsers.put(userData)
+    // rpoBetaUsers.put(userData)
+    let testerData = {
+      testerJoinDate : req.app.locals.moment().format(),
+      testerDevice : req.body.testerDevice,
+      isBetaTester : true,
+    }
+
+    rpoUsers.update(userData._id, testerData)
 
     res.flash('success', 'Thank you for participating with our Beta App.');
     res.redirect("/beta/download")

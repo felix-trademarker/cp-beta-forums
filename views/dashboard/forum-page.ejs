@@ -3,19 +3,8 @@
 		<div class="row justify-content-center">
 			<div class="col-11 text-center">
 				<h3>Welcome to our ChinesePod Beta Program</h3>
-				<% if(!isBetaTester && userData) { %>
-				<form action="/beta/forums/participate" method="post">
-
-
-					<div class="form-group-inline">
-						<input id="betaAgreement" type="checkbox" name="agreement" required>
-						<label for="betaAgreement">I agree with the terms and conditions</label>
-					</div>
-
-					<div class="form-group">
-						<input type="submit" class="btn btn-primary" value="Participate!">
-					</div>
-				</form>
+				<% if(userData && !userData.isBetaTester) { %>
+					<%- include('../partials/participate-block'); %>
 				<% } %>
 			</div>
 		</div>
@@ -134,7 +123,7 @@
 				</div>
 
 				<!-- form add comments -->
-				<% if(isBetaTester) { %>
+				<% if(userData && userData.isBetaTester) { %>
 					<!-- form add comments -->
 					<form style="border: 1px dashed #ccc;padding: 20px;margin-top:50px; font-size: 14px;" @submit.prevent="addComment()" enctype="multipart/form-data">
 						<h6 v-if="!replyTo">Add Comment</h6>
@@ -180,9 +169,9 @@
 						</div>
 		
 					</form>
-					<% } else { %>
-						<p style="font-style: italic;">Please login and participate with our chinesepod Beta Program<br> <a class="btn btn-primary" href="https://www.chinesepod.com/login">Login</a></p>
-					<% } %>
+				<% } else { %>
+					<p style="font-style: italic;">Please login and participate with our chinesepod Beta Program<br> <a class="btn btn-primary" href="https://www.chinesepod.com/login">Login</a></p>
+				<% } %>
 
 			</div>
 		

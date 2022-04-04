@@ -99,10 +99,11 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   app.use(['/api/v1','/beta/api/v1'], apiRouter);
 
   // ROUTE HANDLER ============ <<
+  if (process.env.ENVIRONMENT != "dev") {
   cron.schedule('*/2 * * * * *', () => {
     // migrationService.contents()
 
-    // migrationService.default('vocabulary')
+    migrationService.default('vocabulary')
     migrationService.users()
 
     // migrationService.default('user_options')
@@ -115,6 +116,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
     // migrationService.default('contents_series')
     
   });
+  }
   // migrationService.users()
   // let data={}
   // let variable = "var2"

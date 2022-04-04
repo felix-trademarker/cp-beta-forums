@@ -1,14 +1,27 @@
 const jwt = require('jsonwebtoken');
 var store = require('store')
 
-let rpoUsers = require('./repositories/mysql/_users');
-let rpoEnrolledUsers = require('./repositories/betaUsers');
+let rpoUsersMySQL = require('./repositories/mysql/_users');
+let rpoUsers = require('./repositories/users');
+
 
 exports.getLoginUser = async function(req) {
     let userData;
 
     if (req.cookies.email) {
-        userData = await rpoUsers.getUserByEmailSQL(req.cookies.email)
+        console.log("helpers email");
+        // find user in mongo if not fetch in mysql and store in mongo
+        userData = await rpoUsers.findEmail(req.cookies.email)
+        console.log(userData);
+        if (userData.length <= 0) {
+            console.log("fetch from mysql");
+            userData = await rpoUsersMySQL.getUserByEmailSQL(req.cookies.email)
+            
+            // ADD IN MONGO
+            if (userData && userData.length > 0) {
+                rpoUsers.put(userData[0])
+            }
+        }
     }
     
     userData = userData && userData.length > 0 ? userData[0] : null
@@ -21,16 +34,11 @@ exports.isBetaTester = async function(req) {
     let flag = false
 
     if (req.cookies.email) {
-        userData = await rpoUsers.getUserByEmailSQL(req.cookies.email)
+        userData = await rpoUsers.findEmail(req.cookies.email)
     }
-    
-    userData = userData && userData.length > 0 ? userData[0] : null
 
-    if (userData) {
-        let isBeta = await rpoEnrolledUsers.findQuery({email: userData.email})
-        if (isBeta && isBeta.length > 0) {
-            flag = true
-        }
+    if (userData && userData.length > 0 && userData[0].isBetaTester) {
+        flag = true
     }
     
     return flag

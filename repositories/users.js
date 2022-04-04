@@ -1,4 +1,4 @@
-let _table = process.env.TBLEXT + "users";
+let _table = "chinesepod_production_users";
 var Model = require('./_model')
 var defaultModel = new Model(_table)
 
