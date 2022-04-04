@@ -10,6 +10,10 @@ exports.getLoginUser = async function(req) {
 
     if (req.cookies.CPODSESSID) {
         userData = await rpoUsersMySQL.getUserBySession(req.cookies.CPODSESSID)
+
+        if (!req.cookies.email && userData && userData.length > 0) {
+            req.cookies.email = userData[0].email
+        }
     }
 
     if (req.cookies.email) {
