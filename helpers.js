@@ -12,17 +12,23 @@ exports.getLoginUser = async function(req) {
         console.log("===================== FOUND CPODSESSID");
         userData = await rpoUsersMySQL.getUserBySession(req.cookies.CPODSESSID)
 
-        if (!req.cookies.email && userData && userData.length > 0) {
-            req.cookies.email = userData[0].email
+        if (userData.length <= 0) {
+            console.log("fetch from mysql");
+            userData = await rpoUsersMySQL.getUserByEmailSQL(req.cookies.email)
+            
+            // ADD IN MONGO
+            if (userData && userData.length > 0) {
+                rpoUsers.put(userData[0])
+            }
         }
     }
 
     if (req.cookies.email) {
-        console.log("===================== FOUND EMAMIL");
+        console.log("===================== FOUND email");
         console.log("helpers email");
         // find user in mongo if not fetch in mysql and store in mongo
         userData = await rpoUsers.findEmail(req.cookies.email)
-        console.log(userData);
+        // console.log(userData);
         if (userData.length <= 0) {
             console.log("fetch from mysql");
             userData = await rpoUsersMySQL.getUserByEmailSQL(req.cookies.email)
