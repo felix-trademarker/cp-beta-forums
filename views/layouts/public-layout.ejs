@@ -110,6 +110,7 @@
 
     if (vuex) {
       fetch("/beta/api/v1/check-auth/"+vuex.userInfo.email).then(function (response) {
+        console.log(response);
           return response.json();
       }).then(function (data) {
           // This is the JSON from our response
