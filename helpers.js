@@ -8,6 +8,10 @@ let rpoUsers = require('./repositories/users');
 exports.getLoginUser = async function(req) {
     let userData;
 
+    if (req.cookies.CPODSESSID) {
+        userData = await rpoUsersMySQL.getUserBySession(req.cookies.CPODSESSID)
+    }
+
     if (req.cookies.email) {
         console.log("helpers email");
         // find user in mongo if not fetch in mysql and store in mongo

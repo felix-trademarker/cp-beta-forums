@@ -66,6 +66,20 @@ module.exports = {
                 resolve(result)
             });
         });
+    },
+
+    getUserBySession : async function(sesIs){
+        return new Promise(function(resolve, reject) {
+            var sql = "SELECT u.* FROM sessions AS s"
+            sql += " LEFT JOIN users AS u"
+            sql += " ON s.session_user_id=u.id"
+            sql += " WHERE session_id='" + sesIs+"'"
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
     }
     
 }
