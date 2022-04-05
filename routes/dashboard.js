@@ -9,7 +9,7 @@ var router = express.Router();
 // TESTERS ============================
 // ====================================
 
-router.get(['/', '/beta'],dashboardController.landing);
+router.get(['/', '/beta','/beta-app'],dashboardController.landing);
 router.get(['/forums', '/beta/forums'],dashboardController.forum);
 router.get(['/forums/:id','/beta/forums/:id'],dashboardController.forumPage);
 
