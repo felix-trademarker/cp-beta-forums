@@ -104,56 +104,5 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
 
-
-  <iframe id="storageScriptFrame"></iframe>
-
-<script>
-
-var target = "https://www.chinesepod.com/home";
-var storageScriptFrame = document.getElementById("storageScriptFrame");
-var storageScriptWindow = storageScriptFrame.contentWindow;
-
-
-function storeItem(key, value) {
-    var message = {key: key, value: value};
-    storageScriptWindow.postMessage(message, target);
-}
-
-
-// you can store values after the iframe has loaded
-storageScriptFrame.onload = function() {
-
-    storeItem("foo", "nobody"); 
-
-};
-// replace this with actual page
-storageScriptFrame.src = 'https://www.chinesepod.com/home'; 
-
-</script>
-
-
-  <script>
-    // console.log(window.localStorage.getItem('vuex'));
-    var vuex = JSON.parse(window.localStorage.getItem('vuex'))
-    console.log("vuex",vuex);
-    if (vuex) {
-      fetch("/beta/api/v1/check-auth/"+vuex.userInfo.email).then(function (response) {
-        console.log("ajax response",response);
-          return response.json();
-      }).then(function (data) {
-          // This is the JSON from our response
-          console.log("ajax data",data);
-      }).catch(function (err) {
-          // There was an error
-          console.warn('Something went wrong.', err);
-      });
-
-    }
-    
-
-  </script>
-
-<iframe src="https://www.chinesepod.com/home" width="0" height="0"></iframe>
-
 </body>
 </html>
