@@ -151,7 +151,7 @@ exports.downloadPage = async function(req, res, next) {
 exports.participate = async function(req, res, next) {
     
   let userData = await helpers.getLoginUser(req)
-
+  console.log("participate", userData, req.body);
   let userAgree = req.body.agreement
 
   if (userAgree) {
