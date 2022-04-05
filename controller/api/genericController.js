@@ -102,7 +102,7 @@ exports.addImageComments = async function(req, res, next) {
 
 exports.getAuth = async function(req, res, next) {
   
-  console.log(req.params.email);
+  console.log("get auth email >>>> ",req.params.email);
   console.log(req.params);
   res.cookie('email',req.params.email);
   res.json({results:true});
