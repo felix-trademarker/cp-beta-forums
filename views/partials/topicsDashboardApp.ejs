@@ -1,5 +1,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
-    
+
 <script>
     var topicsDashboardApp = new Vue({
     el: "#topicsDashboardApp",
@@ -297,11 +297,11 @@
         }
 
         // script to fetch comments interval 5sec
-        var interval = setInterval(function(){
-            if (topicsDashboardApp.topicId) {
-                topicsDashboardApp.updateComments();
-            }
-        }, 5000);
+        // var interval = setInterval(function(){
+        //     if (topicsDashboardApp.topicId) {
+        //         topicsDashboardApp.updateComments();
+        //     }
+        // }, 5000);
 
         // test drag and drop functions
         // ************************ Drag and drop ***************** //
