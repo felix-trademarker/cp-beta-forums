@@ -62,6 +62,10 @@ exports.isBetaTester = async function(req) {
     return flag
 }
 
+exports.getProxyBase = async function(req) {
+    console.log('get base');
+}
+
 
 
 
