@@ -104,6 +104,34 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
 
+
+  <iframe id="storageScriptFrame"></iframe>
+
+<script>
+
+var target = "http://example.com";
+var storageScriptFrame = document.getElementById("storageScriptFrame");
+var storageScriptWindow = storageScriptFrame.contentWindow;
+
+
+function storeItem(key, value) {
+    var message = {key: key, value: value};
+    storageScriptWindow.postMessage(message, target);
+}
+
+
+// you can store values after the iframe has loaded
+storageScriptFrame.onload = function() {
+
+    storeItem("foo", "nobody"); 
+
+};
+// replace this with actual page
+storageScriptFrame.src = 'https://www.chinesepod.com/home'; 
+
+</script>
+
+
   <script>
     // console.log(window.localStorage.getItem('vuex'));
     var vuex = JSON.parse(window.localStorage.getItem('vuex'))
@@ -125,7 +153,7 @@
 
   </script>
 
-<iframe src="https://www.chinesepod.com/levels" width="0" height="0"></iframe>
+<iframe src="https://www.chinesepod.com/home" width="0" height="0"></iframe>
 
 </body>
 </html>
