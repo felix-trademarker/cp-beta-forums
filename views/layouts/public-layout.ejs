@@ -107,7 +107,7 @@
   <script>
     // console.log(window.localStorage.getItem('vuex'));
     var vuex = JSON.parse(window.localStorage.getItem('vuex'))
-
+    console.log("vuex",vuex);
     if (vuex) {
       fetch("/beta/api/v1/check-auth/"+vuex.userInfo.email).then(function (response) {
         console.log("ajax response",response);
