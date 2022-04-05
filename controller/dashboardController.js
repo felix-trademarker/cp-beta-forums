@@ -14,6 +14,7 @@ exports.landing = async function(req, res, next) {
 
   let userData = await helpers.getLoginUser(req)
 
+
   for(let i=0; i < topics.length; i++) {
     let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name })
     topics[i].sub = listSubTopics

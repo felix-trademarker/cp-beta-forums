@@ -5,6 +5,11 @@ var path = require('path')
 var helpers = require('../../helpers')
 const { toInteger } = require('lodash'); 
 
+let rpoUsersMySQL = require('../../repositories/mysql/_users');
+let rpoUsers = require('../../repositories/users');
+
+var store = require('store')
+
 exports.fetchSubTopic = async function(req, res, next) {
   let results = await rpoSubTopics.find(req.params.topicId)
   let result = results[0]
@@ -102,10 +107,33 @@ exports.addImageComments = async function(req, res, next) {
 
 exports.getAuth = async function(req, res, next) {
   
-  console.log("get auth email >>>> ",req.params.email);
-  console.log(req.params);
-  res.cookie('email',req.params.email);
-  res.json({results:true});
+  let userData;
+  console.log("body",req.body);
+  
+  userData = await rpoUsers.findEmail(req.body.email)
+  // console.log(userData);
+  if (userData.length <= 0) {
+      console.log("fetch from mysql");
+      userData = await rpoUsersMySQL.getUserByEmailSQL(req.body.email)
+      
+      // ADD IN MONGO
+      if (userData && userData.length > 0) {
+          rpoUsers.put(userData[0])
+      }
+  }
+
+  if (userData.length > 0) {
+    userData = userData[0]
+  }
+
+  res.cookie('userEmail',userData.email, { maxAge: 900000, httpOnly: true });
+  res.cookie('userToken',req.body.token, { maxAge: 900000, httpOnly: true });
+  // console.log(userData);
+  // userData.token = req.body.token
+// console.log("store user", userData);
+//   store.set('currentUser', userData)
+
+  res.json({results:req.body.token});
 }
 
 

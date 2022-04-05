@@ -14,7 +14,8 @@
         testerName: '',
         testerAvatar: '',
         replyTo: '',
-        replyToData: null
+        replyToData: null,
+        // vuex: {}
     },
     methods: {
 
@@ -278,42 +279,53 @@
 
     })
 
-    topicsDashboardApp.setTopic("<%= selectedTopic %>")
+    var vuex = JSON.parse(window.localStorage.getItem('vuex'))
+    // topicsDashboardApp.vuex = vuex
 
-    // console.log(topicsDashboardApp.userData);
-    // set initial topic id
-    if (!topicsDashboardApp.topicId && topicsDashboardApp.topics && topicsDashboardApp.topics[0].sub) {
-        topicsDashboardApp.setTopic(topicsDashboardApp.topics[0].sub[0]._id)
-    }
+    var commentForm = document.getElementById("commentForm");
+    let uploadProgress = []
+    let progressBar = document.getElementById('progress-bar')
 
-    // script to fetch comments interval 5sec
-    var interval = setInterval(function(){
-        if (topicsDashboardApp.topicId) {
-            topicsDashboardApp.updateComments();
+    if (commentForm) {
+
+        topicsDashboardApp.setTopic("<%= selectedTopic %>")
+
+        // console.log(topicsDashboardApp.userData);
+        // set initial topic id
+        if (!topicsDashboardApp.topicId && topicsDashboardApp.topics && topicsDashboardApp.topics[0].sub) {
+            topicsDashboardApp.setTopic(topicsDashboardApp.topics[0].sub[0]._id)
         }
-    }, 5000);
 
-    // test drag and drop functions
-    // ************************ Drag and drop ***************** //
-    let dropArea = document.getElementById("drop-area");
+        // script to fetch comments interval 5sec
+        var interval = setInterval(function(){
+            if (topicsDashboardApp.topicId) {
+                topicsDashboardApp.updateComments();
+            }
+        }, 5000);
 
-    // Prevent default drag behaviors
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, preventDefaults, false)   
-        document.body.addEventListener(eventName, preventDefaults, false)
-    });
+        // test drag and drop functions
+        // ************************ Drag and drop ***************** //
+        let dropArea = document.getElementById("drop-area");
 
-    // // Highlight drop area when item is dragged over it
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropArea.addEventListener(eventName, highlight, false)
-    });
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false)   
+            document.body.addEventListener(eventName, preventDefaults, false)
+        });
 
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, unhighlight, false)
-    });
+        // // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false)
+        });
 
-    // // Handle dropped files
-    dropArea.addEventListener('drop', handleDrop, false);
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false)
+        });
+
+        // // Handle dropped files
+        dropArea.addEventListener('drop', handleDrop, false);
+
+    }
 
     function preventDefaults (e) {
         e.preventDefault()
@@ -335,8 +347,7 @@
         handleFiles(files)
     }
 
-    let uploadProgress = []
-    let progressBar = document.getElementById('progress-bar')
+    
 
     function initializeProgress(numFiles) {
         progressBar.value = 0

@@ -11,7 +11,7 @@
 	</div>
 </section>
 
-<section class="mt-5" id="topicsDashboardApp">
+<section class="mt-5">
     <div class="container" style="min-height:65vh">
         <div class="row justify-content-center box-bg-container">
 
@@ -125,7 +125,7 @@
 				<!-- form add comments -->
 				<% if(userData && userData.isBetaTester) { %>
 					<!-- form add comments -->
-					<form style="border: 1px dashed #ccc;padding: 20px;margin-top:50px; font-size: 14px;" @submit.prevent="addComment()" enctype="multipart/form-data">
+					<form id="commentForm" style="border: 1px dashed #ccc;padding: 20px;margin-top:50px; font-size: 14px;" @submit.prevent="addComment()" enctype="multipart/form-data">
 						<h6 v-if="!replyTo">Add Comment</h6>
 						<h6 v-if="replyTo">Reply to </h6>
 						<div v-if="replyToData" @click="removeReply" class="replyBox">

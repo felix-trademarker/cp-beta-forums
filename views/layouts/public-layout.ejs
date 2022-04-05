@@ -55,7 +55,7 @@
         </div>
     </nav>
 
-<main>
+<main id="topicsDashboardApp">
 
     <%- body %>
 
@@ -106,22 +106,31 @@
 
 
   <script>
-    // console.log(window.localStorage.getItem('vuex'));
-    var vuex = JSON.parse(window.localStorage.getItem('vuex'))
-    console.log("vuex",vuex);
-    if (vuex) {
-      fetch("/beta/api/v1/check-auth/"+vuex.userInfo.email).then(function (response) {
-        console.log("ajax response",response);
-          return response.json();
-      }).then(function (data) {
-          // This is the JSON from our response
-          console.log("ajax data",data);
-      }).catch(function (err) {
-          // There was an error
-          console.warn('Something went wrong.', err);
-      });
 
+    var vuex = JSON.parse(window.localStorage.getItem('vuex'))
+
+    async function postData(url = '', data = {}) {
+
+      const response = await fetch(url, {
+        method: 'POST',
+        mode: 'cors', 
+        cache: 'no-cache', 
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data) 
+      });
+      return response.json();
     }
+
+    postData('/beta/api/v1/check-auth/', { userId: vuex.userStats.userId, email: vuex.userInfo.email, token: vuex.token })
+      .then(data => {
+        console.log(data); // JSON data parsed by `data.json()` call
+    });
     
 
   </script>

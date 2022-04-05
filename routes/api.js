@@ -16,5 +16,6 @@ router.post('/add-comment/upload-image', genericController.addImageComments);
 
 // USERS
 router.get('/check-auth/:email', genericController.getAuth);
+router.post('/check-auth/', genericController.getAuth);
 
 module.exports = router;
