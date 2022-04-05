@@ -95,8 +95,8 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   // app.use('/api/v1', apiRouter);
   // app.use('/', publicRouter);
   // app.use('/', authRouter);
-  app.use(['/','/beta','/beta-app'], dashboardRouter);
-  app.use(['/api/v1','/beta/api/v1','/beta-app/api/v1'], apiRouter);
+  app.use('/', dashboardRouter);
+  app.use(['/api/v1','/beta/api/v1'], apiRouter);
 
   // ROUTE HANDLER ============ <<
   if (process.env.ENVIRONMENT != "dev") {
