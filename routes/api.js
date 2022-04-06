@@ -11,6 +11,7 @@ router.get('/find-comment/:commentId', genericController.findComments);
 router.post('/add-comment/', genericController.addComments);
 router.post('/add-comment/upload-image', genericController.addImageComments);
 
+router.get('/topics', genericController.getTopics);
 
 
 

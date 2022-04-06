@@ -1,3 +1,4 @@
+var rpoTopics = require('../../repositories/topics');
 var rpoSubTopics = require('../../repositories/subTopics');
 var rpoComments = require('../../repositories/comments');
 // var rpoComments = require('../../repositories/comments');
@@ -108,7 +109,7 @@ exports.addImageComments = async function(req, res, next) {
 exports.getAuth = async function(req, res, next) {
   
   let userData;
-  console.log("body",req.body);
+  // console.log("body",req.body);
   
   userData = await rpoUsers.findEmail(req.body.email)
   // console.log(userData);
@@ -128,12 +129,33 @@ exports.getAuth = async function(req, res, next) {
 
   res.cookie('userEmail',userData.email, { maxAge: 900000, httpOnly: true });
   res.cookie('userToken',req.body.token, { maxAge: 900000, httpOnly: true });
-  // console.log(userData);
-  // userData.token = req.body.token
-// console.log("store user", userData);
-//   store.set('currentUser', userData)
 
-  res.json({results:req.body.token});
+  let resData = {
+    token: req.body.token,
+    isBetaTester:  userData.isBetaTester
+  } 
+
+  res.json(resData);
+}
+
+exports.getTopics = async function(req, res, next) {
+  
+  let topics = await rpoTopics.get();
+  let selectedTopic = req.params.id
+
+  for(let i=0; i < topics.length; i++) {
+    let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name, status: {$ne : 'draft'} })
+    topics[i].sub = listSubTopics
+    
+    if (i == 0 && !selectedTopic) {
+      selectedTopic = topics[i].sub[0]._id
+    }
+
+  }
+
+  // console.log("this", topics);
+
+  res.json(topics);
 }
 
 

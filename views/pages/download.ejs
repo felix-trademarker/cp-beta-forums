@@ -15,31 +15,27 @@
 			<div class="cprecap-banner-body col-11">
 				<h1><span>Welcome to the BETA Version of the ChinesePod Express App Forum -</span><br>
 					The Community you deserve, help us make it better for you!</h1>
-				
-				<% if(userData && userData.isBetaTester) { %>
-				<p class="button-comb">
+
+				<p v-if="userData.token && userData.isBetaTester" class="button-comb">
 					<strong>Download</strong> Our Beta APP BY:<br>
 					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/store/apps/details?id=com.chinesepod.express">Mobile</a>&nbsp;
 					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/apps/testing/com.chinesepod.express">Web</a><br>
 
 					<strong>Already have the APP?</strong> <br>
 					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="/beta/forums">Send Feedback</a>
-					</p>
-				<% } else { %> 
-					<% if(!userData) { %>
-					<p style="font-style: italic;">Please login and Enroll as a ChinesePod App Beta Tester <br><a class="btn btn-primary" target="_blank" href="https://www.chinesepod.com/login">Login</a></p>
-					<% } else { %>
-						<p class="button-comb"><strong>Hi <%= userData.username %>,</strong> To participate with our Beta App, please agree with our terms and conditions below.</p>
-					<% } %>
-				<% } %>
+				</p>
+
+				<p v-if="!userData.token" style="font-style: italic;">Please login and Enroll as a ChinesePod App Beta Tester <br><a class="btn btn-primary" target="_blank" href="https://www.chinesepod.com/login">Login</a></p>
+				<p v-if="userData.token && !userData.isBetaTester" class="button-comb"><strong>Hi <%= userData.username %>,</strong> To participate with our Beta App, please agree with our terms and conditions below.</p>
+
 			</div>
 		</div>
 
 	</div>
 </section>
 
-<% if(userData && !userData.isBetaTester ) { %>
-<section class="cprecap-actions-banner">
+
+<section v-if="userData.token && !userData.isBetaTester" class="cprecap-actions-banner">
 	<div class="container-fluid">
 		<div class="row justify-content-center">
 			<div class="col-11 text-center">
@@ -50,5 +46,5 @@
 	</div>
 </section>
 
-<% } %>
+
 

@@ -104,37 +104,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
 
-
-  <script>
-
-    var vuex = JSON.parse(window.localStorage.getItem('vuex'))
-
-    async function postData(url = '', data = {}) {
-
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors', 
-        cache: 'no-cache', 
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        body: JSON.stringify(data) 
-      });
-      return response.json();
-    }
-
-    postData('/beta/api/v1/check-auth/', { userId: vuex.userStats.userId, email: vuex.userInfo.email, token: vuex.token })
-      .then(data => {
-        console.log(data); // JSON data parsed by `data.json()` call
-    });
-    
-
-  </script>
-
+  <%- include('../partials/topicsDashboardApp'); %>
 
 </body>
 </html>

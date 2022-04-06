@@ -16,7 +16,8 @@
         replyTo: '',
         replyToData: null,
         vuex: {},
-        userData: {}
+        userData: {},
+        topics: {}
     },
     methods: {
 
@@ -287,9 +288,12 @@
     let uploadProgress = []
     let progressBar = document.getElementById('progress-bar')
 
+    console.log("topics", topicsDashboardApp.topics); 
+
+
     if (commentForm) {
 
-        topicsDashboardApp.setTopic("<%= selectedTopic %>")
+        topicsDashboardApp.setTopic("<%= typeof selectedTopic !== 'undefined' ? selectedTopic : '' %>")
 
         // console.log(topicsDashboardApp.userData);
         // set initial topic id
@@ -326,6 +330,43 @@
         // // Handle dropped files
         dropArea.addEventListener('drop', handleDrop, false);
 
+    }
+
+    fetch('/beta/api/v1/topics').then(function (response) {
+        // The API call was successful!
+        return response.json();
+    }).then(function (data) {
+
+        topicsDashboardApp.topics = data
+        console.log("topics",data);
+    }).catch(function (err) {
+        // There was an error
+        console.warn('Something went wrong.', err);
+    });
+
+    postData('/beta/api/v1/check-auth/', { userId: vuex.userStats.userId, email: vuex.userInfo.email, token: vuex.token })
+        .then(data => {
+            topicsDashboardApp.userData = data
+            // console.log(data); // JSON data parsed by `data.json()` call
+    });
+
+    async function postData(url = '', data = {}) {
+
+        const response = await fetch(url, {
+            method: 'POST',
+            mode: 'cors', 
+            cache: 'no-cache', 
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data) 
+        });
+
+        return response.json();
     }
 
     function preventDefaults (e) {
