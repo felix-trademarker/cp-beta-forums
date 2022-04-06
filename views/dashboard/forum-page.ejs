@@ -59,7 +59,7 @@
 							</tr>
 						</table>
 					</div>
-					<div class="" v-if="comments.length > 0">
+					<div class="comments-block" v-if="comments.length > 0">
 						<ul class="message-blocks">
 							<li :id="comment._id" v-for="comment in comments" :class="comment.replyToData ? 'hasComment': ''">
 
@@ -125,7 +125,7 @@
 				<!-- form add comments -->
 				<% if(userData && userData.isBetaTester) { %>
 					<!-- form add comments -->
-					<form id="commentForm" style="border: 1px dashed #ccc;padding: 20px;margin-top:50px; font-size: 14px;" @submit.prevent="addComment()" enctype="multipart/form-data">
+					<form id="commentForm" style="border: 1px solid #ccc;padding: 20px;margin-top:50px; font-size: 14px;background: #fff;" @submit.prevent="addComment()" enctype="multipart/form-data">
 						<h6 v-if="!replyTo">Add Comment</h6>
 						<h6 v-if="replyTo">Reply to </h6>
 						<div v-if="replyToData" @click="removeReply" class="replyBox">

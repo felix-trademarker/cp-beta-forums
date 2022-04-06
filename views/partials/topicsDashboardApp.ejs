@@ -15,7 +15,8 @@
         testerAvatar: '',
         replyTo: '',
         replyToData: null,
-        // vuex: {}
+        vuex: {},
+        userData: {}
     },
     methods: {
 
@@ -280,7 +281,7 @@
     })
 
     var vuex = JSON.parse(window.localStorage.getItem('vuex'))
-    // topicsDashboardApp.vuex = vuex
+    topicsDashboardApp.vuex = vuex
 
     var commentForm = document.getElementById("commentForm");
     let uploadProgress = []
@@ -297,11 +298,11 @@
         }
 
         // script to fetch comments interval 5sec
-        // var interval = setInterval(function(){
-        //     if (topicsDashboardApp.topicId) {
-        //         topicsDashboardApp.updateComments();
-        //     }
-        // }, 5000);
+        var interval = setInterval(function(){
+            if (topicsDashboardApp.topicId) {
+                topicsDashboardApp.updateComments();
+            }
+        }, 5000);
 
         // test drag and drop functions
         // ************************ Drag and drop ***************** //
