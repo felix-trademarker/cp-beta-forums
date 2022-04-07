@@ -2,6 +2,9 @@ let rpoTopics = require('../repositories/topics');
 let rpoSubTopics = require('../repositories/subTopics');
 let rpoComments = require('../repositories/comments');
 let rpoUsers = require('../repositories/users');
+
+let mailService = require('../services/mailService')
+
 var path = require('path')
 const { toInteger } = require('lodash'); 
 
@@ -166,6 +169,21 @@ exports.participate = async function(req, res, next) {
     }
 
     rpoUsers.update(userData._id, testerData)
+
+    // send welcome email
+    let mailData = {
+      subject: "Welcome to our Beta APP Program",
+      to: userData.email,
+      message: `
+        <p>Hi ${userData.username},</p>
+        <p>Thank you for participating as a beta tester</p>
+        <p>You may download the Beta APP By: <a href="https://play.google.com/store/apps/details?id=com.chinesepod.express">Mobile</a> OR <a href="https://play.google.com/apps/testing/com.chinesepod.express">Web</a></p>
+
+        <br><br>
+        <p>Best,<br>ChinesePod Team</p>
+      `
+    }
+    mailService.welcomeBetaTester(mailData)
 
     res.flash('success', 'Thank you for participating with our Beta App.');
     res.redirect("/beta/download")

@@ -17,7 +17,7 @@
 
           .message-data{
               margin-right: 30px;
-              min-width: 150px;
+              min-width: 100px;
 
               .message-data-name{
                   display: block;
@@ -35,6 +35,7 @@
           .message{
             font-size: 16px;
             width: 100%;
+            word-break: break-word;
 
             pre{
               font-size: inherit;
@@ -60,6 +61,7 @@
           .message-reply{
             font-size: 12px;
             margin: 0;
+            align-self: flex-end;
           }
 
           
@@ -428,4 +430,43 @@ p {
 .comments-block{
   max-height: 100vh;
   overflow-y: auto;
+}
+
+@media only screen and (max-width: 1200px){
+
+  h2{
+    font-size: 23px;
+  }
+  h4{
+    font-size: 20px;
+  }
+
+  .message-blocks li {
+    .message-wrapper {
+      .message-data{
+        min-width: 100px;
+      }
+
+    }
+  }
+}
+
+@media only screen and (max-width: 768px){
+
+  .message-blocks li {
+    .message-wrapper {
+      flex-direction: column;
+      .message-data{
+        margin: 0;
+      }
+
+      .message-reply{
+        // position: absolute;
+      }
+    }
+  }
+
+  .topic-icon{
+    font-size: 28px;
+  }
 }

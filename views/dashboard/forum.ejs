@@ -27,7 +27,7 @@
 			</div>
 			<% } %>
 
-			<div v-if="userData.isBetaTester" class="col-md-12 mb-5">
+			<div v-if="userData.isBetaTester" class="col-md-12 mb-5 mt-3">
 				<h4>Add New Topic</h4>
 				<form method="post" enctype="multipart/form-data">
 
@@ -76,20 +76,20 @@
 			<div class="col-md-6">
 				<h4><i class="fa fa-users topic-icon"></i> Topics</h4>
 				<hr>
-				<div class="" style="max-height: 100vh;overflow-y: auto;">
+				<div class="" style="max-height: 100vh;overflow-y: auto;overflow-x: hidden;margin-bottom: 30px;">
 				<% subTopics.forEach(function(topic,key) {  %>
 					
 					<div class="row topic-block text-left mb-3">
 						
-						<div class="col-md-2">
+						<div class="col-2">
 							<img class="img-responsive" src="/beta/images/<%= topic.parentName.replace(' ','-').toLowerCase() %>.png">
 						</div>
-						<div class="col-md-10">
+						<div class="col-10">
 							<h4 class=""><%= topic.name %></h4>
 							<p class=""><%= topic.description %></p>
 							
 						</div>
-						<div class="col-md-12">
+						<div class="col-12">
 							<p class="author"><%= topic.parentName %> <%= moment(topic.created_at).format('MMM D, YYYY') %></p>
 						</div>
 
@@ -105,7 +105,7 @@
 				<% if(latestComments && latestComments.length > 0) { %>
 					<h4><i class="fa fa-comments topic-icon"></i> Latest Feedbacks </h4>
 					<hr>
-					<div class="" style="max-height: 100vh;overflow-y: auto;">
+					<div class="" style="max-height: 100vh;overflow-y: auto;overflow-x: hidden;margin-bottom: 30px;">
 					<ul class="message-blocks">
 						<% latestComments.forEach(function(comment,key) {  %>
 						<li>
@@ -125,7 +125,7 @@
 									<span class="message-data-time"><%= moment(comment.created_at).format('MMMM Do YYYY, h:mm:ss') %></span>
 								</div>
 								<div class="message"> 
-									<pre><%= comment.message %> </pre>
+									<p><%- comment.message.replace("\n","<br>") %> </p>
 									<% if(comment.file.length > 0) { %>
 										<div class="message-attachments">
 										<% comment.file.forEach(function(file,key) {  %>	

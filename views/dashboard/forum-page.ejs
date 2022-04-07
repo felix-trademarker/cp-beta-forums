@@ -36,11 +36,11 @@
 				<div class="" v-if="topic">
 					<div class="row mb-3 mt-3 topic-block" style="align-items: center;">
 							
-						<div class="col-md-2 text-left">
-							<h4>{{ topic.parentName }}</h4>
+						<div class="col-3 text-left">
+							<h4 class="d-none d-lg-block d-md-block">{{ topic.parentName }}</h4>
 							<img class="img-responsive" :src="'/beta/images/'+topic.parentName.replace(' ','-').toLowerCase()+'.png'">
 						</div>
-						<div class="col-md-10 text-left">
+						<div class="col-9 text-left">
 							<h4> This topic is all about <strong>{{ topic.name }}</strong></h4>
 							<p>{{ topic.description }}</p>
 						</div>
@@ -49,9 +49,9 @@
 					<div class="commentHead">
 						<table class="table">
 							<tr>
-								<td style="width:90%">Last Comment: {{ dateFormat(comments[(comments.length -1)].created_at) }}</td>
-								<td><i class="fa fa-comments" style="margin-right: 5px;"></i>{{ comments.length }}</td>
-								<td><i class="fa fa-eye" style="margin-right: 5px;"></i>{{ topic.viewCount ? topic.viewCount : 0 }}</td>
+								<td >Last Comment: {{ dateFormat(comments[(comments.length -1)].created_at) }}</td>
+								<td style="width:50px"><i class="fa fa-comments" style="margin-right: 5px;"></i>{{ comments.length }}</td>
+								<td style="width:50px"><i class="fa fa-eye" style="margin-right: 5px;"></i>{{ topic.viewCount ? topic.viewCount : 0 }}</td>
 							</tr>
 						</table>
 					</div>
@@ -71,7 +71,9 @@
 										<span class="message-data-time">{{ dateFormat(comment.created_at) }}</span>
 									</div>
 									<div class="message"> 
-										<pre>{{ comment.message }} </pre>
+										<p v-html="comment.message.replace('\n','<br>')"></p>
+									
+									
 										<div class="message-attachments" v-if="comment.file.length > 0" >
 											<div v-for="(key, file) in comment.file">
 												
@@ -80,7 +82,7 @@
 										</div>
 									</div>
 									
-									<p v-if="userData.token && userData.isBetaTester" @click="setReply(comment._id)" class="message-reply btn btn-primary" style="font-size: 12px;margin: 0;align-self: flex-end;">
+									<p v-if="userData.token && userData.isBetaTester" @click="setReply(comment._id)" class="message-reply btn btn-primary">
 										Reply
 									</p>
 								</div>
