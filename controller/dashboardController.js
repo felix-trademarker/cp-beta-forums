@@ -80,8 +80,9 @@ exports.addSubTopicsClient = async function(req, res, next) {
     data.userData = userData
 
     // check if it has image attached
-    var file = req.files.topicImage
-    if (file) {
+    
+    if (req.files && req.files.topicImage) {
+      var file = req.files.topicImage
       var extName = path.extname(file.name)
       var filename = toInteger(req.app.locals.moment().format('YYMMDDHHMMSS')) + '.' + extName;
       filename = filename.toLowerCase()
