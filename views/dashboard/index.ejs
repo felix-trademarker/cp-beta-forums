@@ -5,11 +5,14 @@
 			<div class="cprecap-banner-body col-9">
 				<h1>Welcome to the ChinesePod BETA Program<br>
 					<span>Help us build the BEST APP to learn Mandarin Chinese. Become a Beta Tester!</span></h1>
-				<p class="button-comb">
-					<!-- <a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/store/apps/details?id=com.chinesepod.express">Mobile APP</a>&nbsp;
-					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/apps/testing/com.chinesepod.express">Web APP</a><br> -->
+				<p v-if="userData.token" class="button-comb">
 					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="/beta/download">Enroll to Beta Program</a><br>
-					<strong>TRY OUT</strong> Our Beta APP</p>
+					<strong>TRY OUT</strong> Our Beta APP
+				</p>
+
+				<p v-if="!userData.token" class="button-comb">
+					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" target="_blank" href="/login">Enroll to Beta Program</a><br>
+				</p>
 						
 			</div>
 			<div class="cprecap-banner-body col-3">
@@ -61,8 +64,12 @@
 				</div>
 			<% }) %>
 
-			<div class="col-12 text-center mb-5 mt-5" style="font-size: 22px;">
+			<div v-if="userData.token" class="col-12 text-center mb-5 mt-5" style="font-size: 22px;">
 				<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="/beta/forums">Visit ChinesePod Beta Program Room</a>&nbsp;
+			</div>
+
+			<div v-if="!userData.token" class="col-12 text-center mb-5 mt-5" style="font-size: 22px;">
+				<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" target="_blank" href="/login">Visit ChinesePod Beta Program Room</a>&nbsp;
 			</div>
 
 			
