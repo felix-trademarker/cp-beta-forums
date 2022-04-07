@@ -347,8 +347,20 @@
     postData('/beta/api/v1/check-auth/', { userId: vuex.userStats.userId, email: vuex.userInfo.email, token: vuex.token })
         .then(data => {
             topicsDashboardApp.userData = data
-            // console.log(data); // JSON data parsed by `data.json()` call
     });
+
+    // CHECK EVERY 10 SEC FOR USERS DATA
+    var interval = setInterval(function(){
+        // FETCH NEW VUEX
+        vuex = JSON.parse(window.localStorage.getItem('vuex'))
+        topicsDashboardApp.vuex = vuex
+        // CALL AJAX TO CHECK USERSDATA
+        postData('/beta/api/v1/check-auth/', { userId: vuex.userStats.userId, email: vuex.userInfo.email, token: vuex.token })
+        .then(data => {
+            topicsDashboardApp.userData = data
+        });
+
+    }, 10000);
 
     async function postData(url = '', data = {}) {
 
