@@ -177,11 +177,19 @@ exports.participate = async function(req, res, next) {
       to: userData.email,
       message: `
         <p>Hi ${userData.username},</p>
-        <p>Thank you for participating as a beta tester</p>
-        <p>You may download the Beta APP By: <a href="https://play.google.com/store/apps/details?id=com.chinesepod.express">Mobile</a> OR <a href="https://play.google.com/apps/testing/com.chinesepod.express">Web</a></p>
+        <br>
+        <p>Thank you very much for enrolling in the ChinesePod Beta Program.</p>
+        <p>Your participation is invaluable for us to help build the best app for YOU in your journey to learn Mandarin Chinese. </p>
+        <p>You can start by downloading the beta version of the Chinese Express App for Android Phones through this link:
+        https://www.chinesepod.com/beta/download</p>
+        <p>Already have the ChinesePod Express App (Beta) installed? Make sure it’s updated with the latest version - Ver. 26</p>
+        <p>Share your experiences and suggestions, or report any bugs and issues in our dedicated Forum Page.
+        https://www.chinesepod.com/beta/forums</p>
+
+        <p>See you in our Beta Testers Community Page!</p>
 
         <br><br>
-        <p>Best,<br>ChinesePod Team</p>
+        <p>Sincerely,<br>ChinesePod Team</p>
       `
     }
     mailService.welcomeBetaTester(mailData)

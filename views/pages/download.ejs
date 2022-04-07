@@ -16,7 +16,7 @@
 				<h1><span>Welcome to the BETA Version of the ChinesePod Express App Forum -</span><br>
 					The Community you deserve, help us make it better for you!</h1>
 
-				<p v-if="userData.token && userData.isBetaTester" class="button-comb">
+				<p v-if="userData && userData.token && userData.isBetaTester" class="button-comb">
 					<strong>Download</strong> Our Beta APP BY:<br>
 					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/store/apps/details?id=com.chinesepod.express">Mobile</a>&nbsp;
 					<a class="btn btn-danger cprecap-btn-try rounded-pill pt-3 pb-3 pl-5 pr-5 mb-3" href="https://play.google.com/apps/testing/com.chinesepod.express">Web</a><br>
@@ -26,7 +26,7 @@
 				</p>
 
 				<p v-if="!userData.token" style="font-style: italic;">Please login and Enroll as a ChinesePod App Beta Tester <br><a class="btn btn-primary" target="_blank" href="https://www.chinesepod.com/login">Login</a></p>
-				<p v-if="userData.token && !userData.isBetaTester" class="button-comb"><strong>Hi <%= userData.username %>,</strong> To participate with our Beta App, please agree with our terms and conditions below.</p>
+				<p v-if="userData.token && !userData.isBetaTester" class="button-comb"><strong>Hi <%= userData && userData.username ? userData.username : '' %>,</strong> To participate with our Beta App, please agree with our terms and conditions below.</p>
 
 			</div>
 		</div>
