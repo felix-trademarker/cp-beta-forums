@@ -176,8 +176,8 @@ exports.participate = async function(req, res, next) {
       subject: "Welcome to our Beta APP Program",
       to: userData.email,
       message: `
-        <p>Hi ${userData.username},</p>
-        <br>
+        <h3 style="margin-bottom:30px;">Hi ${userData.username},</h3>
+
         <p>Thank you very much for enrolling in the ChinesePod Beta Program.</p>
         <p>Your participation is invaluable for us to help build the best app for YOU in your journey to learn Mandarin Chinese. </p>
         <p>You can start by downloading the beta version of the Chinese Express App for Android Phones through this link:
@@ -188,7 +188,7 @@ exports.participate = async function(req, res, next) {
 
         <p>See you in our Beta Testers Community Page!</p>
 
-        <br><br>
+        <br>
         <p>Sincerely,<br>ChinesePod Team</p>
       `
     }
