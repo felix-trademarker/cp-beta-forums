@@ -133,7 +133,7 @@ exports.addSubTopicsClient = async function(req, res, next) {
       `
     }
 
-    mailService.basicSend(mailDataAdmin)
+    mailService.defaultSend(mailDataAdmin)
 
   }
 

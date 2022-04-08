@@ -126,7 +126,8 @@ exports.addComments = async function(req, res, next) {
         <p>Sincerely,<br>ChinesePod Team</p>
       `
     }
-    mailService.defaultSend(mailDataAdmin)
+    mailService.basicSend(mailDataAdmin)
+
   }
 
   res.json({results:true})
