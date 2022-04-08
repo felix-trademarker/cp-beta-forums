@@ -194,3 +194,16 @@ exports.editTopics = async function(req, res, next) {
 
      
 }
+
+exports.deleteTopics = async function(req, res, next) {
+
+  let message;
+
+  let topicId = req.params.id
+
+  let topics = await rpoSubTopics.remove(topicId);
+
+  res.redirect("/beta/admin-dashboard/topics/")
+
+     
+}

@@ -3,7 +3,7 @@
 		
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="/beta/admin-dashboard/">Dashboard</a></li>
+				<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
 				<li class="breadcrumb-item active" aria-current="page">Topics</li>
 			</ol>
 		</nav>
@@ -16,14 +16,13 @@
 				</div>
 			<% } %>
 			<div class="col-md-12">
-				<h2>Sub Topics</h2>
+				<h2>Topics</h2>
 				<% if(subtopics && subtopics.length > 0) { %>
 					<table class="table">
 						<tr>
-							<th>Topics</th>
-							<th>Sub Topic</th>
+							<th>Category</th>
+							<th>Topic</th>
 							<th>Description</th>
-							<th>Notes</th>
 							<th>Status</th>
 							<th>Action</th>
 						</tr>
@@ -31,8 +30,7 @@
 							<tr>
 								<td><%= subtopic.parentName %></td>
 								<td><%= subtopic.name %></td>
-								<td><%= subtopic.description %></td>
-								<td><%= subtopic.notes %></td>
+								<td><%- subtopic.description.replace("\n","<br>") %></td>
 								<td><%= subtopic.status %></td>
 								<td>
 									<a href="/beta/admin-dashboard/topics/edit/<%= subtopic._id %>"><i class="fa fa-pen"></i></a>&nbsp;
@@ -55,7 +53,7 @@
 				<form method="post">
 
 					<div class="form-group">
-						<label>Topic</label>
+						<label>Category</label>
 						<select name="parentName" class="form-control">
 							<% topics.forEach(function(topic,key) {  %>
 								<option value="<%= topic.name %>"><%= topic.name %></option>
@@ -64,18 +62,13 @@
 					</div>
 
 					<div class="form-group">
-						<label>Sub Topic</label>
+						<label>Topic</label>
 						<input type="text" name="name" class="form-control" required>
 					</div>
 
 					<div class="form-group">
 						<label>Description</label>
 						<textarea class="form-control" name="description" rows="3"></textarea>
-					</div>
-
-					<div class="form-group">
-						<label>Notes</label>
-						<textarea class="form-control" name="notes" rows="3"></textarea>
 					</div>
 
 					<div class="form-group">
