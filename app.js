@@ -92,11 +92,13 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   var dashboardRouter = require('./routes/dashboard');
   var authRouter = require('./routes/auth');
   var apiRouter = require('./routes/api');
+  var adminRouter = require('./routes/admin');
   // app.use('/api/v1', apiRouter);
   // app.use('/', publicRouter);
   // app.use('/', authRouter);
   app.use('/', dashboardRouter);
   app.use(['/api/v1','/beta/api/v1'], apiRouter);
+  app.use(['/admin-dashboard','/beta/admin-dashboard'], adminRouter);
 
   // ROUTE HANDLER ============ <<
   if (process.env.ENVIRONMENT != "dev") {

@@ -23,26 +23,4 @@ router.get(['/about','/beta/about'],dashboardController.about);
 router.post(['/forums', '/beta/forums'],dashboardController.addSubTopicsClient);
 router.post(['/forums/participate', '/beta/forums/participate'],dashboardController.participate);
 
-
-// ADMIN ==============================
-// ====================================
-
-// ************** TOPICS **************
-router.get('/admin-dashboard/topics',dashboardController.addTopics);
-router.post('/admin-dashboard/topics',dashboardController.addTopics);
-router.get('/admin-dashboard/topics/edit/:id',dashboardController.editTopics);
-router.post('/admin-dashboard/topics/edit/:id',dashboardController.editTopics);
-router.get('/admin-dashboard/topics/delete/:id',dashboardController.deleteTopics);
-
-// ************** SUB TOPICS **************
-router.get('/admin-dashboard/sub-topics',dashboardController.addSubTopics);
-router.post('/admin-dashboard/sub-topics',dashboardController.addSubTopics);
-router.get('/admin-dashboard/sub-topics/edit/:id',dashboardController.editSubTopics);
-router.post('/admin-dashboard/sub-topics/edit/:id',dashboardController.editSubTopics);
-
-
-
-
-
-
 module.exports = router;

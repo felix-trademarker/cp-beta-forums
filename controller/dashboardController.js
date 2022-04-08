@@ -97,6 +97,47 @@ exports.addSubTopicsClient = async function(req, res, next) {
     res.flash('success', 'Added successfully!, Topic has been sent to admin for approval');
     await rpoSubTopics.put(data)
 
+    console.log(data)
+    // send email notification
+    let mailData = {
+      subject: "New Topic Submission",
+      to: userData.email,
+      message: `
+        <h3 style="margin-bottom:30px;">Hi ${userData.username},</h3>
+
+        <p>Thank you for submitting a topic, topic submitted has been sent to ChinesePod Beta Team for approval.</p>
+
+
+        <br>
+        <p>Sincerely,<br>ChinesePod Team</p>
+      `
+    }
+    mailService.basicSend(mailData)
+
+    let mailDataAdmin = {
+      subject: mailData.subject + " From " + userData.username,
+      to: "felix@bigfoot.com",
+      message: `
+        <h3 style="margin-bottom:30px;">Hi Admin,</h3>
+
+        <p>A new topic has been submitted for approval</p>
+        <p>Category: ${data.parentName}<br>
+        Topic: ${data.name}<br>
+        Author: ${userData.username}
+        </p>
+
+        <p>Admin Topic <a href="#">link</a></p>
+
+
+        <br>
+        <p>Sincerely,<br>ChinesePod Team</p>
+      `
+    }
+
+    // https://www.chinesepod.com/beta/admin-dashboard/topics/edit/${data._id}
+
+    mailService.basicSend(mailDataAdmin)
+
   }
 
   res.redirect('/beta/forums')
@@ -244,167 +285,4 @@ exports.about = async function(req, res, next) {
     keywords: '',
   });
 
-}
-
-// ============================ ADMIN FUNCTIONS
-exports.addTopics = async function(req, res, next) {
-
-  let message;
-
-  if (req.body && req.body.name) {
-    
-    let findDuplicate = await rpoTopics.findQuery({name:req.body.name})
-
-    if (findDuplicate && findDuplicate.length > 0) {
-      message = {
-        status: false,
-        message: "Topic Already Exist!"
-      }
-    } else {
-      await rpoTopics.put(req.body)
-      message = {
-        status: true,
-        message: "Added Successfully!"
-      }
-    }
-
-  }
-
-  let topics = await rpoTopics.get();
-    
-  res.render('admin/topics/', { 
-    title: '',
-    description: '',
-    keywords: '',
-    topics: topics,
-    message: message
-
-  });
-
-     
-}
-
-exports.editTopics = async function(req, res, next) {
-
-  let message;
-
-  let topicId = req.params.id
-
-  
-
-  if (req.body && req.body.name) {
-    // update
-    await rpoTopics.update(topicId,req.body);
-
-    message = {
-      status: true,
-      message: "Updated Successfully!"
-    }
-  }
-
-  let topics = await rpoTopics.find(topicId);
-
-  if (!topics) res.redirect('/admin-dashboard/topics') 
-    
-  res.render('admin/topics/edit', { 
-    title: '',
-    description: '',
-    keywords: '',
-    topic: topics[0],
-    message: message
-
-  });
-
-     
-}
-
-exports.deleteTopics = async function(req, res, next) {
-
-  let message;
-
-  let topicId = req.params.id
-
-  let topics = await rpoTopics.remove(topicId);
-
-  res.write("delete")
-
-     
-}
-
-exports.addSubTopics = async function(req, res, next) {
-
-  let message;
-
-  // console.log(req.app.locals.moment().format());
-
-  if (req.body && req.body.name) {
-    let data = req.body
-
-    let findDuplicate = await rpoTopics.findQuery({name:req.body.name})
-
-    if (findDuplicate && findDuplicate.length > 0) {
-      data.topic_id = findDuplicate[0]._id
-    }
-
-    // add date created
-    data.created_at = req.app.locals.moment().format()
-
-    await rpoSubTopics.put(data)
-    message = {
-      status: true,
-      message: "Added Successfully!"
-    }
-
-  }
-
-  let topics = await rpoTopics.get();
-  let subtopics = await rpoSubTopics.get();
-    
-  res.render('admin/sub-topics/', { 
-    title: '',
-    description: '',
-    keywords: '',
-    topics: topics,
-    subtopics: subtopics,
-    message: message
-
-  });
-
-     
-}
-
-exports.editSubTopics = async function(req, res, next) {
-
-  let message;
-
-  let topicId = req.params.id
-
-  
-
-  if (req.body && req.body.name) {
-    // update
-    await rpoSubTopics.update(topicId,req.body);
-
-    message = {
-      status: true,
-      message: "Updated Successfully!"
-    }
-  }
-
-  let topics = await rpoSubTopics.find(topicId);
-
-  console.log(topics);
-
-  if (!topics) res.redirect('/admin-dashboard/sub-topics') 
-    
-  res.render('admin/sub-topics/edit', { 
-    title: '',
-    description: '',
-    keywords: '',
-    topic: topics[0],
-    message: message
-
-  });
-
-     
 }

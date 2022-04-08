@@ -3,7 +3,7 @@
 		
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="/admin-dashboard/">Dashboard</a></li>
+				<li class="breadcrumb-item"><a href="/beta/admin-dashboard/">Dashboard</a></li>
 				<li class="breadcrumb-item active" aria-current="page">Topics</li>
 			</ol>
 		</nav>
@@ -16,25 +16,27 @@
 				</div>
 			<% } %>
 			<div class="col-md-12">
-				<h2>Topics</h2>
-				<% if(topics && topics.length > 0) { %>
+				<h2>Sub Topics</h2>
+				<% if(subtopics && subtopics.length > 0) { %>
 					<table class="table">
 						<tr>
 							<th>Topics</th>
+							<th>Sub Topic</th>
 							<th>Description</th>
 							<th>Notes</th>
 							<th>Status</th>
-							<th>Actions</th>
+							<th>Action</th>
 						</tr>
-						<% topics.forEach(function(topic,key) {  %>
+						<% subtopics.forEach(function(subtopic,key) {  %>
 							<tr>
-								<td><%= topic.name %></td>
-								<td><%= topic.description %></td>
-								<td><%= topic.notes %></td>
-								<td><%= topic.status %></td>
+								<td><%= subtopic.parentName %></td>
+								<td><%= subtopic.name %></td>
+								<td><%= subtopic.description %></td>
+								<td><%= subtopic.notes %></td>
+								<td><%= subtopic.status %></td>
 								<td>
-									<a href="/admin-dashboard/topics/edit/<%= topic._id %>"><i class="fa fa-pen"></i></a>&nbsp;
-									<a href="/admin-dashboard/topics/delete/<%= topic._id %>"><i class="fa fa-trash"></i></a>
+									<a href="/beta/admin-dashboard/topics/edit/<%= subtopic._id %>"><i class="fa fa-pen"></i></a>&nbsp;
+									<a href="/beta/admin-dashboard/topics/delete/<%= subtopic._id %>"><i class="fa fa-trash"></i></a>
 								</td>
 							</tr>
 						<% }) %>
@@ -51,9 +53,24 @@
 
 				
 				<form method="post">
+
 					<div class="form-group">
 						<label>Topic</label>
+						<select name="parentName" class="form-control">
+							<% topics.forEach(function(topic,key) {  %>
+								<option value="<%= topic.name %>"><%= topic.name %></option>
+							<% }) %>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label>Sub Topic</label>
 						<input type="text" name="name" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<label>Description</label>
+						<textarea class="form-control" name="description" rows="3"></textarea>
 					</div>
 
 					<div class="form-group">
@@ -68,7 +85,7 @@
 						  <option value="draft">Draft</option>
 						  <option value="archive">Archive</option>
 						</select>
-					  </div>
+					</div>
 
 					<div class="form-group">
 						<input type="submit" value="Add">
