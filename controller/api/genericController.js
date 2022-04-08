@@ -50,30 +50,31 @@ exports.addComments = async function(req, res, next) {
   if (data.file) {
     data.file = data.file.split(',')
   }
-  
 
   if (data.replyTo) {
     let results = await rpoComments.find(data.replyTo)
     data.replyToData = results[0]
 
     // send email notification
-
-    let mailDataAdmin = {
-      subject: "ChinesePod Beta Program | " + data.testerName + " replied to your feedback",
-      to: data.replyToData.userData.email,
-      message: `
-        <h3 style="margin-bottom:30px;">Hi ${data.replyToData.userData.username},</h3>
-
-        <p>${data.testerName} replied to your feedback</p>
-        <p>${data.message.replace("\n","<br>")}</p>
-
-        <p><a href="https://www.chinesepod.com/beta/forums/${data.topicId}">Reply</p>
-
-        <br>
-        <p>Sincerely,<br>ChinesePod Team</p>
-      `
+    if (data.replyToData.userData) {
+      let mailDataAdmin = {
+        subject: "ChinesePod Beta Program | " + data.testerName + " replied to your feedback",
+        to: data.replyToData.userData.email,
+        message: `
+          <h3 style="margin-bottom:30px;">Hi ${data.replyToData.userData.username},</h3>
+  
+          <p>${data.testerName} replied to your feedback</p>
+          <p>${data.message.replace("\n","<br>")}</p>
+  
+          <p><a href="https://www.chinesepod.com/beta/forums/${data.topicId}">Reply</p>
+  
+          <br>
+          <p>Sincerely,<br>ChinesePod Team</p>
+        `
+      }
+      mailService.defaultSend(mailDataAdmin)
     }
-    mailService.defaultSend(mailDataAdmin)
+    
 
   }
 
@@ -83,7 +84,11 @@ exports.addComments = async function(req, res, next) {
 
   data.created_at = req.app.locals.moment().format()
 
-  await rpoComments.put(data)
+  if (data.message) {
+    await rpoComments.put(data)
+  }
+
+  
 
   // Update topic counters
   let topics = await rpoSubTopics.find(data.topicId)
