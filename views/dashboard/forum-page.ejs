@@ -43,7 +43,7 @@
 						</div>
 						<div class="col-9 text-left">
 							<h4> This topic is all about <strong>{{ topic.name }}</strong></h4>
-							<p>{{ topic.description }}</p>
+							<p v-html="topic.description.replace('\n','<br>')"></p>
 						</div>
 					</div>
 					

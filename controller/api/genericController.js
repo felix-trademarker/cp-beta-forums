@@ -113,9 +113,9 @@ exports.addComments = async function(req, res, next) {
     // send email notification topics has feedback
     let mailDataAdmin = {
       subject: "ChinesePod Beta Program | "+data.testerName+" Added new feedback on your topic",
-      to: (data.replyToData.userData ? data.replyToData.userData.email : "beta@chinesepod.com"),
+      to: topics.userData.email,
       message: `
-        <h3 style="margin-bottom:30px;">Hi ${data.replyToData.userData.username},</h3>
+        <h3 style="margin-bottom:30px;">Hi ${topics.userData.username},</h3>
 
         <p>${data.testerName} leave a feedback on your topic</p>
         <p>${data.message.replace("\n","<br>")}</p>
