@@ -9,7 +9,7 @@ const { toInteger } = require('lodash');
 let rpoUsersMySQL = require('../../repositories/mysql/_users');
 let rpoUsers = require('../../repositories/users');
 
-var store = require('store')
+let mailService = require('../../services/mailService')
 
 exports.fetchSubTopic = async function(req, res, next) {
   let results = await rpoSubTopics.find(req.params.topicId)
@@ -55,6 +55,26 @@ exports.addComments = async function(req, res, next) {
   if (data.replyTo) {
     let results = await rpoComments.find(data.replyTo)
     data.replyToData = results[0]
+
+    // send email notification
+
+    let mailDataAdmin = {
+      subject: "ChinesePod Beta Program | " + data.testerName + " replied to your feedback",
+      to: data.replyToData.userData.email,
+      message: `
+        <h3 style="margin-bottom:30px;">Hi ${data.replyToData.userData.username},</h3>
+
+        <p>${data.testerName} replied to your feedback</p>
+        <p>${data.message.replace("\n","<br>")}</p>
+
+        <p><a href="https://www.chinesepod.com/beta/forums/${data.topicId}">Reply</p>
+
+        <br>
+        <p>Sincerely,<br>ChinesePod Team</p>
+      `
+    }
+    mailService.defaultSend(mailDataAdmin)
+
   }
 
   let userData = await helpers.getLoginUser(req)
@@ -84,6 +104,24 @@ exports.addComments = async function(req, res, next) {
     }
 
     rpoSubTopics.update(topics._id, topicsData)
+
+    // send email notification topics has feedback
+    let mailDataAdmin = {
+      subject: "ChinesePod Beta Program | "+data.testerName+" Added new feedback on your topic",
+      to: data.replyToData.userData.email,
+      message: `
+        <h3 style="margin-bottom:30px;">Hi ${data.replyToData.userData.username},</h3>
+
+        <p>${data.testerName} leave a feedback on your topic</p>
+        <p>${data.message.replace("\n","<br>")}</p>
+
+        <p><a href="https://www.chinesepod.com/beta/forums/${data.topicId}">Reply</p>
+
+        <br>
+        <p>Sincerely,<br>ChinesePod Team</p>
+      `
+    }
+    mailService.defaultSend(mailDataAdmin)
   }
 
   res.json({results:true})

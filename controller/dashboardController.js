@@ -97,7 +97,6 @@ exports.addSubTopicsClient = async function(req, res, next) {
     res.flash('success', 'Added successfully!, Topic has been sent to admin for approval');
     await rpoSubTopics.put(data)
 
-    console.log(data)
     // send email notification
     let mailData = {
       subject: "New Topic Submission",
@@ -116,7 +115,7 @@ exports.addSubTopicsClient = async function(req, res, next) {
 
     let mailDataAdmin = {
       subject: mailData.subject + " From " + userData.username,
-      to: "felix@bigfoot.com",
+      to: "beta@chinesepod.com",
       message: `
         <h3 style="margin-bottom:30px;">Hi Admin,</h3>
 
@@ -126,15 +125,13 @@ exports.addSubTopicsClient = async function(req, res, next) {
         Author: ${userData.username}
         </p>
 
-        <p>Admin Topic <a href="#">link</a></p>
+        <p>Admin Topic <a href="https://www.chinesepod.com/beta/admin-dashboard/topics/edit/${data._id}">link</a></p>
 
 
         <br>
         <p>Sincerely,<br>ChinesePod Team</p>
       `
     }
-
-    // https://www.chinesepod.com/beta/admin-dashboard/topics/edit/${data._id}
 
     mailService.basicSend(mailDataAdmin)
 

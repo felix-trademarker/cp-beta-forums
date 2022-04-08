@@ -140,14 +140,37 @@ exports.addTopics = async function(req, res, next) {
 exports.editTopics = async function(req, res, next) {
 
   let message;
-
   let topicId = req.params.id
+  let topics = await rpoSubTopics.find(topicId);
 
-  
 
   if (req.body && req.body.name) {
     // update
     await rpoSubTopics.update(topicId,req.body);
+
+    // check if other statur to publish
+    if (topics && topics.length > 0) {
+      if (req.body.status == "publish" && topics[0].status != req.body.status ) {
+        // notify author published
+        let mailDataAdmin = {
+          subject: "Topic ["+topics[0].name+"] has been Approved and Publish",
+          to: topics[0].userData.email,
+          message: `
+            <h3 style="margin-bottom:30px;">Hi ${topics[0].userData.username},</h3>
+    
+            <p>Congratulations! submitted topic has been Approved and Published.</p>
+            <p>Topic <a href="https://www.chinesepod.com/beta/forums/${topics[0]._id}">${topics[0]}</a></p>
+    
+            <br>
+            <p>Sincerely,<br>ChinesePod Team</p>
+          `
+        }
+    
+        mailService.basicSend(mailDataAdmin)
+
+      }
+
+    }
 
     message = {
       status: true,
@@ -155,7 +178,6 @@ exports.editTopics = async function(req, res, next) {
     }
   }
 
-  let topics = await rpoSubTopics.find(topicId);
 
   console.log(topics);
 

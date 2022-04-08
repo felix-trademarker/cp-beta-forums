@@ -40,3 +40,16 @@ exports.basicSend = async function(mailData) {
     
 }
 
+exports.defaultSend = async function(mailData) {
+
+    return await transporter.sendMail({
+      sender: "ChinesePod Team <beta@chinesepod.com>",
+      replyTo: "ChinesePod Team <beta@chinesepod.com>",
+      from: "ChinesePod Team <beta@chinesepod.com>", 
+      to: mailData.to,
+      subject: mailData.subject, 
+      html: mailData.message, 
+    });
+    
+}
+
