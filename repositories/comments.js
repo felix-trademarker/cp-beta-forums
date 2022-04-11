@@ -32,7 +32,7 @@ module.exports = {
 	getLatestComments : async function() {
 		return new Promise(function(resolve, reject) {
 
-			let query = { };
+			let query = { deleted_at: {$exists: false } };
 			
 			conn.getDb().collection(_table).find(query).sort( { "created_at": -1 } ).limit(15).toArray(function(err, result) {
 					

@@ -12,6 +12,9 @@ router.post('/add-comment/', genericController.addComments);
 router.post('/add-comment/upload-image', genericController.addImageComments);
 
 router.get('/topics', genericController.getTopics);
+router.post('/update-comment/', genericController.updateComments);
+router.post('/delete-comment/', genericController.deleteComments);
+
 
 
 

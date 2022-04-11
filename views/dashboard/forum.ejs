@@ -85,14 +85,18 @@
 							<img class="img-responsive" src="/beta/images/<%= topic.parentName.replace(' ','-').toLowerCase() %>.png">
 						</div>
 						<div class="col-10">
-							<h4 class=""><%= topic.name %></h4>
+							<h4 class=""><%= topic.name %> <span style="float:right">(<%= (topic.numberOfComments ? topic.numberOfComments : '0') %>)</span></h4>
 							<p class=""><%- topic.description.replace("\n","<br>") %></p>
 							
 						</div>
 						<div class="col-12">
-							<p class="author"><%= topic.parentName %> <%= moment(topic.created_at).format('MMM D, YYYY') %></p>
-						</div>
+							<p class="author"><%= topic.parentName %> <%= moment(topic.created_at).format('MMM D, YYYY') %>
 
+							</p>
+						</div>
+						<% if( topic.userData && userData.id == topic.userData.id ){ %>
+							<!-- <i @click="deleteTopic(<%= topic._id %>)" class="fa fa-trash btnDeleteTopic"></i> -->
+						<% } %>
 						<a class="block-link" href="/beta/forums/<%= topic._id %>"></a>
 						
 					</div>
@@ -114,8 +118,12 @@
 							<% if(comment.replyToData) { %>
 								<a class="replyBox">
 									<p><b>REPLY TO</b></p>
+									<% if(comment.replyToData.deleted_at) { %>
 									<p><img class="profilePicReply" src="<%= comment.testerAvatar ? comment.testerAvatar : 'https://www.chinesepod.com/home/img/brand/symbol-black-center.svg' %>"> <%= comment.replyToData.testerName %></p>
 									<p> <%= comment.replyToData.message %> </p>
+									<% } else { %>
+										<p> Content Unavailable </p>
+									<% } %>
 								</a>
 							<% } %>
 

@@ -94,7 +94,7 @@ exports.addSubTopicsClient = async function(req, res, next) {
     // add date created
     data.created_at = req.app.locals.moment().format()
     console.log("add flash message");
-    res.flash('success', 'Added successfully!, Topic has been sent to admin for approval');
+    res.flash('success', 'Added successfully! Topic has been sent to admin for approval');
     await rpoSubTopics.put(data)
 
     // send email notification

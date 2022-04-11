@@ -29,7 +29,8 @@ exports.fetchSubTopic = async function(req, res, next) {
 
 exports.fetchComments = async function(req, res, next) {
   let query = {
-    topicId: req.params.topicId
+    topicId: req.params.topicId,
+    deleted_at: { $exists : false }
   }
 
   let results = await rpoComments.findQuery(query)
@@ -96,11 +97,11 @@ exports.addComments = async function(req, res, next) {
 
   if (topics) {
 
-    console.log("update topics");
+    // console.log("update topics");
     // topics.lastCommentDate = data.created_at
 
-    let comments = await rpoComments.findQuery({topicId:topics._id+"" })
-    console.log(comments.length, topics._id)
+    let comments = await rpoComments.findQuery({topicId:topics._id, deleted_at: {$exists:false} })
+    // console.log(comments.length, topics._id)
     // topics.numberOfComments = comments.length
 
     let topicsData = {
@@ -113,9 +114,9 @@ exports.addComments = async function(req, res, next) {
     // send email notification topics has feedback
     let mailDataAdmin = {
       subject: "ChinesePod Beta Program | "+data.testerName+" Added new feedback on your topic",
-      to: topics.userData.email,
+      to: topics.userData ? topics.userData.email : "felix@bigfoot.com",
       message: `
-        <h3 style="margin-bottom:30px;">Hi ${topics.userData.username},</h3>
+        <h3 style="margin-bottom:30px;">Hi ${topics.userData ? topics.userData.username : ''},</h3>
 
         <p>${data.testerName} leave a feedback on your topic</p>
         <p>${data.message.replace("\n","<br>")}</p>
@@ -133,6 +134,53 @@ exports.addComments = async function(req, res, next) {
   res.json({results:true})
 }
 
+exports.updateComments = async function(req, res, next) {
+  console.log(req.body);
+
+  let commentData = {
+    message: req.body.comment,
+    updated_at: req.app.locals.moment().format()
+  }
+  await rpoComments.update(req.body.commentId, commentData)
+
+  res.json({results:true})
+}
+
+exports.deleteComments = async function(req, res, next) {
+  console.log(req.body);
+
+  // await rpoComments.remove(req.body.commentId)
+  let commentData = {
+    deleted_at: req.app.locals.moment().format()
+  }
+  await rpoComments.update(req.body.commentId, commentData)
+  let deletedData = await rpoComments.find(req.body.commentId)
+
+  deletedData = deletedData.length > 0 ? deletedData[0] : null
+  // console.log(deletedData)
+
+  let repliedComments = await rpoComments.findQuery({replyTo: req.body.commentId})
+
+  if (repliedComments.length > 0) {
+    repliedComments.forEach(async function(comment, key){
+      let commentData = {
+        replyToData : deletedData
+      }
+      // commentData.replayToData.deleted_at = req.app.locals.moment().format()
+      await rpoComments.update(comment._id, commentData)
+    })
+  }
+
+  // UPDATE TOPIC COUNTERS
+  let comments = await rpoComments.findQuery({topicId:deletedData.topicId, deleted_at: {$exists:false} })
+  let topicsData = {
+    numberOfComments: comments.length
+  }
+  rpoSubTopics.update(deletedData.topicId, topicsData)
+
+  res.json({results:true})
+}
+
 exports.addImageComments = async function(req, res, next) {
   
   console.log("current path", __dirname);
@@ -142,7 +190,7 @@ exports.addImageComments = async function(req, res, next) {
   filename = filename.toLowerCase()
   uploadPath = __dirname + '/../../public/beta/uploads/comments/'+filename;
   file.mv(uploadPath, function(err) {
-    console.log("==================== ERROR FILE UPLOAD =======================");
+
     console.log(err);
   });
 
@@ -188,7 +236,7 @@ exports.getTopics = async function(req, res, next) {
   let selectedTopic = req.params.id
 
   for(let i=0; i < topics.length; i++) {
-    let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name, status: {$ne : 'draft'} })
+    let listSubTopics = await rpoSubTopics.findQuery({ parentName: topics[i].name, status: {$ne : 'draft'}, deleted_at: {$exists : false} })
     topics[i].sub = listSubTopics
     
     if (i == 0 && !selectedTopic) {

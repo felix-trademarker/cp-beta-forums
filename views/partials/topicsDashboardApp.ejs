@@ -17,7 +17,8 @@
         replyToData: null,
         vuex: {},
         userData: {},
-        topics: {}
+        topics: {},
+        editComment: {}
     },
     methods: {
 
@@ -165,6 +166,18 @@
             modal.style.display = "none";
         },
 
+        commentEdit: function(comment) {
+            var modal = document.getElementById("editCommentModal")
+            this.editComment = comment
+            modal.style.display = "block";
+        },
+
+        closeCommentEdit: function() {
+            var modal = document.getElementById("editCommentModal")
+
+            modal.style.display = "none";
+        },
+
         setReply: function(replyId) {
             this.replyTo = replyId
 
@@ -194,6 +207,39 @@
             this.replyToData = null
             this.replyTo = ''
         },
+
+        updateComment: function() {
+            let this_ = this
+            
+            let updateData = {
+                commentId: this.editComment._id,
+                comment: this.editComment.message
+            }
+            postData('/beta/api/v1/update-comment/', updateData)
+                .then(data => {
+                    console.log(data)
+
+                    this_.closeCommentEdit()
+            });
+        },
+
+        deleteComment: function(comment) {
+            let this_ = this
+            
+            let text = "Are you sure?"
+            if (confirm(text) == true) {
+
+                let deleteData = {
+                    commentId: comment._id,
+                }
+
+                postData('/beta/api/v1/delete-comment/', deleteData)
+                    .then(data => {
+                        console.log(data)
+
+                });
+            } 
+        }
 
 
     },
@@ -288,7 +334,7 @@
     let uploadProgress = []
     let progressBar = document.getElementById('progress-bar')
 
-    console.log("topics", topicsDashboardApp.topics); 
+    // console.log("topics", topicsDashboardApp.topics); 
 
 
     if (commentForm) {
@@ -302,11 +348,11 @@
         }
 
         // script to fetch comments interval 5sec
-        var interval = setInterval(function(){
-            if (topicsDashboardApp.topicId) {
-                topicsDashboardApp.updateComments();
-            }
-        }, 5000);
+        // var interval = setInterval(function(){
+        //     if (topicsDashboardApp.topicId) {
+        //         topicsDashboardApp.updateComments();
+        //     }
+        // }, 5000);
 
         // test drag and drop functions
         // ************************ Drag and drop ***************** //
@@ -330,6 +376,93 @@
         // // Handle dropped files
         dropArea.addEventListener('drop', handleDrop, false);
 
+        function preventDefaults (e) {
+            e.preventDefault()
+            e.stopPropagation()
+        }
+
+        function highlight(e) {
+            dropArea.classList.add('highlight')
+        }
+
+        function unhighlight(e) {
+            dropArea.classList.remove('active')
+        }
+
+        function handleDrop(e) {
+            var dt = e.dataTransfer
+            var files = dt.files
+
+            handleFiles(files)
+        }
+
+        
+
+        function initializeProgress(numFiles) {
+            progressBar.value = 0
+            uploadProgress = []
+
+            for(let i = numFiles; i > 0; i--) {
+                uploadProgress.push(0)
+            }
+        }
+
+        function updateProgress(fileNumber, percent) {
+            uploadProgress[fileNumber] = percent
+            let total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length
+            progressBar.value = total
+        }
+
+        function handleFiles(files) {
+
+            files = [...files]
+            initializeProgress(files.length)
+            files.forEach(uploadFile)
+
+        }
+
+        function previewFile(file) {
+            let reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onloadend = function() {
+                let img = document.createElement('img')
+                img.src = reader.result
+                document.getElementById('gallery').appendChild(img)
+            }
+        }
+
+        function uploadFile(file, i) {
+            var url = '/beta/api/v1/add-comment/upload-image'
+            var xhr = new XMLHttpRequest()
+            var formData = new FormData()
+            xhr.open('POST', url, true)
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+
+            // Update progress (can be used to show progress indicator)
+            xhr.upload.addEventListener("progress", function(e) {
+                console.log("upload progress...", (e.loaded * 100.0 / e.total));
+                updateProgress(i, (e.loaded * 100.0 / e.total) || 100)
+            })
+
+            xhr.addEventListener('readystatechange', function(e) {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log("progress... complete");
+                updateProgress(i, 100) 
+                var res = JSON.parse(xhr.response)
+    
+                    if (res.results) {
+                        topicsDashboardApp.files.push(res.results)
+                    }
+                }
+                else if (xhr.readyState == 4 && xhr.status != 200) {
+                // Error. Inform the user
+                }
+            })
+            formData.append('file', file)
+            xhr.send(formData)
+        }
+
+
     }
 
     fetch('/beta/api/v1/topics').then(function (response) {
@@ -338,7 +471,7 @@
     }).then(function (data) {
 
         topicsDashboardApp.topics = data
-        console.log("topics",data);
+        // console.log("topics",data);
     }).catch(function (err) {
         // There was an error
         console.warn('Something went wrong.', err);
@@ -381,89 +514,6 @@
         return response.json();
     }
 
-    function preventDefaults (e) {
-        e.preventDefault()
-        e.stopPropagation()
-    }
-
-    function highlight(e) {
-        dropArea.classList.add('highlight')
-    }
-
-    function unhighlight(e) {
-        dropArea.classList.remove('active')
-    }
-
-    function handleDrop(e) {
-        var dt = e.dataTransfer
-        var files = dt.files
-
-        handleFiles(files)
-    }
-
     
-
-    function initializeProgress(numFiles) {
-        progressBar.value = 0
-        uploadProgress = []
-
-        for(let i = numFiles; i > 0; i--) {
-            uploadProgress.push(0)
-        }
-    }
-
-    function updateProgress(fileNumber, percent) {
-        uploadProgress[fileNumber] = percent
-        let total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length
-        progressBar.value = total
-    }
-
-    function handleFiles(files) {
-
-        files = [...files]
-        initializeProgress(files.length)
-        files.forEach(uploadFile)
-
-    }
-
-    function previewFile(file) {
-        let reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onloadend = function() {
-            let img = document.createElement('img')
-            img.src = reader.result
-            document.getElementById('gallery').appendChild(img)
-        }
-    }
-
-    function uploadFile(file, i) {
-        var url = '/beta/api/v1/add-comment/upload-image'
-        var xhr = new XMLHttpRequest()
-        var formData = new FormData()
-        xhr.open('POST', url, true)
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
-
-        // Update progress (can be used to show progress indicator)
-        xhr.upload.addEventListener("progress", function(e) {
-            updateProgress(i, (e.loaded * 100.0 / e.total) || 100)
-        })
-
-        xhr.addEventListener('readystatechange', function(e) {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-            updateProgress(i, 100) 
-            var res = JSON.parse(xhr.response)
-   
-                if (res.results) {
-                    topicsDashboardApp.files.push(res.results)
-                }
-            }
-            else if (xhr.readyState == 4 && xhr.status != 200) {
-            // Error. Inform the user
-            }
-        })
-        formData.append('file', file)
-        xhr.send(formData)
-    }
-
 
 </script>
