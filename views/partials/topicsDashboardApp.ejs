@@ -218,7 +218,7 @@
             postData('/beta/api/v1/update-comment/', updateData)
                 .then(data => {
                     console.log(data)
-
+                    this_.this.updateComments()
                     this_.closeCommentEdit()
             });
         },
@@ -236,7 +236,7 @@
                 postData('/beta/api/v1/delete-comment/', deleteData)
                     .then(data => {
                         console.log(data)
-
+                        this_.this.updateComments()
                 });
             } 
         }
