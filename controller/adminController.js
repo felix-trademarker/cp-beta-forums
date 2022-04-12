@@ -10,6 +10,18 @@ const { toInteger } = require('lodash');
 
 let helpers = require('../helpers');
 
+exports.adminDashboard = async function(req, res, next) {
+    
+  res.render('admin/', { 
+    title: 'ChinesePod Beta Program | Admin Dashboard',
+    description: '',
+    keywords: ''
+
+  });
+
+     
+}
+
 // ============================ ADMIN FUNCTIONS
 exports.addCategory = async function(req, res, next) {
 
@@ -95,6 +107,7 @@ exports.deleteCategory = async function(req, res, next) {
      
 }
 
+// ============================ TOPICS FUNCTIONS
 exports.addTopics = async function(req, res, next) {
 
   let message;
@@ -207,3 +220,92 @@ exports.deleteTopics = async function(req, res, next) {
 
      
 }
+
+
+// ============================ TESTERS FUNCTIONS
+exports.testers = async function(req, res, next) {
+
+  let users = await rpoUsers.findQuery({isBetaTester:true});
+  let subtopics = await rpoSubTopics.get();
+    
+  res.render('admin/users/', {
+    title: '',
+    description: '',
+    keywords: '',
+    users: users,
+
+  });
+
+     
+}
+
+// exports.editTopics = async function(req, res, next) {
+
+//   let message;
+//   let topicId = req.params.id
+//   let topics = await rpoSubTopics.find(topicId);
+
+
+//   if (req.body && req.body.name) {
+//     // update
+//     await rpoSubTopics.update(topicId,req.body);
+
+//     // check if other statur to publish
+//     if (topics && topics.length > 0) {
+//       if (req.body.status == "publish" && topics[0].status != req.body.status ) {
+//         // notify author published
+//         let mailDataAdmin = {
+//           subject: "Topic ["+topics[0].name+"] has been Approved and Publish",
+//           to: topics[0].userData.email,
+//           message: `
+//             <h3 style="margin-bottom:30px;">Hi ${topics[0].userData.username},</h3>
+    
+//             <p>Congratulations! submitted topic has been Approved and Published.</p>
+//             <p>Topic <a href="https://www.chinesepod.com/beta/forums/${topics[0]._id}">${topics[0]}</a></p>
+    
+//             <br>
+//             <p>Sincerely,<br>ChinesePod Team</p>
+//           `
+//         }
+    
+//         mailService.basicSend(mailDataAdmin)
+
+//       }
+
+//     }
+
+//     message = {
+//       status: true,
+//       message: "Updated Successfully!"
+//     }
+//   }
+
+
+//   console.log(topics);
+
+//   if (!topics) res.redirect('/admin-dashboard/topics') 
+    
+//   res.render('admin/topics/edit', { 
+//     title: '',
+//     description: '',
+//     keywords: '',
+//     topic: topics[0],
+//     message: message
+
+//   });
+
+     
+// }
+
+// exports.deleteTopics = async function(req, res, next) {
+
+//   let message;
+
+//   let topicId = req.params.id
+
+//   let topics = await rpoSubTopics.remove(topicId);
+
+//   res.redirect("/beta/admin-dashboard/topics/")
+
+     
+// }

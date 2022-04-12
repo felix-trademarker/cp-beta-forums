@@ -514,6 +514,22 @@
         return response.json();
     }
 
-    
+    let btnDeleteTopic = document.getElementById("btnDeleteTopic");
+
+    if (btnDeleteTopic) {
+        btnDeleteTopic.addEventListener('click', deleteTopic, false)
+    }
+
+    function deleteTopic(e) {
+        
+
+        let text = "Are you sure?"
+        if (confirm(text) != true) {
+            e.preventDefault()
+            e.stopPropagation()
+        }
+
+        // return false;
+    }
 
 </script>

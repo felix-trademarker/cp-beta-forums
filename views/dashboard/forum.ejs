@@ -95,7 +95,8 @@
 							</p>
 						</div>
 						<% if( topic.userData && userData.id == topic.userData.id ){ %>
-							<!-- <i @click="deleteTopic(<%= topic._id %>)" class="fa fa-trash btnDeleteTopic"></i> -->
+							<a id="btnDeleteTopic" class="btnDeleteTopic" href="/beta/forums/delete/<%= topic._id %>" ><i class="fa fa-trash"></i></a>
+							<a class="btnEditTopic" href="/beta/forums/edit/<%= topic._id %>" ><i class="fa fa-pen"></i></a>
 						<% } %>
 						<a class="block-link" href="/beta/forums/<%= topic._id %>"></a>
 						

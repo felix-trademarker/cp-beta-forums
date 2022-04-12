@@ -23,4 +23,8 @@ router.get(['/about','/beta/about'],dashboardController.about);
 router.post(['/forums', '/beta/forums'],dashboardController.addSubTopicsClient);
 router.post(['/forums/participate', '/beta/forums/participate'],dashboardController.participate);
 
+router.get(['/forums/edit/:id', '/beta/forums/edit/:id'],dashboardController.editTopicClient);
+router.post(['/forums/edit/:id', '/beta/forums/edit/:id'],dashboardController.editTopicClient);
+router.get(['/forums/delete/:id', '/beta/forums/delete/:id'],dashboardController.deleteTopicClient);
+
 module.exports = router;

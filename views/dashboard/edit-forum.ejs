@@ -1,0 +1,55 @@
+<section class="cprecap-info" id="about">
+	<div class="container-xl" style="min-height:65vh">
+		
+
+        <div class="row justify-content-center box-bg-container">
+
+			<div class="col-md-12">
+				<h2>Edit Topic: <%= topic.name %></h2>
+				
+			</div>
+
+			<div class="col-md-12">
+
+				<form method="post">
+
+					<div class="form-group">
+						<label>Author: <%= (topic.userData ? topic.userData.username : 'Admin') %></label>
+					</div>
+
+					<div class="form-group">
+						<label>Topic</label>
+						<input type="text" name="name" class="form-control" value="<%= topic.name %>" required>
+					</div>
+
+					<div class="form-group">
+						<label>Description</label>
+						<textarea class="form-control" name="description" rows="3"><%= topic.description %></textarea>
+					</div>
+
+					<!-- <div class="form-group">
+						<label>Notes</label>
+						<textarea class="form-control" name="notes" rows="3"><%= topic.notes %></textarea>
+					</div> -->
+
+					<!-- <div class="form-group">
+						<label>Status</label>
+						<select name="status" class="form-control">
+						  <option value="publish" <%= topic.status == 'publish' ? 'selected' : '' %>>Publish</option>
+						  <option value="draft" <%= topic.status == 'draft' ? 'selected' : '' %>>Draft</option>
+						  <option value="archive" <%= topic.status == 'archive' ? 'selected' : '' %>>Archive</option>
+						</select>
+					</div> -->
+
+					<div class="form-group text-center">
+						<input type="submit" class="btn btn-primary" value="Update">
+					</div>
+
+				</form>
+
+			</div>
+
+		
+		</div>
+    </div>
+</section>

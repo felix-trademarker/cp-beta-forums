@@ -8,6 +8,8 @@ var router = express.Router();
 
 // ADMIN ==============================
 // ====================================
+router.get('/',controller.adminDashboard);
+
 
 // ************** CATEGORIES **************
 router.get('/categories',controller.addCategory);
@@ -22,6 +24,12 @@ router.post('/topics',controller.addTopics);
 router.get('/topics/edit/:id',controller.editTopics);
 router.post('/topics/edit/:id',controller.editTopics);
 router.get('/topics/delete/:id',controller.deleteTopics);
+
+// ************** BETA TESTERS **************
+router.get('/testers',controller.testers);
+// router.get('/testers/edit/:id',controller.editTopics);
+// router.post('/testers/edit/:id',controller.editTopics);
+// router.get('/testers/delete/:id',controller.deleteTopics);
 
 
 

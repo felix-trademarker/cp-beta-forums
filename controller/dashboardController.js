@@ -4,6 +4,7 @@ let rpoComments = require('../repositories/comments');
 let rpoUsers = require('../repositories/users');
 
 let mailService = require('../services/mailService')
+let activityService = require('../services/activityLogService')
 
 var path = require('path')
 const { toInteger } = require('lodash'); 
@@ -11,6 +12,8 @@ const { toInteger } = require('lodash');
 let helpers = require('../helpers');
 
 exports.landing = async function(req, res, next) {
+
+  activityService.logger(req, "Visited Beta Page");
 
   let topics = await rpoTopics.get();
   let selectedTopic = req.params.id
@@ -41,6 +44,8 @@ exports.landing = async function(req, res, next) {
 
 exports.forum = async function(req, res, next) {
 
+  activityService.logger(req, "Visited Forum Page");
+
   let topics = await rpoTopics.get();
   let subTopics = await rpoSubTopics.getLatestTopics();
   let userData = await helpers.getLoginUser(req)
@@ -67,9 +72,13 @@ exports.addSubTopicsClient = async function(req, res, next) {
 
   let userData = await helpers.getLoginUser(req)
 
+  
+
 
   if (req.body && req.body.name) {
     let data = req.body
+
+    activityService.logger(req, "Add Topics "+req.body.name);
 
     let findDuplicate = await rpoTopics.findQuery({name:req.body.name})
 
@@ -141,10 +150,61 @@ exports.addSubTopicsClient = async function(req, res, next) {
      
 }
 
+exports.deleteTopicClient = async function(req, res, next) {
+  console.log(req.params.id)
+
+  // let topic = await rpoSubTopics.remove(req.params.id)
+  if (!req.params.id) {
+    res.redirect('/beta/forums')
+  }
+
+  let data = {
+    status: 'draft',
+    deleted_at: req.app.locals.moment().format()
+  }
+
+  await rpoSubTopics.update(req.params.id, data)
+
+  res.flash('success', 'Topic Deleted');
+  res.redirect('/beta/forums')
+
+}
+
+exports.editTopicClient = async function(req, res, next) {
+  console.log(req.params.id)
+
+  // let topic = await rpoSubTopics.remove(req.params.id)
+  if (!req.params.id) {
+    res.redirect('/beta/forums')
+  }
+
+  let topicId = req.params.id
+  let topics = await rpoSubTopics.find(topicId);
+
+  if (!topics) res.redirect('/beta/forums') 
+
+  if (req.body && req.body.name) {
+    // update
+    await rpoSubTopics.update(topicId,req.body);
+
+    res.flash('success', 'Topic Updated');
+    res.redirect('/beta/forums')
+  }
+
+  res.render('dashboard/edit-forum', { 
+    title: '',
+    description: '',
+    keywords: '',
+    topic: topics[0],
+  });
+
+}
+
 exports.forumPage = async function(req, res, next) {
 
   let topics = await rpoTopics.get();
   let selectedTopic = req.params.id
+  let selectedTopicName=""
 
   let userData = await helpers.getLoginUser(req)
   let isBetaTester = userData && userData.isBetaTester ? true : false;
@@ -155,9 +215,12 @@ exports.forumPage = async function(req, res, next) {
     
     if (i == 0 && !selectedTopic) {
       selectedTopic = topics[i].sub[0]._id
+      selectedTopicName = topics[i].sub[0].name
     }
 
   }
+
+  activityService.logger(req, "Visited Topic "+selectedTopicName);
 
   console.log("selected", selectedTopic);
     
