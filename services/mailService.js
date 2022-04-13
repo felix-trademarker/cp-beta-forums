@@ -19,7 +19,7 @@ exports.welcomeBetaTester = async function(mailData) {
       replyTo: "ChinesePod Team <beta@chinesepod.com>",
       from: "ChinesePod Team <beta@chinesepod.com>", 
       to: mailData.to,
-      // bcc: ["felix@bigfoot.com", "carissa@chinesepod.com", "mgleiss@chinesepod.com", "miahuang1013@gmail.com"],
+      bcc: ["felix@bigfoot.com", "carissa@chinesepod.com", "mgleiss@chinesepod.com", "miahuang1013@gmail.com"],
       subject: mailData.subject, 
       html: mailData.message, 
     });
