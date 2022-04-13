@@ -1,5 +1,13 @@
 <section class="cprecap-info" id="about">
-    <div class="container-xl" style="min-height:65vh">
+	<div class="container-xl" style="min-height:65vh">
+		
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/beta/admin-dashboard/">Dashboard</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Testers</li>
+			</ol>
+		</nav>
+
         <div class="row justify-content-center box-bg-container">
 
 			<div class="col-md-12">
@@ -31,13 +39,12 @@
 								<td><%= moment(user.testerJoinDate).format("MMMM Do YYYY") %></td>
 								<td>
 									<a href="/beta/admin-dashboard/testers/edit/<%= user._id %>"><i class="fa fa-pen"></i></a>
-									<a href="/beta/admin-dashboard/testers/edit/<%= user._id %>"><i class="fa fa-trash"></i></a>
 								</td>
 							</tr>
 						<% }) %>
 					</table>
 				<% } else { %>
-					<p>Sorry, no topics found!</p>
+					<p>Sorry, no testers found!</p>
 				<% } %>
 			</div>
 

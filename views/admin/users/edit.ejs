@@ -1,9 +1,18 @@
 <section class="cprecap-info" id="about">
-    <div class="container-xl" style="min-height:65vh">
+	<div class="container-xl" style="min-height:65vh">
+		
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/beta/admin-dashboard/">Dashboard</a></li>
+				<li class="breadcrumb-item"><a href="/beta/admin-dashboard/testers">Testers</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Edit</li>
+			</ol>
+		</nav>
+
         <div class="row justify-content-center box-bg-container">
 
 			<div class="col-md-12">
-				<h2>Beta Tester</h2>
+				<h2>Edit Beta Tester</h2>
 
 			</div>
 
@@ -11,26 +20,22 @@
 
 				<form method="post">
 					<div class="form-group">
-						<label>Topic</label>
-						<input type="text" name="name" class="form-control" required>
+						<label>Tester </label>
+						<input type="text" name="username" value="<%= testers.username %>" class="form-control">
+					</div>
+
+					<div class="form-group-inline">
+						<input id="isBetaTester" type="checkbox" name="isBetaTester" <%= testers.isBetaTester ? "checked" : "" %>>
+						<label for="isBetaTester">is Beta Tester</label>
+					</div>
+
+					<div class="form-group-inline">
+						<input id="isAdmin" type="checkbox" name="isAdmin" <%= testers.isAdmin ? "checked" : "" %>>
+						<label for="isAdmin">is Admin</label>
 					</div>
 
 					<div class="form-group">
-						<label>Notes</label>
-						<textarea class="form-control" name="notes" rows="3"></textarea>
-					</div>
-
-					<div class="form-group">
-						<label>is Beta Tester</label>
-						<select name="status" class="form-control">
-						  <option value="publish">Publish</option>
-						  <option value="draft">Draft</option>
-						  <option value="archive">Archive</option>
-						</select>
-					  </div>
-
-					<div class="form-group">
-						<input type="submit" value="Add">
+						<input type="submit" value="Update">
 					</div>
 
 				</form>

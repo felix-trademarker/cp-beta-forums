@@ -9,6 +9,7 @@ var path = require('path')
 const { toInteger } = require('lodash'); 
 
 let helpers = require('../helpers');
+const { Console } = require('console');
 
 exports.adminDashboard = async function(req, res, next) {
     
@@ -249,8 +250,13 @@ exports.editTesters = async function(req, res, next) {
 
   if (req.body && req.body.username) {
     // update
-    await rpoUsers.update(userId,req.body);
 
+    req.body.isBetaTester = req.body.isBetaTester ? true : false
+    req.body.isAdmin = req.body.isAdmin ? true : false
+
+    await rpoUsers.update(userId,req.body);
+    console.log(req.body)
+    res.flash('success', 'User Updated!');
     res.redirect("/beta/admin-dashboard/testers")
   }
 
