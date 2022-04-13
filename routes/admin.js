@@ -27,6 +27,8 @@ router.get('/topics/delete/:id',controller.deleteTopics);
 
 // ************** BETA TESTERS **************
 router.get('/testers',controller.testers);
+router.get('/testers/edit/:id',controller.editTesters);
+router.post('/testers/edit/:id',controller.editTesters);
 // router.get('/testers/edit/:id',controller.editTopics);
 // router.post('/testers/edit/:id',controller.editTopics);
 // router.get('/testers/delete/:id',controller.deleteTopics);

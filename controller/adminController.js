@@ -239,6 +239,38 @@ exports.testers = async function(req, res, next) {
      
 }
 
+
+exports.editTesters = async function(req, res, next) {
+
+  let message;
+  let userId = req.params.id
+  let testers = await rpoUsers.find(userId);
+
+
+  if (req.body && req.body.username) {
+    // update
+    await rpoUsers.update(userId,req.body);
+
+    res.redirect("/beta/admin-dashboard/testers")
+  }
+
+
+
+
+  if (!testers) res.redirect('/admin-dashboard/testers') 
+    
+  res.render('admin/users/edit', { 
+    title: '',
+    description: '',
+    keywords: '',
+    testers: testers[0]
+
+  });
+
+     
+}
+
+
 // exports.editTopics = async function(req, res, next) {
 
 //   let message;

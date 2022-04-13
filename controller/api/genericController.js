@@ -58,11 +58,16 @@ exports.addComments = async function(req, res, next) {
 
     // send email notification
     if (data.replyToData.userData) {
+
+      let name = data.replyToData.userData.name.trim().replace(","," ")
+      let fname = name.split(" ")
+      let firstName = fname.length > 0 ? fname[0] : data.replyToData.userData.username;
+
       let mailDataAdmin = {
         subject: "ChinesePod Beta Program | " + data.testerName + " replied to your feedback",
         to: data.replyToData.userData.email,
         message: `
-          <h3 style="margin-bottom:30px;">Hi ${data.replyToData.userData.username},</h3>
+          <h3 style="margin-bottom:30px;">Hi ${firstName},</h3>
   
           <p>${data.testerName} replied to your feedback</p>
           <p>${data.message.replace("\n","<br>")}</p>
@@ -111,12 +116,16 @@ exports.addComments = async function(req, res, next) {
 
     rpoSubTopics.update(topics._id, topicsData)
 
+    let name = topics.userData.name.trim().replace(","," ")
+    let fname = name.split(" ")
+    let firstName = fname.length > 0 ? fname[0] : topics.userData.username;
+
     // send email notification topics has feedback
     let mailDataAdmin = {
       subject: "ChinesePod Beta Program | "+data.testerName+" Added new feedback on your topic",
       to: topics.userData ? topics.userData.email : "felix@bigfoot.com",
       message: `
-        <h3 style="margin-bottom:30px;">Hi ${topics.userData ? topics.userData.username : ''},</h3>
+        <h3 style="margin-bottom:30px;">Hi ${firstName},</h3>
 
         <p>${data.testerName} leave a feedback on your topic</p>
         <p>${data.message.replace("\n","<br>")}</p>

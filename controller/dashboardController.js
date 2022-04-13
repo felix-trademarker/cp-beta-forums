@@ -106,12 +106,16 @@ exports.addSubTopicsClient = async function(req, res, next) {
     res.flash('success', 'Added successfully! Topic has been sent to admin for approval');
     await rpoSubTopics.put(data)
 
+    let name = userData.name.trim().replace(","," ")
+    let fname = name.split(" ")
+    let firstName = fname.length > 0 ? fname[0] : userData.username;
+
     // send email notification
     let mailData = {
       subject: "New Topic Submission",
       to: userData.email,
       message: `
-        <h3 style="margin-bottom:30px;">Hi ${userData.username},</h3>
+        <h3 style="margin-bottom:30px;">Hi ${firstName},</h3>
 
         <p>Thank you for submitting a topic, topic submitted has been sent to ChinesePod Beta Team for approval.</p>
 
@@ -272,12 +276,16 @@ exports.participate = async function(req, res, next) {
 
     rpoUsers.update(userData._id, testerData)
 
+    let name = userData.name.trim().replace(","," ")
+    let fname = name.split(" ")
+    let firstName = fname.length > 0 ? fname[0] : userData.username;
+
     // send welcome email
     let mailData = {
       subject: "Welcome to our Beta APP Program",
       to: userData.email,
       message: `
-        <h3 style="margin-bottom:30px;">Hi ${userData.username},</h3>
+        <h3 style="margin-bottom:30px;">Hi <span style="">${firstName}</span>,</h3>
 
         <p>Thank you very much for enrolling in the ChinesePod Beta Program.</p>
         <p>Your participation is invaluable for us to help build the best app for YOU in your journey to learn Mandarin Chinese. </p>
@@ -287,10 +295,10 @@ exports.participate = async function(req, res, next) {
         <p>Share your experiences and suggestions, or report any bugs and issues in our dedicated Forum Page.
         https://www.chinesepod.com/beta/forums</p>
 
-        <p>See you in our Beta Testers Community Page!</p>
+        <p>Please let me know what we can do better and what are the key areas that you would like to see improved in the APP.</p>
 
         <br>
-        <p>Sincerely,<br>ChinesePod Team</p>
+        <p>Sincerely,<br>Mia</p>
       `
     }
     mailService.welcomeBetaTester(mailData)

@@ -3,7 +3,19 @@
         <div class="row justify-content-center box-bg-container">
 
 			<div class="col-md-12">
+				<% if (flash.success) { %>
+					<div class="alert alert-success" role="alert">
+						<strong><%= flash.success %></strong>
+					</div>
+				<% } %>
+					
+				<% if (flash.error) { %>
+					<div class="alert alert-danger" role="alert">
+						<strong><%= flash.error %></strong>
+					</div>
+				<% } %>
 				<h2>Beta Testers</h2>
+				
 				<% if(users && users.length > 0) { %>
 					<table class="table">
 						<tr>
@@ -18,8 +30,8 @@
 								<td><%= user.email %></td>
 								<td><%= moment(user.testerJoinDate).format("MMMM Do YYYY") %></td>
 								<td>
-									<a href="#"><i class="fa fa-pen"></i></a>
-									<a href="#"><i class="fa fa-trash"></i></a>
+									<a href="/beta/admin-dashboard/testers/edit/<%= user._id %>"><i class="fa fa-pen"></i></a>
+									<a href="/beta/admin-dashboard/testers/edit/<%= user._id %>"><i class="fa fa-trash"></i></a>
 								</td>
 							</tr>
 						<% }) %>
