@@ -4,7 +4,7 @@
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a href="/beta/admin-dashboard/">Dashboard</a></li>
-				<li class="breadcrumb-item"><a href="/beta/admin-dashboard/categories">Categories</a></li>
+				<li class="breadcrumb-item"><a href="/beta/admin-dashboard/topics">Topics</a></li>
 				<li class="breadcrumb-item active" aria-current="page">Edit</li>
 			</ol>
 		</nav>
@@ -24,6 +24,11 @@
 			<div class="col-md-12">
 
 				<form method="post">
+
+					<div class="form-group">
+						<label>Author: <%= (topic.userData ? topic.userData.username : 'Admin') %></label>
+					</div>
+
 					<div class="form-group">
 						<label>Topic</label>
 						<input type="text" name="name" class="form-control" value="<%= topic.name %>" required>
@@ -34,10 +39,10 @@
 						<textarea class="form-control" name="description" rows="3"><%= topic.description %></textarea>
 					</div>
 
-					<div class="form-group">
+					<!-- <div class="form-group">
 						<label>Notes</label>
 						<textarea class="form-control" name="notes" rows="3"><%= topic.notes %></textarea>
-					</div>
+					</div> -->
 
 					<div class="form-group">
 						<label>Status</label>

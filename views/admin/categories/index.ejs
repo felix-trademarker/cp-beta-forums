@@ -10,15 +10,22 @@
 
         <div class="row justify-content-center box-bg-container">
 
-			<% if(message) { %>
-				<div class="alert alert-<%= message && message.status ? 'success':'error' %>" role="alert">
-					<%= message.message %>
+			<% if (flash.success) { %>
+				<div class="alert alert-success" role="alert">
+					<strong><%= flash.success %></strong>
+				</div>
+			<% } %>
+				
+			<% if (flash.error) { %>
+				<div class="alert alert-danger" role="alert">
+					<strong><%= flash.error %></strong>
 				</div>
 			<% } %>
 			<div class="col-md-12">
 				<h2>Topics</h2>
 				<% if(topics && topics.length > 0) { %>
-					<table class="table">
+					<table id="dataTBL" class="table">
+						<thead>
 						<tr>
 							<th>Topics</th>
 							<th>Description</th>
@@ -26,9 +33,11 @@
 							<th>Status</th>
 							<th>Actions</th>
 						</tr>
+						</thead>
+						<tbody>
 						<% topics.forEach(function(topic,key) {  %>
 							<tr>
-								<td><%= topic.name %></td>
+								<td data-sort="<%= moment(topic.created_at).unix() %>"><%= topic.name %></td>
 								<td><%= topic.description %></td>
 								<td><%= topic.notes %></td>
 								<td><%= topic.status %></td>
@@ -38,6 +47,7 @@
 								</td>
 							</tr>
 						<% }) %>
+						</tbody>
 					</table>
 				<% } else { %>
 					<p>Sorry, no topics found!</p>

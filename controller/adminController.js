@@ -216,7 +216,7 @@ exports.deleteTopics = async function(req, res, next) {
   let topicId = req.params.id
 
   let topics = await rpoSubTopics.remove(topicId);
-
+  res.flash('success', 'topic deleted!');
   res.redirect("/beta/admin-dashboard/topics/")
 
      
@@ -276,74 +276,30 @@ exports.editTesters = async function(req, res, next) {
      
 }
 
+exports.comments = async function(req, res, next) {
 
-// exports.editTopics = async function(req, res, next) {
-
-//   let message;
-//   let topicId = req.params.id
-//   let topics = await rpoSubTopics.find(topicId);
-
-
-//   if (req.body && req.body.name) {
-//     // update
-//     await rpoSubTopics.update(topicId,req.body);
-
-//     // check if other statur to publish
-//     if (topics && topics.length > 0) {
-//       if (req.body.status == "publish" && topics[0].status != req.body.status ) {
-//         // notify author published
-//         let mailDataAdmin = {
-//           subject: "Topic ["+topics[0].name+"] has been Approved and Publish",
-//           to: topics[0].userData.email,
-//           message: `
-//             <h3 style="margin-bottom:30px;">Hi ${topics[0].userData.username},</h3>
+  let comments = await rpoComments.get();
     
-//             <p>Congratulations! submitted topic has been Approved and Published.</p>
-//             <p>Topic <a href="https://www.chinesepod.com/beta/forums/${topics[0]._id}">${topics[0]}</a></p>
-    
-//             <br>
-//             <p>Sincerely,<br>ChinesePod Team</p>
-//           `
-//         }
-    
-//         mailService.basicSend(mailDataAdmin)
+  res.render('admin/comments/', {
+    title: '',
+    description: '',
+    keywords: '',
+    comments: comments,
 
-//       }
-
-//     }
-
-//     message = {
-//       status: true,
-//       message: "Updated Successfully!"
-//     }
-//   }
-
-
-//   console.log(topics);
-
-//   if (!topics) res.redirect('/admin-dashboard/topics') 
-    
-//   res.render('admin/topics/edit', { 
-//     title: '',
-//     description: '',
-//     keywords: '',
-//     topic: topics[0],
-//     message: message
-
-//   });
+  });
 
      
-// }
+}
 
-// exports.deleteTopics = async function(req, res, next) {
+exports.deleteComments = async function(req, res, next) {
 
-//   let message;
+  let message;
 
-//   let topicId = req.params.id
+  let commentId = req.params.id
 
-//   let topics = await rpoSubTopics.remove(topicId);
-
-//   res.redirect("/beta/admin-dashboard/topics/")
+  let comment = await rpoComments.remove(commentId);
+  res.flash('success', 'Comment deleted!');
+  res.redirect("/beta/admin-dashboard/comments/")
 
      
-// }
+}

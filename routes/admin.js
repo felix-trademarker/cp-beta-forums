@@ -33,6 +33,9 @@ router.post('/testers/edit/:id',controller.editTesters);
 // router.post('/testers/edit/:id',controller.editTopics);
 // router.get('/testers/delete/:id',controller.deleteTopics);
 
+// ************** COMMENTS **************
+router.get('/comments',controller.comments);
+router.get('/comments/delete/:id',controller.deleteComments);
 
 
 

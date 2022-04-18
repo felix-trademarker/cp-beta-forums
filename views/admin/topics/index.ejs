@@ -18,7 +18,8 @@
 			<div class="col-md-12">
 				<h2>Topics</h2>
 				<% if(subtopics && subtopics.length > 0) { %>
-					<table class="table">
+					<table id="dataTBL" class="table">
+						<thead>
 						<tr>
 							<th>Category</th>
 							<th>Topic</th>
@@ -26,9 +27,11 @@
 							<th>Status</th>
 							<th>Action</th>
 						</tr>
+						</thead>
+						<tbody>
 						<% subtopics.forEach(function(subtopic,key) {  %>
 							<tr>
-								<td><%= subtopic.parentName %></td>
+								<td data-sort="<%= moment(subtopic.created_at).unix() %>"><%= subtopic.parentName %></td>
 								<td><%= subtopic.name %></td>
 								<td><%- subtopic.description.replace("\n","<br>") %></td>
 								<td><%= subtopic.status %></td>
@@ -38,6 +41,7 @@
 								</td>
 							</tr>
 						<% }) %>
+						</tbody>
 					</table>
 				<% } else { %>
 					<p>Sorry, no topics found!</p>

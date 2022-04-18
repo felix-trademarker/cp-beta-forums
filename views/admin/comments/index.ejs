@@ -1,16 +1,17 @@
 <section class="cprecap-info" id="about">
 	<div class="container-xl" style="min-height:65vh">
-		
+
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a href="/beta/admin-dashboard/">Dashboard</a></li>
-				<li class="breadcrumb-item active" aria-current="page">Testers</li>
+				<li class="breadcrumb-item active" aria-current="page">Comments</li>
 			</ol>
 		</nav>
 
         <div class="row justify-content-center box-bg-container">
 
 			<div class="col-md-12">
+				<h2>Comments</h2>
 				<% if (flash.success) { %>
 					<div class="alert alert-success" role="alert">
 						<strong><%= flash.success %></strong>
@@ -22,36 +23,33 @@
 						<strong><%= flash.error %></strong>
 					</div>
 				<% } %>
-				<h2>Beta Testers</h2>
-				
-				<% if(users && users.length > 0) { %>
-					<table id="dataTBL" class="table"><thead>
+				<% if(comments && comments.length > 0) { %>
+					<table id="dataTBL" class="table">
+						<thead>
 						<tr>
-							<th>Username</th>
-							<th>Email</th>
-							<th>Date Joined</th>
-							<th></th>
-						</tr></thead>
+							<th>Beta Tester</th>
+							<th style="width: 50%">Comment</th>
+							<th>Date</th>
+							<th>Action</th>
+						</tr>
+						</thead>
 						<tbody>
-						<% users.forEach(function(user,key) {  %>
+						<% comments.forEach(function(comment,key) {  %>
 							<tr>
-								<td><%= user.username %></td>
-								<td><%= user.email %></td>
-								<td><%= moment(user.testerJoinDate).format("MMMM Do YYYY") %></td>
+								<td data-sort="<%= moment(comment.created_at).unix() %>"><%= comment.testerName %></td>
+								<td><%- comment.message.replace("\n","<br>") %></td>
+								<td><%= moment(comment.created_at).format('MMM D, YYYY') %></td>
 								<td>
-									<a href="/beta/admin-dashboard/testers/edit/<%= user._id %>"><i class="fa fa-pen"></i></a>
+									<a href="/beta/admin-dashboard/comments/delete/<%= comment._id %>"><i class="fa fa-trash"></i></a>
 								</td>
 							</tr>
 						<% }) %>
 					</tbody>
 					</table>
 				<% } else { %>
-					<p>Sorry, no testers found!</p>
+					<p>Sorry, no comments found!</p>
 				<% } %>
 			</div>
-
-			
-
 		
 		</div>
     </div>
