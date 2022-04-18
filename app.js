@@ -98,7 +98,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   // app.use('/', authRouter);
   app.use('/', dashboardRouter);
   app.use(['/api/v1','/beta/api/v1'], apiRouter);
-  app.use(['/admin-dashboard','/beta/admin-dashboard'], adminRouter);
+  app.use(['/admin-dashboard','/beta/admin-dashboard'], middleware.isAdmin,adminRouter);
 
   // ROUTE HANDLER ============ <<
   if (process.env.ENVIRONMENT != "dev") {
