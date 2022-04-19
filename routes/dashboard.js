@@ -14,6 +14,9 @@ router.get(['/forums', '/beta/forums'],dashboardController.forum);
 router.get(['/forums/:id','/beta/forums/:id'],dashboardController.forumPage);
 
 router.get(['/download','/beta/download'],dashboardController.downloadPage);
+router.get(['/download/web','/beta/download/web'],dashboardController.downloadPageWeb);
+router.get(['/download/mobile','/beta/download/mobile'],dashboardController.downloadPageMobile);
+
 router.get(['/we-need-you','/beta/we-need-you'],dashboardController.weNeedYou);
 router.get(['/our-mission','/beta/our-mission'],dashboardController.ourMission);
 router.get(['/become-a-beta-tester','/beta/become-a-beta-tester'],dashboardController.enroll);

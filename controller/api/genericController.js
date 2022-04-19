@@ -11,6 +11,8 @@ let rpoUsers = require('../../repositories/users');
 
 let mailService = require('../../services/mailService')
 
+let activityService = require('../../services/activityLogService')
+
 exports.fetchSubTopic = async function(req, res, next) {
   let results = await rpoSubTopics.find(req.params.topicId)
   let result = results[0]
@@ -85,6 +87,8 @@ exports.addComments = async function(req, res, next) {
   }
 
   let userData = await helpers.getLoginUser(req)
+
+  activityService.logger(req, "Write a comment");
 
   data.userData = userData
 

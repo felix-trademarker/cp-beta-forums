@@ -11,6 +11,8 @@ const { toInteger } = require('lodash');
 
 let helpers = require('../helpers');
 
+let variables = require("../config/variables")
+
 exports.landing = async function(req, res, next) {
 
   activityService.logger(req, "Visited Beta Page");
@@ -249,12 +251,28 @@ exports.downloadPage = async function(req, res, next) {
   // console.log(req.cookies.email);
   // console.log(userData);
 
+  activityService.logger(req, "Visited Download Page ");
+
   res.render('pages/download', { 
     title: '',
     description: '',
     keywords: '',
     userData: userData,
   });
+
+}
+
+exports.downloadPageWeb = async function(req, res, next) {
+    
+  activityService.logger(req, "Download Web APP");
+  res.redirect(variables.webAppURL)
+
+}
+
+exports.downloadPageMobile = async function(req, res, next) {
+    
+  activityService.logger(req, "Download Mobile APP");
+  res.redirect(variables.mobileAppURL)
 
 }
 
