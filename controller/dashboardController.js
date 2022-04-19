@@ -52,7 +52,8 @@ exports.forum = async function(req, res, next) {
   let isBetaTester = await helpers.isBetaTester(req)
   let latestComments = await rpoComments.getLatestComments()
   // console.log(userData);
-  // console.log(latestComments);
+  // let topic = subTopics.find(x => (x._id+'') === '623d71d030fae23f5a2adf00' )
+  // console.log(topic);
 
   res.render('dashboard/forum', { 
     title: '',

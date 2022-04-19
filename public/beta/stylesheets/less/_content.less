@@ -7,7 +7,7 @@
         .message-wrapper{
           
           display: flex;
-
+          flex-wrap: wrap;
           border: 1px solid #ccc;
           margin-bottom: 10px;
           padding: 10px;
@@ -16,8 +16,9 @@
           background: #fff;
 
           .message-data{
-              margin-right: 30px;
-              min-width: 100px;
+              // margin-right: 30px;
+              width: 20%;
+              padding-right: 20px;
 
               .message-data-name{
                   display: block;
@@ -34,9 +35,9 @@
 
           .message{
             font-size: 16px;
-            width: 100%;
+            width: 80%;
             word-break: break-word;
-
+    
             pre{
               font-size: inherit;
               font-family: inherit;
@@ -56,6 +57,13 @@
               }
             }
 
+          }
+
+          .messageTopic{
+            display:block;
+            font-size: 10px;
+            font-weight: 600;
+            width: 100%;
           }
 
           .message-reply{
@@ -482,14 +490,7 @@ p {
     font-size: 20px;
   }
 
-  .message-blocks li {
-    .message-wrapper {
-      .message-data{
-        min-width: 100px;
-      }
 
-    }
-  }
 }
 
 @media only screen and (max-width: 768px){
@@ -499,6 +500,11 @@ p {
       flex-direction: column;
       .message-data{
         margin: 0;
+        width: 100%;
+      }
+
+      .message{
+        width: 100%;
       }
 
       .message-reply{

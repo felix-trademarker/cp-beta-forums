@@ -28,8 +28,8 @@
 			<% } %>
 
 			<div v-if="userData.isBetaTester" class="col-md-12 mb-5 mt-3">
-				<h4>Add New Topic</h4>
-				<form method="post" enctype="multipart/form-data">
+				<h4><span class="btn btn-primary" data-toggle="collapse" role="button" aria-expanded="false" data-target="#addTopicForm" aria-controls="addTopicForm"><i class="fa fa-plus"></i> Add Topic</span></h4>
+				<form id="addTopicForm" class="collapse" method="post" enctype="multipart/form-data">
 
 					<div class="form-group">
 						<label>Category</label>
@@ -113,6 +113,9 @@
 					<div class="" style="max-height: 100vh;overflow-y: auto;overflow-x: hidden;margin-bottom: 30px;">
 					<ul class="message-blocks">
 						<% latestComments.forEach(function(comment,key) {  %>
+							<%
+							let topic = subTopics.find(x => (x._id+'') === comment.topicId )
+							%>
 						<li>
 
 							
@@ -131,9 +134,11 @@
 							<div class="message-wrapper">
 								<div class="message-data text-left">
 									<span class="message-data-name"><img class="profilePic" src="<%= comment.testerAvatar ? comment.testerAvatar : 'https://www.chinesepod.com/home/img/brand/symbol-black-center.svg' %>"> <%= comment.testerName %></span>
-									<span class="message-data-time"><%= moment(comment.created_at).format('MMMM Do YYYY, h:mm:ss') %></span>
+									<span class="message-data-time"><%= moment(comment.created_at).format('MMMM Do YYYY') %></span>
+									
 								</div>
 								<div class="message"> 
+									
 									<p><%- comment.message.replace("\n","<br>") %> </p>
 									<% if(comment.file.length > 0) { %>
 										<div class="message-attachments">
@@ -146,9 +151,9 @@
 									<% } %>
 								</div>
 								
+								<% if(topic) { %><span class="messageTopic"><%= topic.name %></span><% } %>
 							</div>
 
-							
 							
 							
 						</li>
