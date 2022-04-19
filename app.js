@@ -102,10 +102,10 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
 
   // ROUTE HANDLER ============ <<
   if (process.env.ENVIRONMENT != "dev") {
-  cron.schedule('*/5 * * * * *', () => {
+  cron.schedule('*/40 * * * * *', () => {
     // migrationService.contents()
 
-    // migrationService.default('vocabulary')
+    migrationService.default('vocabulary')
     // migrationService.users()
 
     // migrationService.default('user_options')
