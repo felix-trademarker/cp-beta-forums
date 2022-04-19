@@ -35,7 +35,6 @@ exports.logger = async function(req, msg) {
             city    : geo.city,
             region  : geo.region,
             activity: msg,
-            fromEmail: fromEmail,
             created_at: toInteger(moment().format('YYMMDD')),
             created_at_formatted: moment().format()
         };
@@ -50,7 +49,6 @@ exports.logger = async function(req, msg) {
             city    : '',
             region  : '',
             activity: msg,
-            fromEmail: fromEmail,
             created_at: toInteger(moment().format('YYMMDD')),
             created_at_formatted: moment().format()
         };
