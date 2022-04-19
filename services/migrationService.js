@@ -81,6 +81,8 @@ exports.default = async function(table) {
             })
 
             console.log("==MIGRATING PAGE "+page+ " OF " + table +"==")
+        } else {
+            console.log(">>>>> Stop Migration "+ table);
         }
         
     } catch (err) {
