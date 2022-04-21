@@ -101,31 +101,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   app.use(['/admin-dashboard','/beta/admin-dashboard'], middleware.isAdmin,adminRouter);
 
   // ROUTE HANDLER ============ <<
-  if (process.env.ENVIRONMENT != "dev") {
-  cron.schedule('*/40 * * * * *', () => {
-    // migrationService.contents()
 
-    // migrationService.default('vocabulary')
-    // migrationService.users()
-
-    // migrationService.default('user_options')
-    // migrationService.default('user_addresses')
-
-
-    // migrationService.default('comments')
-    // migrationService.default('content_rates')
-    // migrationService.default('contents_notes')
-    // migrationService.default('contents_series')
-    
-  });
-  }
-  // migrationService.users()
-  // let data={}
-  // let variable = "var2"
-  // let var2 = { ...variable : 'asd' }
-  // let value = "value test"
-  // data.this[variable].value = value
-  // console.log(var2)
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
