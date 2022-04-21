@@ -105,7 +105,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   cron.schedule('*/40 * * * * *', () => {
     // migrationService.contents()
 
-    migrationService.default('vocabulary')
+    // migrationService.default('vocabulary')
     // migrationService.users()
 
     // migrationService.default('user_options')
