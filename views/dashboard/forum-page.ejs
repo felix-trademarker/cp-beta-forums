@@ -24,7 +24,7 @@
 							<h6>{{ topic.name }}</h6>
 							<ul>
 								<li v-for="sub in topic.sub" v-bind:class="topicId == sub._id ? 'selected':'d'" v-on:click="setTopic(sub._id)" >{{ sub.name }}
-									<span style="float: right;">{{ sub.numberOfComments ? '('+sub.numberOfComments+')':'(0)' }}</span>
+									<span v-if="sub.numberOfComments" style="float: right;">{{ sub.numberOfComments ? '('+sub.numberOfComments+')':'(0)' }}</span>
 								</li>
 							</ul>
 						</li>
