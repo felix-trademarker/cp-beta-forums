@@ -2,12 +2,12 @@
 let signUp = document.querySelector('.sign-up-section');
 let video_player = document.querySelector('.video-player');
 
-if (document.cookie.includes('false')) {
-    setTimeout(() => {
-        video_player.innerHTML = `<div class="alert-message-main"><div class="alert-message"><a href="#">Sign up</a> to continue</div></div>`;
-        signUpFunc();
-    }, 20000);
-}
+// if (document.cookie.includes('false')) {
+//     setTimeout(() => {
+//         video_player.innerHTML = `<div class="alert-message-main"><div class="alert-message"><a href="#">Sign up</a> to continue</div></div>`;
+//         signUpFunc();
+//     }, 20000);
+// }
 
 let signUpFunc = () => {
     // signUp.style.display = 'block';
@@ -111,7 +111,7 @@ let insertLesson = () => {
     if (id) {
         video_player.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     } else {
-        video_player.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/NjCYc5p8a5c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        // video_player.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/NjCYc5p8a5c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     }
 
 }
