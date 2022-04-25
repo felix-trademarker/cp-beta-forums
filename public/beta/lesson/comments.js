@@ -177,6 +177,7 @@ document.cookie = 'isLogin = false'
 fetch('/api/v1/lessons/get-dialogue?lessonId=1670',{
     credentials: 'same-origin',
     headers: {
+        'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json'
         // 'Content-Type': 'application/x-www-form-urlencoded',
     },
