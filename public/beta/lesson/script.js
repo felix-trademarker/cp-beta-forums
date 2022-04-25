@@ -13,5 +13,5 @@ fetch('api/v1/lessons/get-lesson?slug=hello-and-goodbye',{
 })
 .then(resp => resp.json())
 .then(res => {
-    lessonDashboardApp.lesson = res
+    console.log(res);
 })
