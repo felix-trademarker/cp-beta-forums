@@ -173,12 +173,14 @@ cmnt_comment.onkeyup = () => {
 
 document.cookie = 'isLogin = false'
 
+var vuex = localStorage.getItem("vuex");
 
 fetch('/api/v1/lessons/get-dialogue?lessonId=1670',{
     credentials: 'same-origin',
     headers: {
         'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+ vuex.token
         // 'Content-Type': 'application/x-www-form-urlencoded',
     },
 })
