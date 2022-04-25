@@ -381,8 +381,9 @@ exports.about = async function(req, res, next) {
 exports.lesson = async function(req, res, next) {
 
   // fetch dialogues
-  let slug = req.params.slug ? req.params.slug : "hello-and-goodbye"
+  let slug = req.params.slug ? req.params.slug : "hello-and-goodbye";
 
+  console.log(slug);
     
   res.render('pages/lesson', {
     layout: 'layouts/lesson-layout', 
