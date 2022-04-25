@@ -5,7 +5,8 @@
         el: "#lessonDashboardApp",
         data: {
             vuex: JSON.parse(window.localStorage.getItem('vuex')),
-
+            lesson: {},
+            dialogue: {},
         },
         methods: {
 
@@ -38,7 +39,8 @@
 
     })
 
-    lessonDashboardApp.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId=1670');
+    lessonDashboardApp.lesson = lessonDashboardApp.getAPIFetch('api/v1/lessons/get-lesson?slug=<%= slug %>');
+    lessonDashboardApp.dialogue = lessonDashboardApp.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId='+lessonDashboardApp.lesson.id);
     // var vuex = JSON.parse(window.localStorage.getItem('vuex'))
     
 

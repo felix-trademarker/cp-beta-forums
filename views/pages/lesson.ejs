@@ -3,15 +3,14 @@
 		<div class="row">
 			<div class="col-lg-9">
 				<div class="video-header">
-					<h1>Intro To All The Way To Intermediate Series</h1>
+					<h1>{{ lesson.title }}</h1>
 					<div class="breadcrumb">
 						<nav style="--bs-breadcrumb-divider: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#39;http://www.w3.org/2000/svg&#39; width=&#39;8&#39; height=&#39;8&#39;%3E%3Cpath d=&#39;M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z&#39; fill=&#39;currentColor&#39;/%3E%3C/svg%3E&quot;);" aria-label="breadcrumb">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">Home</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">Course
 										Overview</a></li>
-								<li class="breadcrumb-item active" aria-current="page">Intro to All the Way
-									to Intermediate series
+								<li class="breadcrumb-item active" aria-current="page">{{ lesson.introduction }}
 								</li>
 							</ol>
 						</nav>
@@ -32,8 +31,38 @@
 
 		</div>
 		<div class="row">
+
+				
 			<div class="col-lg-9">
-				<div class="video-player"><iframe width="560" height="315" src="/beta/lesson/NjCYc5p8a5c.html" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" style="height: 543.613px;"></iframe></div>
+				<div class="card mb-0">
+					<img :alt="lesson.title" class="card-img" :src="lesson.image" lazy="loaded">
+					<div class="card-img-overlay d-flex align-items-center">
+						<div class="mx-auto">
+							<div class="audio-player-controls">
+								<div class="col-12">
+									<div class="row">
+										<div class="col-4">
+											<button data-v-64e4d6e0="" type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+												<i data-v-64e4d6e0="" class="fi flaticon-040-backward text-white jump emphasize-dark"></i>
+											</button>
+										</div>
+										<div class="col-4">
+											<button data-v-64e4d6e0="" type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+												<i data-v-64e4d6e0="" class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
+											</button>
+										</div>
+										<div class="col-4">
+											<button data-v-64e4d6e0="" type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+												<i data-v-64e4d6e0="" class="fi flaticon-032-forwards text-white jump emphasize-dark"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
 
 				<div class="my-btn-group mt-3 mb-5 lessons-btn">
 					<button type="button" class="btn text-white me-3 px-5 py-2 primary-btn">
@@ -48,16 +77,12 @@
 				</div>
 
 				<div class="in-this-lesson">
-					<p>How do you say Hello in Chinese? What do you say when you first meet a person in
-						China? Or see a long lost friend? All the answers are here! We teach you how to
-						greet someone in Chinese with words like good morning and "long-time no see" in the
-						first of our All the Way to Intermediate lessons. Here are other related lessons
-						from our library that will supplement this lesson and boost your Chinese level.</p>
+					<p>{{ lesson.introduction }}</p>
 				</div>
 			</div>
 
 			<div class="col-lg-3 mb-4 mb-md-0">
-				<h4 class="mb-3">Next in course:</h4>
+				<h4 class="mb-3">Next in course: ONGOING</h4>
 				<div class="row">
 					<div class="col-12 col-md-6 col-lg-12">
 						<div class="card mb-3">
