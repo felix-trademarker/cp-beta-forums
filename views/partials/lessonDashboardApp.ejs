@@ -11,7 +11,7 @@
         methods: {
 
             getAPIFetch: function(api) {
-                let this_ = this
+          
                 fetch(api,{
                     credentials: 'same-origin',
                     headers: {
@@ -22,7 +22,7 @@
                 })
                 .then(resp => resp.json())
                 .then(res => {
-                    this_.lesson = res
+                    // this.lesson = res
                     console.log("this result", res);
                     // return res;
                 })
