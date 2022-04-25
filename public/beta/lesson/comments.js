@@ -174,8 +174,14 @@ cmnt_comment.onkeyup = () => {
 document.cookie = 'isLogin = false'
 
 
-fetch('/api/v1/lessons/get-dialogue?lessonId=1670')
-        .then(resp => resp.json())
-        .then(res => {
-            console.log("THIS CALLER??",res);
-        })
+fetch('/api/v1/lessons/get-dialogue?lessonId=1670',{
+    credentials: 'same-origin',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+})
+.then(resp => resp.json())
+.then(res => {
+    console.log("THIS CALLER??",res);
+})
