@@ -153,3 +153,21 @@ if (Notification.permission === 'granted') {
         }
     })
 }
+
+
+
+var vuex = JSON.parse(window.localStorage.getItem('vuex'))
+
+fetch('https://www.chinesepod.com/api/v1/lessons/get-dialogue?lessonId=1670',{
+    credentials: 'same-origin',
+    headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+ vuex.token
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+})
+.then(resp => resp.json())
+.then(res => {
+    console.log("THIS CALLER??",res);
+})

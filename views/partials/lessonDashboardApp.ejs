@@ -1,0 +1,45 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+
+<script>
+    var lessonDashboardApp = new Vue({
+        el: "#lessonDashboardApp",
+        data: {
+            vuex: JSON.parse(window.localStorage.getItem('vuex')),
+
+        },
+        methods: {
+
+            getAPIFetch: async function(api) {
+                let this_ = this
+                let result = await fetch(api,{
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+ this.vuex.token
+                    },
+                })
+                .then(resp => resp.json())
+                .then(res => {
+                    return res;
+                })
+
+                console.log(result);
+            },
+
+        },
+        
+        computed: {
+
+            
+
+            
+        }
+
+    })
+
+    lessonDashboardApp.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId=1670');
+    // var vuex = JSON.parse(window.localStorage.getItem('vuex'))
+    
+
+</script>
