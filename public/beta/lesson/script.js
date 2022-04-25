@@ -157,7 +157,7 @@ if (Notification.permission === 'granted') {
 
 var vuex = JSON.parse(window.localStorage.getItem('vuex'))
 
-fetch('https://www.chinesepod.com/api/v1/lessons/get-dialogue?lessonId=1670',{
+fetch('https://www.chinesepod.com/api/v1/lessons/get-lesson?slug=asking-height-and-weight',{
     credentials: 'same-origin',
     headers: {
         'Accept': 'application/json, text/plain, */*',
