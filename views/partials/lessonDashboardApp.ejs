@@ -10,9 +10,9 @@
         },
         methods: {
 
-            getAPIFetch: async function(api) {
+            getAPIFetch: function(api) {
                 let this_ = this
-                let result = await fetch(api,{
+                fetch(api,{
                     credentials: 'same-origin',
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
@@ -23,7 +23,7 @@
                 .then(resp => resp.json())
                 .then(res => {
                     this_.lesson = res
-                    return res;
+                    // return res;
                 })
 
                 console.log(result);
