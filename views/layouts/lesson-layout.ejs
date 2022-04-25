@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- custom css -->
+    <link rel="stylesheet" href="/beta/lesson/style.css">
+    <link rel="stylesheet" href="/beta/lesson/comments.css">
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+</head>
+
+<body>
+    <div class="sign-up-section">
+        <div class="sign-up-container">
+            <div class="col-md-4">
+                <div class="hero__form mx-md-3">
+                    <div class="form-block">
+                        <div class="form-block__header">
+                            <h3 class="form-block__title">Sign Up Today!</h3>
+                        </div>
+                        <div class="form-block__content">
+                            <!---->
+                            <form class="ajax-form" name="form-medium" id="form-medium" parasails-component="ajax-form">
+                                <div class="form-block__row">
+                                    <div class="form-block__col"><label class="form-block__label">Email Address</label>
+                                        <input type="email" name="email" placeholder="email@example.com" autocomplete="email" class="form-control form-block__input">
+                                        <div class="invalid-feedback">Please enter a valid email address.</div>
+                                        <!---->
+                                    </div>
+                                </div>
+                                <div class="form-block__row">
+                                    <div class="form-block__col"><label class="form-block__checkbox"><input type="checkbox" name="overlay_email" checked="checked">
+                                            <div class="form-block__checkbox-block"></div> <span class="form-block__checkbox-label">I want to hear the latest news from
+                                                ChinesePod.</span>
+                                        </label>
+                                        <!---->
+                                    </div>
+                                </div>
+                                <div class="form-block__row">
+                                    <div class="form-block__col">
+                                        <span class="btn ajax-button form-block__button" id="btn-form-top-submit">
+                                            <span class="button-text">Get Started</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-block__row">
+                                    <div class="form-block__col">
+                                        <p><small class="text-muted">By signing up, you agree to the <a href="https://sitetesting123.web.app/privacy/" target="_blank">Privacy Policy</a> and <a href="https://sitetesting123.web.app/terms/" target="_blank">Terms of Service</a> of ChinesePod LLC.</small></p>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- <hr> -->
+                            <!-- <div>
+                                <a href="/api/v1/auth/google" class="btn btn-block btn-outline-primary">
+                                    <div class="row">
+                                        <div class="col-2 my-auto">
+                                            <div class="img-fluid w-50"><svg xmlns="http://www.w3.org/2000/svg"
+                                                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48">
+                                                    <defs>
+                                                        <path id="a"
+                                                            d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z">
+                                                        </path>
+                                                    </defs>
+                                                    <clipPath id="b">
+                                                        <use xlink:href="#a" overflow="visible"></use>
+                                                    </clipPath>
+                                                    <path clip-path="url(#b)" fill="#FBBC05" d="M0 37V11l17 13z"></path>
+                                                    <path clip-path="url(#b)" fill="#EA4335"
+                                                        d="M0 11l17 13 7-6.1L48 14V0H0z"></path>
+                                                    <path clip-path="url(#b)" fill="#34A853"
+                                                        d="M0 37l30-23 7.9 1L48 0v48H0z"></path>
+                                                    <path clip-path="url(#b)" fill="#4285F4"
+                                                        d="M48 48L17 24l-4-3 35-10z">
+                                                    </path>
+                                                </svg></div>
+                                        </div>
+                                        <div class="col-10 my-auto"><span>Continue with Google</span></div>
+                                    </div>
+                                </a>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-dark p-3">
+        <div class="container">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-9">
+                    <div class="logo"><a target="blank" href="https://www.youtube.com/chinesepod"><img class="w-100" src="/beta/lesson/logo-light.svg" alt=""></a></div>
+                </div>
+                <div class="col-lg-2 d-flex justify-content-end">
+                    <a target="blank" href="https://www.chinesepod.com/">
+                        <button type="button" class="btn  text-white px-5 py-2 primary-btn">
+                            <strong>Get Started</strong>
+                        </button>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="in-main-content">
+            <%- body %>
+        </div>
+    </div>
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- custom scripts -->
+    <script src="/beta/lesson/script.js"></script>
+    <script src="/beta/lesson/comments.js"></script>
+
+
+</body></html>

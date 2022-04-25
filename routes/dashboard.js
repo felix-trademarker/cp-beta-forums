@@ -30,4 +30,8 @@ router.get(['/forums/edit/:id', '/beta/forums/edit/:id'],dashboardController.edi
 router.post(['/forums/edit/:id', '/beta/forums/edit/:id'],dashboardController.editTopicClient);
 router.get(['/forums/delete/:id', '/beta/forums/delete/:id'],dashboardController.deleteTopicClient);
 
+// NEW LESSON PAGE
+router.get(['/lesson','/beta/lesson','/lesson/:slug','/beta/lesson/:slug'],dashboardController.lesson);
+
+
 module.exports = router;

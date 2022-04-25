@@ -1,4 +1,4 @@
-let tableName = "vocabulary";
+let tableName = "content_dialogues";
 let _table = "chinesepod_production_" + tableName;
 var Model = require('../_model')
 var defaultModel = new Model(_table)
@@ -43,24 +43,10 @@ module.exports = {
     // ADD CUSTOM FUNCTION BELOW ========================
     // ==================================================
 
-	getSQL : async function(page,limit){
-        return new Promise(function(resolve, reject) {
-            var sql = "SELECT * FROM " + tableName
-            sql += " LIMIT " + limit
-			sql += " OFFSET " + (page -1) * limit
-            con.query(sql, function (err, result) {
-                if (err) reject(err);
-
-                resolve(result)
-            });
-        });
-    },
-
-    getByV3Id : async function(v3id, key){
+	getByV3Id : async function(v3id){
         return new Promise(function(resolve, reject) {
             var sql = "SELECT * FROM " + tableName
             sql += " WHERE v3_id='" + v3id + "'"
-            sql += " AND vocabulary_class='" + key + "'"
             con.query(sql, function (err, result) {
                 if (err) reject(err);
 

@@ -13,6 +13,10 @@ let helpers = require('../helpers');
 
 let variables = require("../config/variables")
 
+// FOR
+let rpoDailog = require('../repositories/mysql/_contents_dialog');
+let rpoVocabulary = require('../repositories/mysql/_vocabulary');
+
 exports.landing = async function(req, res, next) {
 
   activityService.logger(req, "Visited Beta Page");
@@ -373,3 +377,20 @@ exports.about = async function(req, res, next) {
   });
 
 }
+
+exports.lesson = async function(req, res, next) {
+
+  // fetch dialogues
+
+    
+  res.render('pages/lesson', {
+    layout: 'layouts/lesson-layout', 
+    title: ' Lesson Page',
+    description: '',
+    keywords: 'Lesson',
+
+  });
+
+}
+
+
