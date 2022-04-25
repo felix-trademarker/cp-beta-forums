@@ -22,10 +22,12 @@
                 })
                 .then(resp => resp.json())
                 .then(res => {
+                    this_.lesson = res
                     return res;
                 })
 
                 console.log(result);
+                return result;
             },
 
         },
@@ -39,8 +41,8 @@
 
     })
 
-    lessonDashboardApp.lesson = await lessonDashboardApp.getAPIFetch('api/v1/lessons/get-lesson?slug=<%= slug %>');
-    lessonDashboardApp.dialogue = await lessonDashboardApp.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId='+lessonDashboardApp.lesson.id);
+    lessonDashboardApp.lesson = lessonDashboardApp.getAPIFetch('api/v1/lessons/get-lesson?slug=<%= slug %>');
+    // lessonDashboardApp.dialogue = lessonDashboardApp.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId='+lessonDashboardApp.lesson.id);
     // var vuex = JSON.parse(window.localStorage.getItem('vuex'))
     
 
