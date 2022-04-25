@@ -173,7 +173,7 @@ cmnt_comment.onkeyup = () => {
 
 document.cookie = 'isLogin = false'
 
-var vuex = localStorage.getItem("vuex");
+var vuex = JSON.parse(window.localStorage.getItem('vuex'))
 
 fetch('/api/v1/lessons/get-dialogue?lessonId=1670',{
     credentials: 'same-origin',
