@@ -17,7 +17,7 @@
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+ this.vuex.token
+                        'Authorization': 'Bearer '+ this.vuex ? this.vuex.token : ''
                     },
                 })
                 .then(resp => resp.json())
@@ -35,7 +35,7 @@
 
     })
 
-    // lessonDashboardApp.getAPIFetch('api/v1/lessons/get-lesson?slug=hello-and-goodbye');
+    lessonDashboardApp.getAPIFetch('api/v1/lessons/get-lesson?slug=hello-and-goodbye');
     // lessonDashboardApp.dialogue = lessonDashboardApp.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId='+lessonDashboardApp.lesson.id);
     // var vuex = JSON.parse(window.localStorage.getItem('vuex'))
     
