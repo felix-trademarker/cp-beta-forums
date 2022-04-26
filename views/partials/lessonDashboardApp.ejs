@@ -35,10 +35,10 @@
 
         },
         computed: {
-            fetchLessons: async function(){
-                this.lesson = await this.getAPIFetch('/api/v1/lessons/get-lesson?<%= slug %>');
+            fetchLessons: function(){
+                this.lesson = this.getAPIFetch('/api/v1/lessons/get-lesson?<%= slug %>');
 
-                if (this.lesson) {
+                if (this.lesson && this.lesson.id) {
 
                     // next
                     // /api/v1/dashboard/course-lessons?courseId=978&exclude[0]=1670&limit=2
