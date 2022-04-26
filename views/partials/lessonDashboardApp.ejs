@@ -7,11 +7,17 @@
             vuex: JSON.parse(window.localStorage.getItem('vuex')),
             lesson: {},
             dialogue: {},
+            vocab: {},
+            expansion: {},
+            grammar: {},
+            downloads: {},
+            questions: {},
+            course: {},
         },
         methods: {
 
             getAPIFetch: async function(api) {
-                console.log(api);
+
                 let results = await fetch(api,{
                     credentials: 'same-origin',
                     headers: {
@@ -22,26 +28,34 @@
                 })
                 .then(resp => resp.json())
                 .then(res => {
-                    // this.lesson = res
-                    console.log("this result", res);
-                    this.lesson = res
                     return res;
                 })
 
-                console.log(results);
-                // return result;
             }
 
         },
         computed: {
-            fetchLesson: function(){
-                this.files.forEach(previewFile)
+            fetchLessons: function(){
+                this.lesson = this.getAPIFetch('/api/v1/lessons/get-lesson?<%= slug %>');
+
+                if (this.lesson) {
+
+                    // next
+                    // /api/v1/dashboard/course-lessons?courseId=978&exclude[0]=1670&limit=2
+
+                    this.dialogue = this.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId='+this.lesson.id);
+                    this.vocab = this.getAPIFetch('/api/v1/lessons/get-vocab?lessonId='+this.lesson.id);
+                    this.expansion = this.getAPIFetch('/api/v1/lessons/get-expansion?lessonId='+this.lesson.id);
+                    this.grammar = this.getAPIFetch('/api/v1/lessons/get-grammar?lessonId='+this.lesson.id);
+                    this.downloads = this.getAPIFetch('/api/v1/lessons/get-downloads?lessonId='+this.lesson.id);
+                    this.questions = this.getAPIFetch('/api/v1/lessons/get-questions?lessonId='+this.lesson.id);
+                }
             },
         }
 
     })
 
-    lessonDashboardApp.getAPIFetch('https://www.chinesepod.com/api/v1/lessons/get-lesson?slug=hello-and-goodbye');
+    lessonDashboardApp
     // lessonDashboardApp.dialogue = lessonDashboardApp.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId='+lessonDashboardApp.lesson.id);
     // var vuex = JSON.parse(window.localStorage.getItem('vuex'))
     

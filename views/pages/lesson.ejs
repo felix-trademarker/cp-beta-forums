@@ -32,8 +32,10 @@
 
 		</div>
 		<div class="row">
-			<div class="col-12">
-				<div class="card mb-0">
+
+				
+			<div class="col-lg-9">
+				<div v-if="lesson" class="card mb-0">
 					<img :alt="lesson.title" class="card-img" :src="lesson.image" lazy="loaded">
 					<div class="card-img-overlay d-flex align-items-center">
 						<div class="mx-auto">
@@ -62,10 +64,8 @@
 						
 					</div>
 				</div>
-			</div>
-				
-			<div class="col-lg-9">
-				<div class="video-player"><iframe width="560" height="315" src="/beta/lesson/NjCYc5p8a5c.html" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" style="height: 543.613px;"></iframe></div>
+
+				<div v-if="!lesson" class="video-player"><iframe width="560" height="315" src="/beta/lesson/NjCYc5p8a5c.html" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" style="height: 543.613px;"></iframe></div>
 
 				<div class="my-btn-group mt-3 mb-5 lessons-btn">
 					<button type="button" class="btn text-white me-3 px-5 py-2 primary-btn">
