@@ -5,13 +5,13 @@
         el: "#lessonDashboardApp",
         data: {
             vuex: JSON.parse(window.localStorage.getItem('vuex')),
-            lesson: {},
+            lesson: "test",
             dialogue: {},
         },
         methods: {
 
             getAPIFetch: function(api) {
-          
+                console.log(api);
                 fetch(api,{
                     credentials: 'same-origin',
                     headers: {
@@ -33,14 +33,14 @@
 
         },
         computed: {
-            previewImages: function(){
+            fetchLesson: function(){
                 this.files.forEach(previewFile)
             },
         }
 
     })
 
-    lessonDashboardApp.getAPIFetch('api/v1/lessons/get-lesson?slug=hello-and-goodbye');
+    lessonDashboardApp.getAPIFetch('https://www.chinesepod.com/api/v1/lessons/get-lesson?slug=hello-and-goodbye');
     // lessonDashboardApp.dialogue = lessonDashboardApp.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId='+lessonDashboardApp.lesson.id);
     // var vuex = JSON.parse(window.localStorage.getItem('vuex'))
     
