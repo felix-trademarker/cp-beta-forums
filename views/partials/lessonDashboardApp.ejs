@@ -51,7 +51,7 @@
                     this.expansion = await this.getAPIFetch('/api/v1/lessons/get-expansion?lessonId='+this.lesson.id);
                     this.grammar = await this.getAPIFetch('/api/v1/lessons/get-grammar?lessonId='+this.lesson.id);
                     this.downloads = await this.getAPIFetch('/api/v1/lessons/get-downloads?lessonId='+this.lesson.id);
-                    this.questions = await this.getAPIFetch('/api/v1/lessons/get-questions?lessonId='+this.lesson.id);
+                    // this.questions = await this.getAPIFetch('/api/v1/lessons/get-questions?lessonId='+this.lesson.id);
                 }
             },
         }
