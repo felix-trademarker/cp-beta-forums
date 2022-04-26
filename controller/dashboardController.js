@@ -390,7 +390,11 @@ exports.lesson = async function(req, res, next) {
   if (!content.length) {
     console.log("empty try searching using V3 ID", slug);
     content = await rpoContents.getContentV3(slug)
+
+    
   }
+
+  slug = content.length > 0 ? content[0].slug : slug;
 
   let course = await rpoCourseContents.getCourse(content.length > 0 ? content[0].v3_id:'')
   let courseDetails = await rpoCourseDetail.getCourse(course.length > 0 ? course[0].course_id:'')
