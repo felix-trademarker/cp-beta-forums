@@ -143,13 +143,41 @@
 															<div class="border-top pt-1">{{ dia.en }}</div>
 														</div>
 													</span>
+													<span class="mandarin-char position-relative">
+														<span class="fs-2">{{ dia.s }}</span>
+														<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
+															<div class="fs-2 mb-2">{{ dia.s }}</div>
+															<div class="mb-2">{{ dia.p }}</div>
+															<div class="border-top pt-1">{{ dia.en }}</div>
+														</div>
+													</span>
 												</div>
 												<div class="play-audio icon fs-5">
 													<i class="bi bi-volume-up-fill"></i>
 													<audio>
-														<source :src="dia.audio" type="audio/mp3">
+														<source :src="{{ dia.audio }}" type="audio/mp3">
 														Your browser does not support the audio element.
 													</audio>
+												</div>
+											</div>
+											<div class="translation-group fs-5">
+												<div class="pinyin-writing-main d-flex align-items-center justify-content-between">
+													<div class="pinyin-writing show-hide-txt my-3">
+														<span>...</span>
+														<span>{{ dia.p }}</span>
+													</div>
+													<div class="icon toggle-show-hide fs-5">
+														<i class="bi bi-eye-slash-fill"></i>
+													</div>
+												</div>
+												<div class="english-translation-main d-flex align-items-center justify-content-between">
+													<div class="english-translation show-hide-txt">
+														<span>...</span>
+														<span>{{ dia.en }}</span>
+													</div>
+													<div class="icon toggle-show-hide fs-5">
+														<i class="bi bi-eye-slash-fill"></i>
+													</div>
 												</div>
 											</div>
 											
