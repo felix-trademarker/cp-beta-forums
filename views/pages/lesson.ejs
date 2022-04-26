@@ -131,26 +131,19 @@
 						<div class="tab-pane fade show active" id="nav-dialogue" role="tabpanel" aria-labelledby="nav-profile-tab">
 							<div class="dialogue-main">
 								<div class="dialogue py-3">
-									<ul v-if="dialogue" class="list-group d-block d-sm-flex w-100 list-group-horizontal">
-										<li v-for="dia in dialogue.dialogue" class="list-group-item w-100 w-md-50 p-4">
+									<ul v-if="dialogue" class="list-group d-block d-sm-flex w-100 list-group-horizontal" style="flex-wrap: wrap;">
+										<li v-for="dia in dialogue.dialogue" class="list-group-item w-50 w-md-50 p-4" style="border-width:1px !important">
 											<div class="mandarin-chars-main d-flex align-items-center justify-content-between">
 												<div class="mandarin-chars">
-													<span class="mandarin-char position-relative">
-														<span class="fs-2">{{ dia.s }}</span>
+													<span v-for="sentence in dia.sentence" class="mandarin-char position-relative">
+														<span class="fs-2">{{ sentence.s }}</span>
 														<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
-															<div class="fs-2 mb-2">{{ dia.s }}</div>
-															<div class="mb-2">{{ dia.p }}</div>
-															<div class="border-top pt-1">{{ dia.en }}</div>
+															<div class="fs-2 mb-2">{{ sentence.s }}</div>
+															<div class="mb-2">{{ sentence.p }}</div>
+															<div class="border-top pt-1">{{ sentence.en }}</div>
 														</div>
 													</span>
-													<span class="mandarin-char position-relative">
-														<span class="fs-2">{{ dia.s }}</span>
-														<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
-															<div class="fs-2 mb-2">{{ dia.s }}</div>
-															<div class="mb-2">{{ dia.p }}</div>
-															<div class="border-top pt-1">{{ dia.en }}</div>
-														</div>
-													</span>
+												
 												</div>
 												<div class="play-audio icon fs-5">
 													<i class="bi bi-volume-up-fill"></i>
