@@ -156,7 +156,7 @@ if (Notification.permission === 'granted') {
 }
 
 
-var vuex = JSON.parse(window.localStorage.getItem('vuex'))
+// var vuex = JSON.parse(window.localStorage.getItem('vuex'))
 
 // fetch('https://www.chinesepod.com/api/v1/lessons/get-lesson?slug=asking-height-and-weight',{
 //     credentials: 'same-origin',
