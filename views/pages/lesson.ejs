@@ -139,7 +139,7 @@
 														<span class="fs-2">{{ sentence.s }}</span>
 														<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
 															<div class="fs-2 mb-2">{{ sentence.s }}</div>
-															<div class="mb-2">{{ sentence.p }}</div>
+															<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
 															<div class="border-top pt-1">{{ sentence.en }}</div>
 														</div>
 													</span>
@@ -157,7 +157,7 @@
 												<div class="pinyin-writing-main d-flex align-items-center justify-content-between">
 													<div class="pinyin-writing show-hide-txt my-3">
 														<span>...</span>
-														<span>{{ dia.p }}</span>
+														<span>{{ pinyinConvert(dia.p) }}</span>
 													</div>
 													<div class="icon toggle-show-hide fs-5">
 														<i class="bi bi-eye-slash-fill"></i>

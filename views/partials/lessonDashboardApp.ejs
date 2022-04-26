@@ -1,6 +1,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+<script src="/beta/javascripts/pinyin-convert.js" ></script>
 
 <script>
+
+
     var lessonDashboardApp = new Vue({
         el: "#lessonDashboardApp",
         data: {
@@ -34,6 +37,10 @@
 
                 return results;
 
+            },
+
+            pinyinConvert: function(pinyin) {
+                return PinyinConverter.convert(pinyin);
             }
 
         },
