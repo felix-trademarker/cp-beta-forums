@@ -55,29 +55,44 @@
 
                     let toggle_show_hide = document.querySelectorAll('.toggle-show-hide');
 
-toggle_show_hide.forEach((toggle, i) => {
-    let isTranslationTextHidden = true;
-    toggle.onclick = () => {
-        let spanToHide = toggle.parentNode.querySelectorAll('span')[0];
-        let spanToShow = toggle.parentNode.querySelectorAll('span')[1];
+                    toggle_show_hide.forEach((toggle, i) => {
+                        let isTranslationTextHidden = true;
+                        toggle.onclick = () => {
+                            let spanToHide = toggle.parentNode.querySelectorAll('span')[0];
+                            let spanToShow = toggle.parentNode.querySelectorAll('span')[1];
 
-        if (isTranslationTextHidden) {
-            isTranslationTextHidden = false;
+                            if (isTranslationTextHidden) {
+                                isTranslationTextHidden = false;
 
-            spanToShow.style.display = 'block';
-            spanToHide.style.display = 'none';
+                                spanToShow.style.display = 'block';
+                                spanToHide.style.display = 'none';
 
-            toggle.innerHTML = '<i class="bi bi-eye-fill"></i>';
-        } else {
-            isTranslationTextHidden = true;
+                                toggle.innerHTML = '<i class="bi bi-eye-fill"></i>';
+                            } else {
+                                isTranslationTextHidden = true;
 
-            spanToShow.style.display = 'none';
-            spanToHide.style.display = 'block';
+                                spanToShow.style.display = 'none';
+                                spanToHide.style.display = 'block';
 
-            toggle.innerHTML = '<i class="bi bi-eye-slash-fill"></i>';
-        }
-    }
-});
+                                toggle.innerHTML = '<i class="bi bi-eye-slash-fill"></i>';
+                            }
+                        }
+                    });
+
+                    // ## play audio in DIALOGUE tab
+                    let play_audio = document.querySelectorAll('.play-audio');
+
+                    play_audio.forEach((audio, i) => {
+                        audio.onclick = () => {
+                            let audio_player = audio.querySelector('audio');
+                            audio_player.play();
+                            audio.classList.add('emit-audio');
+
+                            audio_player.onended = () => {
+                                audio.classList.remove('emit-audio');
+                            }
+                        }
+                    });
                 }
             },
         }
