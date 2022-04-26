@@ -148,7 +148,7 @@
 												<div class="play-audio icon fs-5">
 													<i class="bi bi-volume-up-fill"></i>
 													<audio>
-														<source :src="{{ dia.audio }}" type="audio/mp3">
+														<source :src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+dia.audio" type="audio/mp3">
 														Your browser does not support the audio element.
 													</audio>
 												</div>
