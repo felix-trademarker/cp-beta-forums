@@ -17,7 +17,7 @@
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+ this.vuex ? this.vuex.token : ''
+                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
                     },
                 })
                 .then(resp => resp.json())
