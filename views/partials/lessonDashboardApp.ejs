@@ -35,8 +35,8 @@
 
         },
         computed: {
-            fetchLessons: function(){
-                this.lesson = this.getAPIFetch('/api/v1/lessons/get-lesson?<%= slug %>');
+            fetchLessons: async function(){
+                this.lesson = await this.getAPIFetch('/api/v1/lessons/get-lesson?<%= slug %>');
 
                 if (this.lesson) {
 
