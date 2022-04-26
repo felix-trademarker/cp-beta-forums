@@ -1,4 +1,4 @@
-let tableName = "contents";
+let tableName = "course_contents";
 let _table = "chinesepod_production_" + tableName;
 var Model = require('../_model')
 var defaultModel = new Model(_table)
@@ -56,22 +56,12 @@ module.exports = {
         });
     },
 
-    getContentSlug : async function(slug){
+    getCourse : async function(v3id){
         return new Promise(function(resolve, reject) {
             var sql = "SELECT * FROM " + tableName
-            sql += " WHERE slug='" + slug + "'"
-            con.query(sql, function (err, result) {
-                if (err) reject(err);
-
-                resolve(result)
-            });
-        });
-    },
-
-    getContentV3 : async function(v3Id){
-        return new Promise(function(resolve, reject) {
-            var sql = "SELECT * FROM " + tableName
-            sql += " WHERE v3_id='" + v3Id + "'"
+            sql += " WHERE v3_id=" + v3id
+			sql += " ORDER BY displaysort ASC"
+			sql += " LIMIT 1"
             con.query(sql, function (err, result) {
                 if (err) reject(err);
 
@@ -81,3 +71,4 @@ module.exports = {
     }
     
 }
+
