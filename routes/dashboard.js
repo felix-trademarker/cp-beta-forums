@@ -31,7 +31,18 @@ router.post(['/forums/edit/:id', '/beta/forums/edit/:id'],dashboardController.ed
 router.get(['/forums/delete/:id', '/beta/forums/delete/:id'],dashboardController.deleteTopicClient);
 
 // NEW LESSON PAGE
-router.get(['/new/lesson/','/new/lesson/:slug','/lesson','/beta/lesson','/lesson/:slug','/beta/lesson/:slug','/beta/lesson/:slug/:courseId'],dashboardController.lesson);
+router.get([
+    '/new/:slug',
+    '/new/lesson/',
+    '/new/lesson/:slug',
+    '/new/lesson/:slug/:courseId',
+    '/lesson',
+    '/beta/:slug',
+    '/beta/lesson',
+    '/lesson/:slug',
+    '/beta/lesson/:slug',
+    '/beta/lesson/:slug/:courseId'
+],dashboardController.lesson);
 
 
 module.exports = router;
