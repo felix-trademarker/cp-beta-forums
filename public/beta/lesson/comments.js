@@ -8,7 +8,7 @@ let fetchComments = () => {
             renderComments(allComments);
         })
 }
-fetchComments();
+// fetchComments();
 
 let renderComments = (allComments) => {
     comments_wrapper.innerHTML = allComments.map(comment => {
