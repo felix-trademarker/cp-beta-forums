@@ -16,6 +16,7 @@ let variables = require("../config/variables")
 // FOR
 let rpoContents = require('../repositories/mysql/_contents');
 let rpoCourseContents = require('../repositories/mysql/_course_contents');
+let rpoCourseDetail = require('../repositories/mysql/_course_detail');
 // let rpoVocabulary = require('../repositories/mysql/_vocabulary');
 
 exports.landing = async function(req, res, next) {
@@ -386,8 +387,10 @@ exports.lesson = async function(req, res, next) {
   // get contents using slug
   let content = await rpoContents.getContentSlug(slug)
   let course = await rpoCourseContents.getCourse(content.length > 0 ? content[0].v3_id:'')
+  let courseDetails = rpoCourseDetail.getCourse(content.length > 0 ? content[0].course_id:'')
+  
+  let courseId = courseDetails.length > 0 ? courseDetails[0].course_id : null
 
-  console.log(course);
   // let courseId=
     
   res.render('pages/lesson', {
@@ -396,7 +399,9 @@ exports.lesson = async function(req, res, next) {
     description: '',
     keywords: 'Lesson',
     slug: slug,
-
+    courseId: courseId,
+    content: content ? content[0] : null,
+    course: courseDetails ? courseDetails[0] : null
   });
 
 }
