@@ -82,27 +82,16 @@
 				</div>
 			</div>
 
-			<div class="col-lg-3 mb-4 mb-md-0">
+			<div v-if="course.length > 0" class="col-lg-3 mb-4 mb-md-0">
 				<h4 class="mb-3">Next in course:</h4>
-				<div class="row">
+				<div v-for="c in course" class="row">
 					<div class="col-12 col-md-6 col-lg-12">
 						<div class="card mb-3">
-							<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
-								<img src="/beta/lesson/thumbnail.jpg" class="card-img-top" alt="">
+							<a href="#">
+								
+								<img :src="c.image" class="card-img-top" alt="">
 								<div class="card-body">
-									<h6 class="card-title fw-bold">How to Say Hello</h6>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="col-12 col-md-6 col-lg-12">
-						<div class="card">
-							<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
-								<img src="/beta/lesson/thumbnail.jpg" class="card-img-top" alt="">
-								<div class="card-body">
-									<h6 class="card-title fw-bold">Intro to All the Way to Intermediate
-										series
-									</h6>
+									<h6 class="card-title fw-bold">{{ c.title }}</h6>
 								</div>
 							</a>
 						</div>
