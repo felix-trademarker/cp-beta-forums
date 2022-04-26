@@ -111,6 +111,7 @@ let insertLesson = () => {
     if (id) {
         video_player.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     } else {
+        if (video_player) 
         video_player.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/NjCYc5p8a5c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     }
 
