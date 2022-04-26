@@ -46,12 +46,12 @@
                     // next
                     // /api/v1/dashboard/course-lessons?courseId=978&exclude[0]=1670&limit=2
 
-                    this.dialogue = this.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId='+this.lesson.id);
-                    this.vocab = this.getAPIFetch('/api/v1/lessons/get-vocab?lessonId='+this.lesson.id);
-                    this.expansion = this.getAPIFetch('/api/v1/lessons/get-expansion?lessonId='+this.lesson.id);
-                    this.grammar = this.getAPIFetch('/api/v1/lessons/get-grammar?lessonId='+this.lesson.id);
-                    this.downloads = this.getAPIFetch('/api/v1/lessons/get-downloads?lessonId='+this.lesson.id);
-                    this.questions = this.getAPIFetch('/api/v1/lessons/get-questions?lessonId='+this.lesson.id);
+                    this.dialogue = await this.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId='+this.lesson.id);
+                    this.vocab = await this.getAPIFetch('/api/v1/lessons/get-vocab?lessonId='+this.lesson.id);
+                    this.expansion = await this.getAPIFetch('/api/v1/lessons/get-expansion?lessonId='+this.lesson.id);
+                    this.grammar = await this.getAPIFetch('/api/v1/lessons/get-grammar?lessonId='+this.lesson.id);
+                    this.downloads = await this.getAPIFetch('/api/v1/lessons/get-downloads?lessonId='+this.lesson.id);
+                    this.questions = await this.getAPIFetch('/api/v1/lessons/get-questions?lessonId='+this.lesson.id);
                 }
             },
         }
