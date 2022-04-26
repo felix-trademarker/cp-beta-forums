@@ -385,8 +385,9 @@ exports.lesson = async function(req, res, next) {
   let slug = req.params.slug ? req.params.slug : "hello-and-goodbye";
   // get contents using slug
   let content = await rpoContents.getContentSlug(slug)
+  let course = await rpoCourseContents.getCourse(content.length > 0 ? content[0].v3_id:'')
 
-  console.log(content);
+  console.log(course);
   // let courseId=
     
   res.render('pages/lesson', {
