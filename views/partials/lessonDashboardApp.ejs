@@ -12,7 +12,7 @@
 
             getAPIFetch: function(api) {
                 console.log(api);
-                fetch(api,{
+                let results = fetch(api,{
                     credentials: 'same-origin',
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
@@ -25,10 +25,10 @@
                     // this.lesson = res
                     console.log("this result", res);
                     this.lesson = res
-                    // return res;
+                    return res;
                 })
 
-                // console.log(result);
+                console.log(results);
                 // return result;
             }
 
