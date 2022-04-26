@@ -28,6 +28,7 @@
                 })
                 .then(resp => resp.json())
                 .then(res => {
+                    console.log("this res", res);
                     return res;
                 })
 
@@ -37,7 +38,7 @@
         computed: {
             fetchLessons: async function(){
                 this.lesson = await this.getAPIFetch('/api/v1/lessons/get-lesson?slug=<%= slug %>');
-
+                console.log("await lesson", this.lesson);
                 if (this.lesson && this.lesson.id) {
 
                     // next
