@@ -5,7 +5,7 @@
         el: "#lessonDashboardApp",
         data: {
             vuex: JSON.parse(window.localStorage.getItem('vuex')),
-            lesson: "test",
+            lesson: {},
             dialogue: {},
         },
         methods: {
@@ -24,6 +24,7 @@
                 .then(res => {
                     // this.lesson = res
                     console.log("this result", res);
+                    this.lesson = res
                     // return res;
                 })
 
