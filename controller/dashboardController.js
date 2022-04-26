@@ -387,7 +387,7 @@ exports.lesson = async function(req, res, next) {
   // get contents using slug
   let content = await rpoContents.getContentSlug(slug)
   let course = await rpoCourseContents.getCourse(content.length > 0 ? content[0].v3_id:'')
-  let courseDetails = rpoCourseDetail.getCourse(course.length > 0 ? course[0].course_id:'')
+  let courseDetails = await rpoCourseDetail.getCourse(course.length > 0 ? course[0].course_id:'')
   
   let courseId = courseDetails.length > 0 ? courseDetails[0].course_id : null
 
