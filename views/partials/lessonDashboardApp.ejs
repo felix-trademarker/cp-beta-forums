@@ -10,9 +10,9 @@
         },
         methods: {
 
-            getAPIFetch: function(api) {
+            getAPIFetch: async function(api) {
                 console.log(api);
-                let results = fetch(api,{
+                let results = await fetch(api,{
                     credentials: 'same-origin',
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
