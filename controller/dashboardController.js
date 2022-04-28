@@ -406,7 +406,7 @@ exports.lesson = async function(req, res, next) {
   }
   // let courseDetails = await rpoCourseDetail.getCourse(course.length > 0 ? course[0].course_id:'')
   
-  let courseId = courseDetails.length > 0 ? courseDetails[0].course_id : null
+  let courseId = courseDetails && courseDetails.length > 0 ? courseDetails[0].course_id : null
 
   // let courseId=
     
