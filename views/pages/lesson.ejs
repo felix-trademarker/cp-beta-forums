@@ -35,15 +35,71 @@
 			<div class="col-lg-9">
 				<div class="card mb-0">
 
-					<div v-if="lesson && lesson.video" class="plyr__video-wrapper">
-						<video id="videoplyr-s3" crossorigin="" playsinline="" :data-poster="lesson.image" class="img-fluid" >
-							<source type="video/m3u8" :src="lesson.sources.hls.simplified">
-						</video>
-						<div class="plyr__poster" style="background-image: url('<%= content.image %>');">
+					<div class="protected"> 
+						<script src="https://fast.wistia.com/embed/medias/<%= content.video %>.jsonp" async></script>
+						<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+						<div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
+							<div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+								<div class="wistia_embed wistia_async_<%= content.video %> videoFoam=true" style="height:100%;position:relative;width:100%">
+									<div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;">
+										<img src="https://fast.wistia.com/embed/medias/<%= content.video %>/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" />
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					
-					
+					<% if(content.video){ %>
+						<!-- <div class="plyr__video-wrapper">
+							<video id="videoplyr-s3" crossorigin="" playsinline="" :data-poster="lesson.image" class="img-fluid" src="blob:https://www.chinesepod.com/c13b9f87-7b2d-4f3d-808e-0870d0aa454a" style="">
+								<source type="application/vnd.apple.mpegURL" src="https://d3glhinmyc42ep.cloudfront.net/14966dca-37be-44dd-bcc0-c068b510e9bc/hls/4ueachdxby.m3u8">
+							</video>
+							<div class="plyr__poster" style="background-image: url(&quot;https://s3contents.chinesepod.com/4625/3471b133d0df2f5f29bf1f3d7b6435b48a1f8e28/images/b431f19fd016ef02562b4aa1f9817d0d3190639e.jpg&quot;);">
+							</div>
+						</div> -->
+						<!-- <div class="protected"> 
+							<script src="https://fast.wistia.com/embed/medias/<%= content.video %>.jsonp" async></script>
+							<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+							<div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
+								<div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+									<div class="wistia_embed wistia_async_<%= content.video %> videoFoam=true" style="height:100%;position:relative;width:100%">
+										<div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;">
+											<img src="https://fast.wistia.com/embed/medias/<%= content.video %>/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div> -->
+
+					<% } else { %>
+						<img alt="<%= content.title %>" class="card-img" src="<%= content.image %>" lazy="loaded">
+						<div class="card-img-overlay d-flex align-items-center">
+							<div class="mx-auto">
+								<div class="audio-player-controls">
+									<div class="col-12">
+										<div class="row">
+											<div class="col-4">
+												<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+													<i class="fi flaticon-040-backward text-white jump emphasize-dark"></i>
+												</button>
+											</div>
+											<div class="col-4">
+												<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+													<i class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
+												</button>
+											</div>
+											<div class="col-4">
+												<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+													<i class="fi flaticon-032-forwards text-white jump emphasize-dark"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+					<% } %>
 					
 				</div>
 
