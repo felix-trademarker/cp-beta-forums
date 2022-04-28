@@ -34,10 +34,14 @@
 				
 			<div class="col-lg-9">
 				<div v-if="lesson" class="card mb-0">
-					<img v-if="!lesson.video" :alt="lesson.title" class="card-img" :src="lesson.image" lazy="loaded">
-					<div v-if="lesson.video" class="protected">
-						<script :src="'https://fast.wistia.com/embed/medias/'+lesson.video+'.jsonp'" async=""></script>
+					
+					<% if(content.video){ %>
+					<div class="protected">
+						<script src="https://fast.wistia.com/embed/medias/<%= content.video %>.jsonp" async=""></script>
 					</div>
+					<% } else { %>
+						<img alt="<%= content.title %>" class="card-img" src="<%= content.image %>" lazy="loaded">
+					<% } %>
 					<div class="card-img-overlay d-flex align-items-center">
 						<div class="mx-auto">
 							<div class="audio-player-controls">
