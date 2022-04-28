@@ -23,7 +23,7 @@ a {
 }
 
 .nav-link.active {
-    color: #495057 !important;
+    color: #fff !important;
 }
 
 .primary-btn {
@@ -357,4 +357,10 @@ small a {
         width: 100%;
         margin-bottom: 1rem;
     }
+}
+
+button.active{
+    background: var(--accent-color) !important;
+    --bs-text-opacity: 1;
+    color: #fff !important;
 }
