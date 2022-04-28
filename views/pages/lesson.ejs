@@ -34,7 +34,10 @@
 				
 			<div class="col-lg-9">
 				<div v-if="lesson" class="card mb-0">
-					<img :alt="lesson.title" class="card-img" :src="lesson.image" lazy="loaded">
+					<img v-if="!lesson.video" :alt="lesson.title" class="card-img" :src="lesson.image" lazy="loaded">
+					<div v-if="lesson.video" class="protected">
+						<script :src="'https://fast.wistia.com/embed/medias/'+lesson.video+'.jsonp'" async=""></script>
+					</div>
 					<div class="card-img-overlay d-flex align-items-center">
 						<div class="mx-auto">
 							<div class="audio-player-controls">
@@ -78,7 +81,17 @@
 				</div>
 
 				<div class="in-this-lesson">
-					<p><%- content.introduction %></p>
+					<%
+						let arrIntro = content.introduction.split("</div>")
+						let stringIntro = ""
+
+						if (arrIntro.length > 1) {
+							stringIntro = arrIntro[1]
+						} else {
+							stringIntro = content.introduction
+						}
+					%>
+					<p><%- stringIntro %></p>
 				</div>
 			</div>
 
