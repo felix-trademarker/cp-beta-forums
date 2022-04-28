@@ -36,9 +36,9 @@ router.get([
     '/new/lesson/:slug',
     '/new/lesson/:slug/:courseId',
 
-    '/beta/leson',
-    '/beta/leson/:slug',
-    '/beta/leson/:slug/:courseId'
+    '/beta/lesson',
+    '/beta/lesson/:slug',
+    '/beta/lesson/:slug/:courseId'
 ],dashboardController.lesson);
 
 router.get([
