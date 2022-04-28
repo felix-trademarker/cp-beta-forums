@@ -384,6 +384,8 @@ exports.lesson = async function(req, res, next) {
 
   // fetch dialogues
   let slug = req.params.slug ? req.params.slug : "hello-and-goodbye";
+  let course;
+  let courseDetails;
   // get contents using slug
   let content = await rpoContents.getContentSlug(slug)
   console.log("slug", slug);
@@ -403,12 +405,12 @@ exports.lesson = async function(req, res, next) {
   // if (!content) {
   //   res.redirect('/new/lesson')
   // }
-  let course = await rpoCourseContents.getCourse(content.length > 0 ? content[0].v3_id:'')
+  if (content && content.length > 0) 
+    course = await rpoCourseContents.getCourse(content.length > 0 ? content[0].v3_id:'')
 
-  let courseDetails;
-  if (course && course.length > 0) {
+  if (course && course.length > 0) 
     courseDetails = await rpoCourseDetail.getCourse(course.length > 0 ? course[0].course_id:'')
-  }
+  
   // let courseDetails = await rpoCourseDetail.getCourse(course.length > 0 ? course[0].course_id:'')
   
   let courseId = courseDetails && courseDetails.length > 0 ? courseDetails[0].course_id : null
