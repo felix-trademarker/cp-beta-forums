@@ -415,19 +415,17 @@ exports.lesson = async function(req, res, next) {
   
   let courseId = courseDetails && courseDetails.length > 0 ? courseDetails[0].course_id : null
 
-  console.log("==== content ====", content)
-  console.log("==== course ====", course)
-  console.log("==== courseDetails ====", courseDetails)
+  content = content && content.length > 0 ? content[0] : null
   // let courseId=
   console.log("render page");
   res.render('pages/lesson', {
     layout: 'layouts/lesson-layout', 
-    title: ' Lesson Page',
+    title: (content ? content.title : 'ChinesePod Lesson Page'),
     description: '',
     keywords: 'Lesson',
     slug: slug,
     courseId: courseId,
-    content: content ? content[0] : null,
+    content: content,
     course: courseDetails ? courseDetails[0] : null
   });
 

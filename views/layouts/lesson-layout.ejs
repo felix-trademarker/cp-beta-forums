@@ -4,8 +4,12 @@
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
+    
+    <% if ( typeof title != "undefined" ) { %>
+        <title><%= title ? title : 'ChinesePod' %></title>
+    <% } else { %>
+        <title>ChinesePod</title>
+    <% } %>
     <!-- custom css -->
     <link rel="stylesheet" href="https://www.chinesepod.com/home/css/app.51ee1791.css">
     <link rel="stylesheet" href="/beta/lesson/style.css">
