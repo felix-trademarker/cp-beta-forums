@@ -385,7 +385,7 @@ exports.lesson = async function(req, res, next) {
   // fetch dialogues
   let slug = req.params.slug ? req.params.slug : "hello-and-goodbye";
   let course;
-  let courseDetails;
+  let courseDetails={};
   // get contents using slug
   let content = await rpoContents.getContentSlug(slug)
   console.log("slug", slug);
