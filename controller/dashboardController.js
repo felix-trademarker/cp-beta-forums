@@ -416,7 +416,7 @@ exports.lesson = async function(req, res, next) {
   let courseId = courseDetails && courseDetails.length > 0 ? courseDetails[0].course_id : null
 
   // let courseId=
-    
+  console.log("render page");
   res.render('pages/lesson', {
     layout: 'layouts/lesson-layout', 
     title: ' Lesson Page',
