@@ -393,9 +393,9 @@ exports.lesson = async function(req, res, next) {
 
     slug = content.length > 0 ? content[0].slug : slug;
 
-    if (content) {
-      res.redirect('/new/lesson/'+slug)
-    }
+    // if (content) {
+    //   res.redirect('/new/lesson/'+slug)
+    // }
     
   }
   
@@ -426,6 +426,22 @@ exports.lesson = async function(req, res, next) {
     course: courseDetails ? courseDetails[0] : null
   });
 
+}
+
+exports.lessonDirect = async function(req, res, next) {
+
+  let v3Id = req.params.v3Id ? req.params.v3Id : "";
+  let content = await rpoContents.getContentV3(v3Id)
+
+  console.log("=== redirect");
+
+  if (content && content.length > 0) {
+    console.log("=== redirect slug =====", content[0].slug);
+    res.redirect("/new/lesson/"+content[0].slug)
+  } else {
+    console.log("=== redirect default");
+    res.redirect("/new/lesson")
+  }
 }
 
 

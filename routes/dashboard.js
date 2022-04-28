@@ -32,17 +32,20 @@ router.get(['/forums/delete/:id', '/beta/forums/delete/:id'],dashboardController
 
 // NEW LESSON PAGE
 router.get([
-    '/new/:slug',
     '/new/lesson/',
     '/new/lesson/:slug',
     '/new/lesson/:slug/:courseId',
     '/lesson',
-    '/beta/:slug',
     '/beta/lesson',
     '/lesson/:slug',
     '/beta/lesson/:slug',
     '/beta/lesson/:slug/:courseId'
 ],dashboardController.lesson);
+
+router.get([
+    '/new/:v3Id',
+    '/beta/:v3Id'
+],dashboardController.lessonDirect);
 
 
 module.exports = router;
