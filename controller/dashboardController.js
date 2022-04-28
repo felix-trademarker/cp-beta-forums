@@ -391,9 +391,14 @@ exports.lesson = async function(req, res, next) {
     console.log("empty try searching using V3 ID", slug);
     content = await rpoContents.getContentV3(slug)
 
+    slug = content.length > 0 ? content[0].slug : slug;
+
+    if (content) {
+      res.redirect('/new/lesson/'+slug)
+    }
     
   }
-  slug = content.length > 0 ? content[0].slug : slug;
+  
 
   if (!content) {
     res.redirect('/new/lesson')
