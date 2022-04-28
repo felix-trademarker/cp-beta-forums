@@ -59,7 +59,7 @@ module.exports = {
     getCourse : async function(v3id){
         return new Promise(function(resolve, reject) {
             var sql = "SELECT * FROM " + tableName
-            sql += " WHERE v3_id=" + v3id
+            sql += " WHERE v3_id='" + v3id +"'"
 			sql += " ORDER BY displaysort ASC"
 			sql += " LIMIT 1"
             con.query(sql, function (err, result) {
