@@ -37,7 +37,7 @@
 
 					<div v-if="lesson && lesson.video" class="plyr__video-wrapper">
 						<video id="videoplyr-s3" crossorigin="" playsinline="" :data-poster="lesson.image" class="img-fluid" >
-							<source type="application/vnd.apple.mpegURL" :src="lesson.sources.hls.simplified">
+							<source type="video/m3u8" :src="lesson.sources.hls.simplified">
 						</video>
 						<div class="plyr__poster" style="background-image: url('<%= content.image %>');">
 						</div>
