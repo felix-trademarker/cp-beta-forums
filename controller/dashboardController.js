@@ -400,9 +400,9 @@ exports.lesson = async function(req, res, next) {
   // }
   
 
-  if (!content) {
-    res.redirect('/new/lesson')
-  }
+  // if (!content) {
+  //   res.redirect('/new/lesson')
+  // }
   let course = await rpoCourseContents.getCourse(content.length > 0 ? content[0].v3_id:'')
 
   let courseDetails;
