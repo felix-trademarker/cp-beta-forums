@@ -35,19 +35,7 @@
 			<div class="col-lg-9">
 				<div class="card mb-0">
 
-					<div class="protected"> 
-						<script src="https://fast.wistia.com/embed/medias/<%= content.video %>.jsonp" async></script>
-						<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
-						<div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
-							<div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
-								<div class="wistia_embed wistia_async_<%= content.video %> videoFoam=true" style="height:100%;position:relative;width:100%">
-									<div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;">
-										<img src="https://fast.wistia.com/embed/medias/<%= content.video %>/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" />
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+				
 					
 					<% if(content.video){ %>
 						<!-- <div class="plyr__video-wrapper">
@@ -103,13 +91,50 @@
 					
 				</div>
 
+				<div class="tab-content" >
+					<div class="tab-pane fade show active" id="nav-video" role="tabpanel" aria-labelledby="nav-profile-tab">
+						<div class="video-main">
+
+							<div class="card mb-0">
+
+								<div class="protected"> 
+									<script src="https://fast.wistia.com/embed/medias/<%= content.video %>.jsonp" async></script>
+									<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+									<div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
+										<div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+											<div class="wistia_embed wistia_async_<%= content.video %> videoFoam=true" style="height:100%;position:relative;width:100%">
+												<div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;">
+													<img src="https://fast.wistia.com/embed/medias/<%= content.video %>/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="tab-pane fade show active" id="nav-audio" role="tabpanel" aria-labelledby="nav-profile-tab">
+						<div class="video-main">
+
+							<div class="card mb-0">
+
+								audio
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+				
 				<div class="video-player d-none"><iframe width="560" height="315" src="/beta/lesson/NjCYc5p8a5c.html" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" style="height: 543.613px;"></iframe></div>
 
 				<div class="my-btn-group mt-3 mb-5 lessons-btn">
-					<button type="button" class="btn text-white me-3 px-5 py-2 primary-btn">
+					<button data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="true" type="button" class="btn text-white me-3 px-5 py-2 primary-btn">
 						<strong>Video Lesson</strong>
 					</button>
-					<button type="button" class="btn bg-white px-5 me-3 py-2">
+					<button data-bs-toggle="tab" data-bs-target="#nav-audio" type="button" role="tab" aria-controls="nav-audio" aria-selected="false" type="button" class="btn bg-white px-5 me-3 py-2">
 						<strong>Audio Lesson</strong>
 					</button>
 					<button type="button" class="btn bg-white px-5 py-2">
@@ -118,16 +143,6 @@
 				</div>
 
 				<div class="in-this-lesson">
-					<%
-						let arrIntro = content.introduction.split("</div>")
-						let stringIntro = ""
-
-						if (arrIntro.length > 1) {
-							stringIntro = arrIntro[1]
-						} else {
-							stringIntro = content.introduction
-						}
-					%>
 					<p v-if="lesson"> {{ lesson.introduction.trim() }} </p>
 				</div>
 			</div>
