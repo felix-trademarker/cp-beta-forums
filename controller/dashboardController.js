@@ -389,17 +389,17 @@ exports.lesson = async function(req, res, next) {
   // get contents using slug
   let content = await rpoContents.getContentSlug(slug)
   console.log("slug", slug);
-  // if (!content.length) {
-  //   console.log("empty try searching using V3 ID", slug);
-  //   content = await rpoContents.getContentV3(slug)
+  if (!content && content.length <= 0) {
+    console.log("empty try searching using V3 ID", slug);
+    content = await rpoContents.getContentV3(slug)
 
-  //   slug = content.length > 0 ? content[0].slug : slug;
+    slug = content.length > 0 ? content[0].slug : slug;
 
-  //   // if (content) {
-  //   //   res.redirect('/new/lesson/'+slug)
-  //   // }
+    // if (content) {
+    //   res.redirect('/new/lesson/'+slug)
+    // }
     
-  // }
+  }
   
 
   // if (!content) {
