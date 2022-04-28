@@ -36,7 +36,7 @@
 				<div class="card mb-0">
 
 					<div v-if="lesson && lesson.video" class="plyr__video-wrapper">
-						<video id="videoplyr-s3" crossorigin="" playsinline="" :data-poster="lesson.image" class="img-fluid" src="blob:https://www.chinesepod.com/c13b9f87-7b2d-4f3d-808e-0870d0aa454a" style="">
+						<video id="videoplyr-s3" crossorigin="" playsinline="" :data-poster="lesson.image" class="img-fluid" >
 							<source type="application/vnd.apple.mpegURL" :src="lesson.sources.hls.simplified">
 						</video>
 						<div class="plyr__poster" style="background-image: url('<%= content.image %>');">
