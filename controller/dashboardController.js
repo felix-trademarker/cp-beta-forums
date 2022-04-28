@@ -415,6 +415,7 @@ exports.lesson = async function(req, res, next) {
   
   let courseId = courseDetails && courseDetails.length > 0 ? courseDetails[0].course_id : null
 
+  console.log("==== content ====", content)
   console.log("==== course ====", course)
   console.log("==== courseDetails ====", courseDetails)
   // let courseId=
