@@ -94,7 +94,7 @@
 
 							</p>
 						</div>
-						<% if( topic.userData && userData.id == topic.userData.id ){ %>
+						<% if( userData && topic.userData && userData.id == topic.userData.id ){ %>
 							<a id="btnDeleteTopic" class="btnDeleteTopic" href="/beta/forums/delete/<%= topic._id %>" ><i class="fa fa-trash"></i></a>
 							<a class="btnEditTopic" href="/beta/forums/edit/<%= topic._id %>" ><i class="fa fa-pen"></i></a>
 						<% } %>
