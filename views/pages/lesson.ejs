@@ -274,82 +274,49 @@
 									</div>
 								</form>
 							</div>
-							<div class="comments-wrapper"><div class="comment-main">
-<div class="left">
-<div class="comment-avatar"><img class="avatar-img" src="/beta/lesson/1.jpg"></div>
-</div>
-<div class="right">
-<div class="name">Harry <span class="date-time">1/4/2022, 6:17:03 PM</span></div>
+							<div v-if="comments && comments.comments" v-for="comment in comments.comments" class="comments-wrapper">
+								<div class="comment-main">
+									<div class="left">
+										<div class="comment-avatar">
+											<img v-if="comment.avatar_url" class="avatar-img" :src="comment.avatar_url">
+											<img v-if="!comment.avatar_url" class="avatar-img" src="https://www.chinesepod.com/home/img/symbol-black-center.d7c26c3a.svg">
+										</div>
+									</div>
+									<div class="right">
+										<div class="name">{{ comment.username }} <span class="date-time">{{ comment.created_at }}</span></div>
 
-<div class="comment-txt">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+										<div class="comment-txt" v-html="comment.content"></div>
 
-<div class="comment-reacts">
-	<div class="thumbs-up comment-react">
-		<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
-			<i class="bi bi-hand-thumbs-up"></i>
-		</a>
-		<span class="react-count">2</span>
-	</div>
-	<div class="thumbs-down comment-react">
-		<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
-			<i class="bi bi-hand-thumbs-down"></i>
-		</a>
-		<span class="react-count">0</span>
-	</div>
-</div>
-</div>
-</div><div class="comment-main">
-<div class="left">
-<div class="comment-avatar"><img class="avatar-img" src="/beta/lesson/1.jpg"></div>
-</div>
-<div class="right">
-<div class="name">Celestial <span class="date-time">1/4/2022, 6:17:03 PM</span></div>
+										<div class="comment-reacts">
+											<div class="thumbs-up comment-react">
+												<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
+													<i class="bi bi-hand-thumbs-up"></i>
+												</a>
+												<span class="react-count">2</span>
+											</div>
+											<div class="thumbs-down comment-react">
+												<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
+													<i class="bi bi-hand-thumbs-down"></i>
+												</a>
+												<span class="react-count">0</span>
+											</div>
+										</div>
+									</div>
+								</div>
 
-<div class="comment-txt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-
-<div class="comment-reacts">
-	<div class="thumbs-up comment-react">
-		<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
-			<i class="bi bi-hand-thumbs-up"></i>
-		</a>
-		<span class="react-count">2</span>
-	</div>
-	<div class="thumbs-down comment-react">
-		<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
-			<i class="bi bi-hand-thumbs-down"></i>
-		</a>
-		<span class="react-count">0</span>
-	</div>
-</div>
-</div>
-</div><div class="comment-main">
-<div class="left">
-<div class="comment-avatar"><img class="avatar-img" src="/beta/lesson/1.jpg"></div>
-</div>
-<div class="right">
-<div class="name">Jason <span class="date-time">1/4/2022, 6:17:03 PM</span></div>
-
-<div class="comment-txt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</div>
-
-<div class="comment-reacts">
-	<div class="thumbs-up comment-react">
-		<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
-			<i class="bi bi-hand-thumbs-up"></i>
-		</a>
-		<span class="react-count">2</span>
-	</div>
-	<div class="thumbs-down comment-react">
-		<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
-			<i class="bi bi-hand-thumbs-down"></i>
-		</a>
-		<span class="react-count">0</span>
-	</div>
-</div>
-</div>
-</div></div>
+							</div>
 						</div>
 						<div class="tab-pane fade show" id="nav-downloads" role="tabpanel" aria-labelledby="nav-profile-tab">
-							No downloads to show right now.
+							
+							<ul v-if="downloads">
+								<li v-if="downloads.downloads.lesson"><a target="_blank" :href="downloads.downloads.lesson" class="btn btn-default">Lesson</a></li>
+								<li v-if="downloads.downloads.dialogue"><a target="_blank" :href="downloads.downloads.lesson" class="btn btn-default">Dialogue</a></li>
+								<li v-if="downloads.downloads.review"><a target="_blank" :href="downloads.downloads.lesson" class="btn btn-default">Review</a></li>
+								<li v-if="downloads.downloads.pdf1"><a target="_blank" :href="downloads.downloads.lesson" class="btn btn-default">lesson</a></li>
+								<li v-if="downloads.downloads.pdf2"><a target="_blank" :href="downloads.downloads.lesson" class="btn btn-default">lesson</a></li>
+							</ul>
+
+							<p v-if="!downloads">No downloads to show right now.</p>
 						</div>
 					</div>
 					<!-- tabs end -->

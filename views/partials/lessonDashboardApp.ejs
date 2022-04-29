@@ -16,6 +16,7 @@
             downloads: {},
             questions: {},
             course: {},
+            comments: {},
         },
         methods: {
 
@@ -58,9 +59,10 @@
                     
                     this.dialogue = await this.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId='+this.lesson.id);
                     this.vocab = await this.getAPIFetch('/api/v1/lessons/get-vocab?lessonId='+this.lesson.id);
-                    this.expansion = await this.getAPIFetch('/api/v1/lessons/get-expansion?lessonId='+this.lesson.id);
-                    this.grammar = await this.getAPIFetch('/api/v1/lessons/get-grammar?lessonId='+this.lesson.id);
+                    // this.expansion = await this.getAPIFetch('/api/v1/lessons/get-expansion?lessonId='+this.lesson.id);
+                    // this.grammar = await this.getAPIFetch('/api/v1/lessons/get-grammar?lessonId='+this.lesson.id);
                     this.downloads = await this.getAPIFetch('/api/v1/lessons/get-downloads?lessonId='+this.lesson.id);
+                    this.comments = await this.getAPIFetch('/api/v1/lessons/get-comments?lessonId='+this.lesson.id);
                     // this.questions = await this.getAPIFetch('/api/v1/lessons/get-questions?lessonId='+this.lesson.id);
 
                     let toggle_show_hide = document.querySelectorAll('.toggle-show-hide');
