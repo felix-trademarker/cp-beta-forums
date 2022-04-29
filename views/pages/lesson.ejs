@@ -65,12 +65,17 @@
 						<div class="video-main">
 
 							<div class="card mb-0">
+								<%
+								let imageUrl = ""
+								if (content.image.includes("https")) {
+									imageUrl = content.image
+								} else {
+									imageUrl = "https://s3contents.chinesepod.com/"+ content.v3_id + "/" + content.hash_code +"/"+ content.image
+								}
 
-								<% if(content.video){ %>
-									<img alt="<%= content.title %>" class="card-img" src="https://s3contents.chinesepod.com/<%= content.v3_id %>/<%= content.hash_code %>/<%= content.image %>" lazy="loaded">
-								<% } else { %>
-									<img alt="<%= content.title %>" class="card-img" src="<%= content.image %>" lazy="loaded">
-								<% } %>
+								%>
+
+								<img alt="<%= content.title %>" class="card-img" src="<%= imageUrl %>" lazy="loaded">
 								<div class="card-img-overlay d-flex align-items-center">
 									<div class="mx-auto">
 										<div class="audio-player-controls">
