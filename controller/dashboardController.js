@@ -72,6 +72,12 @@ exports.forum = async function(req, res, next) {
     console.log(err)
   }
 
+  console.log("=== topics", topics)
+  console.log("=== subTopics", subTopics)
+  console.log("=== userData", userData)
+  console.log("=== isBetaTester", isBetaTester)
+  console.log("=== latestComments", latestComments)
+
   res.render('dashboard/forum', { 
     title: '',
     description: '',
