@@ -160,6 +160,8 @@
 						<div class="nav nav-tabs" id="nav-tab" role="tablist">
 							<button class="nav-link active" id="nav-dialogue-tab" data-bs-toggle="tab" data-bs-target="#nav-dialogue" type="button" role="tab" aria-controls="nav-dialogue" aria-selected="false">Dialogue</button>
 
+							<button class="nav-link" id="nav-vocab-tab" data-bs-toggle="tab" data-bs-target="#nav-vocab" type="button" role="tab" aria-controls="nav-vocab" aria-selected="false">Vocabulary</button>
+
 							<button class="nav-link" id="nav-comments-tab" data-bs-toggle="tab" data-bs-target="#nav-comments" type="button" role="tab" aria-controls="nav-comments" aria-selected="true">Comments</button>
 
 							<button class="nav-link" id="nav-downloads-tab" data-bs-toggle="tab" data-bs-target="#nav-downloads" type="button" role="tab" aria-controls="nav-downloads" aria-selected="false">Downloads</button>
@@ -222,6 +224,45 @@
 							</div>
 
 						</div>
+
+						<div class="tab-pane fade show active" id="nav-vocab" role="tabpanel" aria-labelledby="nav-vocab-tab">
+							<div class="dialogue-main">
+								<div class="dialogue py-3">
+
+									<table v-if="vocab" class="table">
+										<thead>
+											<tr>
+												<th style="width:25%">Traditional</th>
+												<th style="width:25%">Pinyin</th>
+												<th style="width:25%">English</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="voc in vocab">
+												<td>{{ voc.t }}</td>
+												<td>{{ voc.p }}</td>
+												<td>{{ voc.en }}</td>
+												<td>
+													<div class="play-audio icon fs-5">
+														<i class="bi bi-volume-up-fill"></i>
+														<audio>
+															<source :src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+voc.audio" type="audio/mp3">
+															Your browser does not support the audio element.
+														</audio>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+
+									<p v-if="!vocab" class="warning">Vocabulary not found</p>
+									
+								</div>
+							</div>
+
+						</div>
+
 						<div class="tab-pane fade" id="nav-comments" role="tabpanel" aria-labelledby="nav-home-tab">
 							<div class="comments-form mt-4">
 								<form class="postcomment-form">
