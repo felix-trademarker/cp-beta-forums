@@ -62,16 +62,11 @@ exports.forum = async function(req, res, next) {
 
   try{
 
-  
-
   topics = await rpoTopics.get();
   subTopics = await rpoSubTopics.getLatestTopics();
   userData = await helpers.getLoginUser(req)
   isBetaTester = await helpers.isBetaTester(req)
   latestComments = await rpoComments.getLatestComments()
-  // console.log(userData);
-  // let topic = subTopics.find(x => (x._id+'') === '623d71d030fae23f5a2adf00' )
-  // console.log(topic);
 
   } catch(err) {
     console.log(err)
