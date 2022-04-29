@@ -253,6 +253,9 @@
 
 .avatar-img {
     border-radius: 100%;
+    width: 30px;
+    background: #ccc;
+    height: auto;
 }
 
 .avatar-options {

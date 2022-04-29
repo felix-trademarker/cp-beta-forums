@@ -309,11 +309,11 @@
 						<div class="tab-pane fade show" id="nav-downloads" role="tabpanel" aria-labelledby="nav-profile-tab">
 							
 							<ul v-if="downloads">
-								<li v-if="downloads.downloads.lesson"><a target="_blank" :href="downloads.downloads.lesson" class="btn btn-default">Lesson</a></li>
-								<li v-if="downloads.downloads.dialogue"><a target="_blank" :href="downloads.downloads.lesson" class="btn btn-default">Dialogue</a></li>
-								<li v-if="downloads.downloads.review"><a target="_blank" :href="downloads.downloads.lesson" class="btn btn-default">Review</a></li>
-								<li v-if="downloads.downloads.pdf1"><a target="_blank" :href="downloads.downloads.lesson" class="btn btn-default">lesson</a></li>
-								<li v-if="downloads.downloads.pdf2"><a target="_blank" :href="downloads.downloads.lesson" class="btn btn-default">lesson</a></li>
+								<li v-if="downloads.downloads.lesson"><a target="_blank" download :href="downloads.downloads.lesson" class="btn btn-default">Lesson</a></li>
+								<li v-if="downloads.downloads.dialogue"><a target="_blank" download :href="downloads.downloads.lesson" class="btn btn-default">Dialogue</a></li>
+								<li v-if="downloads.downloads.review"><a target="_blank" download :href="downloads.downloads.lesson" class="btn btn-default">Review</a></li>
+								<li v-if="downloads.downloads.pdf1"><a target="_blank" download :href="downloads.downloads.lesson" class="btn btn-default">lesson</a></li>
+								<li v-if="downloads.downloads.pdf2"><a target="_blank" download :href="downloads.downloads.lesson" class="btn btn-default">lesson</a></li>
 							</ul>
 
 							<p v-if="!downloads">No downloads to show right now.</p>
