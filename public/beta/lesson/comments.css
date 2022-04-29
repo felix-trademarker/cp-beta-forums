@@ -308,3 +308,17 @@
         padding-top: 2rem;
     }
 }
+
+.dl-List{
+    padding: 0;
+}
+
+.dl-List li{
+    list-style: none;
+    margin-right: 20px;
+
+}
+
+.dl-List li a{
+    color: #000;
+}
