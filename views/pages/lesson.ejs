@@ -152,8 +152,16 @@
 					<div class="col-12 col-md-6 col-lg-12">
 						<div class="card mb-3">
 							<a :href="'/new/lesson/'+c.slug">
-								
-								<img :src="c.image" class="card-img-top" alt="">
+								<%
+								let imageUrl = ""
+								if (content.image.includes("https")) {
+									imageUrl = content.image
+								} else {
+									imageUrl = "https://s3contents.chinesepod.com/"+ content.v3_id + "/" + content.hash_code +"/"+ content.image
+								}
+
+								%>
+								<img :src="c.image.includes('https') ? ('https://s3contents.chinesepod.com/' + lesson.v3_id + '/' + lesson.hash_code + '/' + c.image) : c.image" class="card-img-top" alt="">
 								<div class="card-body">
 									<h6 class="card-title fw-bold">{{ c.title }}</h6>
 								</div>
