@@ -76,15 +76,15 @@
 								%>
 
 								<img alt="<%= content.title %>" class="card-img" src="<%= imageUrl %>" lazy="loaded">
-								<div class="card-img-overlay d-flex align-items-center">
+								<div id="lessonOverlay" class="card-img-overlay d-flex align-items-center">
 									<div class="mx-auto">
 										<div class="audio-player-controls">
 											<div class="col-12">
 												<div class="row">
 													<div class="col-4">
-														<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+														<!-- <button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
 															<i class="fi flaticon-040-backward text-white jump emphasize-dark"></i>
-														</button>
+														</button> -->
 													</div>
 													<div class="col-4">
 														<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
@@ -92,16 +92,21 @@
 														</button>
 													</div>
 													<div class="col-4">
-														<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+														<!-- <button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
 															<i class="fi flaticon-032-forwards text-white jump emphasize-dark"></i>
-														</button>
+														</button> -->
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-									
+									<audio id="audioLesson">
+										<source src="<%= content.mp3_private %>" type="audio/mp3">
+										Your browser does not support the audio element.
+									</audio>
 								</div>
+								
+
 							</div>
 
 						</div>

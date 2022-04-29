@@ -96,6 +96,14 @@ play_audio.forEach((audio, i) => {
         }
     }
 });
+
+var audioLesson = document.getElementById('audioLesson');
+var lessonOverlay = document.getElementById('lessonOverlay');
+
+lessonOverlay.onClick = () => {
+    audioLesson.play();
+}
+
 // get id in url 
 var url = document.URL;
 var id;
