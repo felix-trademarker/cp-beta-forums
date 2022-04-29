@@ -76,7 +76,7 @@
 								%>
 
 								<img alt="<%= content.title %>" class="card-img" src="<%= imageUrl %>" lazy="loaded">
-								<div id="lessonOverlay" class="card-img-overlay d-flex align-items-center play-audio">
+								<div id="lessonOverlay" class="card-img-overlay d-flex align-items-center ">
 									<div class="mx-auto">
 										<div class="audio-player-controls">
 											<div class="col-12">
@@ -87,9 +87,23 @@
 														</button> -->
 													</div>
 													<div class="col-4">
-														<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
-															<i class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
+														<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default play-audio">
+															<i class="play-btn bi bi-play-fill" ></i>
+															<audio id="">
+																<%
+																let audioURL = ""
+																if (content.mp3_private.includes("https")) {
+																	audioURL = content.mp3_private
+																} else {
+																	audioURL = "https://s3contents.chinesepod.com/"+ content.v3_id + "/" + content.hash_code +"/"+ content.mp3_private
+																}
+						
+																%>
+																<source src="<%= audioURL %>" type="audio/mp3">
+																	Your browser does not support the audio element.
+															</audio>
 														</button>
+
 													</div>
 													<div class="col-4">
 														<!-- <button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
@@ -100,20 +114,10 @@
 											</div>
 										</div>
 									</div>
-									<audio id="">
-										<%
-										let audioURL = ""
-										if (content.mp3_private.includes("https")) {
-											audioURL = content.mp3_private
-										} else {
-											audioURL = "https://s3contents.chinesepod.com/"+ content.v3_id + "/" + content.hash_code +"/"+ content.mp3_private
-										}
-
-										%>
-										<source src="<%= audioURL %>" type="audio/mp3">
-										Your browser does not support the audio element.
-									</audio>
+									
+									
 								</div>
+							
 								
 
 							</div>

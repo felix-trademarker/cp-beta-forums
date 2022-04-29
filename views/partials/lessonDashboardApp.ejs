@@ -97,11 +97,19 @@
                     play_audio.forEach((audio, i) => {
                         audio.onclick = () => {
                             let audio_player = audio.querySelector('audio');
-                            audio_player.play();
+                            // audio_player.play();
                             audio.classList.add('emit-audio');
 
                             audio_player.onended = () => {
                                 audio.classList.remove('emit-audio');
+                            }
+
+                            if (audio_player.duration > 0 && !audio_player.paused) {
+                                audio_player.pause();
+                                alert("pause");
+                            } else {
+                                alert("play");
+                                audio_player.play();
                             }
                         }
                     });

@@ -52,7 +52,7 @@ let video_player_iframe_height = () => {
 }
 
 window.onresize = () => {
-    video_player_iframe_height();
+    // video_player_iframe_height();
 }
 
 // ### show/hide toggle for translations in DIALOGUE tab
@@ -88,7 +88,20 @@ let play_audio = document.querySelectorAll('.play-audio');
 play_audio.forEach((audio, i) => {
     audio.onclick = () => {
         let audio_player = audio.querySelector('audio');
-        audio_player.play();
+        let icon = audio.querySelector('i');
+        if (audio_player.duration > 0 && !audio_player.paused) {
+            audio_player.pause();
+            if (icon){
+                icon.classList.add('bi-play-fill')
+                icon.classList.remove('bi-pause-fill')
+            } 
+        } else {
+            if (icon){
+                icon.classList.add('bi-pause-fill')
+                icon.classList.remove('bi-play-fill')
+            } 
+            audio_player.play();
+        }
         audio.classList.add('emit-audio');
 
         audio_player.onended = () => {

@@ -324,3 +324,9 @@
 .dl-List li a{
     color: #000 !important;
 }
+
+.play-btn{
+    font-size: 115px;
+    text-shadow: 0 0 5px #000;
+    color: #e11e1d !important;
+}
