@@ -54,14 +54,28 @@ exports.forum = async function(req, res, next) {
 
   activityService.logger(req, "Visited Forum Page");
 
-  let topics = await rpoTopics.get();
-  let subTopics = await rpoSubTopics.getLatestTopics();
-  let userData = await helpers.getLoginUser(req)
-  let isBetaTester = await helpers.isBetaTester(req)
-  let latestComments = await rpoComments.getLatestComments()
+  let topics;
+  let subTopics;
+  let userData;
+  let isBetaTester;
+  let latestComments;
+
+  try{
+
+  
+
+  topics = await rpoTopics.get();
+  subTopics = await rpoSubTopics.getLatestTopics();
+  userData = await helpers.getLoginUser(req)
+  isBetaTester = await helpers.isBetaTester(req)
+  latestComments = await rpoComments.getLatestComments()
   // console.log(userData);
   // let topic = subTopics.find(x => (x._id+'') === '623d71d030fae23f5a2adf00' )
   // console.log(topic);
+
+  } catch(err) {
+    console.log(err)
+  }
 
   res.render('dashboard/forum', { 
     title: '',
