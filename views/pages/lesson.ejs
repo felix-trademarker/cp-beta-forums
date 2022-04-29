@@ -101,7 +101,16 @@
 										</div>
 									</div>
 									<audio id="audioLesson">
-										<source src="<%= content.mp3_private %>" type="audio/mp3">
+										<%
+										let audioURL = ""
+										if (content.mp3_private.includes("https")) {
+											audioURL = content.mp3_private
+										} else {
+											audioURL = "https://s3contents.chinesepod.com/"+ content.v3_id + "/" + content.hash_code +"/"+ content.mp3_private
+										}
+
+										%>
+										<source src="<%= audioURL %>" type="audio/mp3">
 										Your browser does not support the audio element.
 									</audio>
 								</div>
