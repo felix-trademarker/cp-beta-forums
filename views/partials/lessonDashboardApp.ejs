@@ -1,6 +1,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
 <script src="/beta/javascripts/pinyin-convert.js" ></script>
 
+
 <script>
 
 
@@ -42,13 +43,27 @@
 
             pinyinConvert: function(pinyin) {
                 return PinyinConverter.convert(pinyin);
+            },
+
+            rewritePinyin: function(vocab) {
+                console.log("called function");
+                
+                let writer = HanziWriter.create('target-'+vocab.id, vocab.t, {
+                    width: 400,
+                    height: 400,
+                    renderer: 'svg',
+                    radicalColor: '#166E16',
+                    showCharacter: false,
+                });
+                console.log("rewrite", vocab);
             }
 
         },
         computed: {
             fetchLessons: async function(){
                 this.lesson = await this.getAPIFetch('/api/v1/lessons/get-lesson?slug=<%= slug %>');
-                console.log("await lesson", this.lesson);
+                // this.lesson = {"id":"0155","title":"I like beef","slug":"i-like-beef","introduction":"In the 80’s it was “Where’s the…”, in the 90’s it was “What’s For Dinner” and in the ummm…0’s, it’s the focus of our lesson.  In this podcast, Ken and Jenny teach a Mandarin Chinese lesson dealing with carnivores and their preferences.","hash_code":"efa41e32fa65a9b3458182a8032ba99fca4d15e5","image":"https://s3contents.chinesepod.com/0155/efa41e32fa65a9b3458182a8032ba99fca4d15e5/images/chinesepod_A0155.jpg","type":"lesson","level":"Newbie","hosts":"Jenny, Ken","publication_timestamp":"2006-06-06T06:00:00.000Z","saved":false,"studied":false,"video":null,"mp3_dialogue":"https://s3contents.chinesepod.com/0155/efa41e32fa65a9b3458182a8032ba99fca4d15e5/mp3/chinesepod_A0155dg.mp3","mp3_public":"https://s3contents.chinesepod.com/0155/efa41e32fa65a9b3458182a8032ba99fca4d15e5/mp3/chinesepod_A0155pb.mp3","mp3_private":"https://s3contents.chinesepod.com/0155/efa41e32fa65a9b3458182a8032ba99fca4d15e5/mp3/chinesepod_A0155pr.mp3","mp3_thefix":"https://s3contents.chinesepod.com/0155/efa41e32fa65a9b3458182a8032ba99fca4d15e5/mp3/chinesepod_A0155rv.mp3","pdf1":"https://s3contents.chinesepod.com/0155/efa41e32fa65a9b3458182a8032ba99fca4d15e5/pdf/chinesepod_A0155.pdf","pdf2":"https://s3contents.chinesepod.com/0155/efa41e32fa65a9b3458182a8032ba99fca4d15e5/pdf/chinesepod_A0155trad.pdf","extra":false}
+                console.log("await lesson asd", this.lesson);
                 if (this.lesson && this.lesson.id) {
 
                     // next
@@ -64,7 +79,10 @@
                     this.downloads = await this.getAPIFetch('/api/v1/lessons/get-downloads?lessonId='+this.lesson.id);
                     this.comments = await this.getAPIFetch('/api/v1/lessons/get-comments?lessonId='+this.lesson.id);
                     // this.questions = await this.getAPIFetch('/api/v1/lessons/get-questions?lessonId='+this.lesson.id);
-
+                    console.log("vocab");
+                    this.vocab = [{"id":6970633,"s":"喜欢","t":"喜歡","p":"xǐhuan","en":"to like","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24545_prototype_3814.mp3","vocabulary_class":"Key Vocabulary"},{"id":6970632,"s":"吃","t":"吃","p":"chī","en":"to eat","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24546_prototype_6471_7445.mp3","vocabulary_class":"Key Vocabulary"},{"id":6970631,"s":"牛肉","t":"牛肉","p":"niúròu","en":"beef","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24547_prototype_8319_11319.mp3","vocabulary_class":"Key Vocabulary"},{"id":6970628,"s":"你呢","t":"你呢","p":"nǐ ne","en":"what about you?","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24548_prototype_20299_17314.mp3","vocabulary_class":"Key Vocabulary"},{"id":6970627,"s":"也","t":"也","p":"yě","en":"also","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24549_prototype_15041_19496.mp3","vocabulary_class":"Key Vocabulary"},{"id":6970626,"s":"鱼","t":"魚","p":"yú","en":"fish","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_42559_prototype_21151_27001.mp3","vocabulary_class":"Key Vocabulary"},{"id":6970625,"s":"鸡肉","t":"雞肉","p":"jīròu","en":"chicken","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24550_prototype_4607_23868.mp3","vocabulary_class":"Supplementary"},{"id":6970624,"s":"鸭肉","t":"鴨肉","p":"yāròu","en":"duck meat","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24551_prototype_12455_33384.mp3","vocabulary_class":"Supplementary"},{"id":6970623,"s":"羊肉","t":"羊肉","p":"yángròu","en":"mutton","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24552_prototype_27071_41261.mp3","vocabulary_class":"Supplementary"},{"id":6970622,"s":"狗肉","t":"狗肉","p":"gǒuròu","en":"dog meat","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24553_prototype_48451_9318.mp3","vocabulary_class":"Supplementary"},{"id":6970621,"s":"猪肉","t":"豬肉","p":"zhūròu","en":"pork","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24554_prototype_50989_32759.mp3","vocabulary_class":"Supplementary"},{"id":6970630,"s":"蔬菜","t":"蔬菜","p":"shūcài","en":"vegetables","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24555_prototype_47498_7520.mp3","vocabulary_class":"Supplementary"},{"id":6970629,"s":"水果","t":"水果","p":"shuǐguǒ","en":"fruit","audio":"mp3/glossary/source/chinesepod_1908_vocabulary_24556_prototype_17647_24150.mp3","vocabulary_class":"Supplementary"}]
+                    
+                    console.log("force value", this.vocab);
                     let toggle_show_hide = document.querySelectorAll('.toggle-show-hide');
 
                     toggle_show_hide.forEach((toggle, i) => {
@@ -120,8 +138,11 @@
                             }
                         }
                     });
+                } else {
+                    console.log("lesson not found");
                 }
             },
+
         }
 
     })
@@ -129,6 +150,47 @@
     lessonDashboardApp.fetchLessons
     // lessonDashboardApp.dialogue = lessonDashboardApp.getAPIFetch('/api/v1/lessons/get-dialogue?lessonId='+lessonDashboardApp.lesson.id);
     // var vuex = JSON.parse(window.localStorage.getItem('vuex'))
-    
+    // writer = HanziWriter.create('target', '牛', {
+    //                 width: 400,
+    //                 height: 400,
+    //                 renderer: 'svg',
+    //                 radicalColor: '#166E16',
+    //                 onCorrectStroke: printStrokePoints,
+    //                 onMistake: printStrokePoints,
+    //                 showCharacter: false,
+    //             });
+
+
+// document.querySelector('.js-animate').addEventListener('click', function () {
+//     writer.animateCharacter();
+// });
+
+window.onload = function () {
+
+    lessonDashboardApp.vocab.forEach((vocab, i) => {
+        let hanziCount = vocab.t.length
+        
+        for (let x=0; x < hanziCount; x++) {
+
+            let writer = HanziWriter.create('target-'+x+'-'+vocab.id, vocab.t[x], {
+                width: 100,
+                height: 100,
+                renderer: 'svg',
+                radicalColor: '#166E16',
+                onCorrectStroke: printStrokePoints,
+                onMistake: printStrokePoints,
+                showCharacter: false,
+            });
+
+            document.querySelector('.js-animate-'+x+'-'+vocab.id).addEventListener('click', function () {
+                writer.animateCharacter();
+            });
+            
+        }
+
+    })
+
+
+};
 
 </script>
