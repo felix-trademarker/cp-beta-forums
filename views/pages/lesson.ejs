@@ -175,6 +175,10 @@
 
 							<button class="nav-link" id="nav-vocab-tab" data-bs-toggle="tab" data-bs-target="#nav-vocab" type="button" role="tab" aria-controls="nav-vocab" aria-selected="false">Vocabulary</button>
 
+							<button class="nav-link" id="nav-expansion-tab" data-bs-toggle="tab" data-bs-target="#nav-expansion" type="button" role="tab" aria-controls="nav-expansion" aria-selected="false">Expansion</button>
+							
+							<button class="nav-link" id="nav-grammar-tab" data-bs-toggle="tab" data-bs-target="#nav-grammar" type="button" role="tab" aria-controls="nav-grammar" aria-selected="false">Grammar</button>
+
 							<button class="nav-link" id="nav-comments-tab" data-bs-toggle="tab" data-bs-target="#nav-comments" type="button" role="tab" aria-controls="nav-comments" aria-selected="true">Comments</button>
 
 							<button class="nav-link" id="nav-downloads-tab" data-bs-toggle="tab" data-bs-target="#nav-downloads" type="button" role="tab" aria-controls="nav-downloads" aria-selected="false">Downloads</button>
@@ -272,6 +276,138 @@
 									</table>
 
 									<p v-if="!vocab" class="warning">Vocabulary not found</p>
+									
+								</div>
+							</div>
+
+						</div>
+
+						<div class="tab-pane fade" id="nav-expansion" role="tabpanel" aria-labelledby="nav-expansion-tab">
+							<div class="expansion-main">
+								<div class="expansion py-3">
+									
+									<ul v-if="expansion" class="list-group d-block d-sm-flex w-100 list-group-horizontal" style="flex-wrap: wrap;">
+										<li v-for="exp in expansion" class="list-group-item w-50 w-md-50 p-4" style="border-width:1px !important">
+											{{ exp.phrase }}
+											<div v-for="examples in exp.examples" class="mb-3">
+												<div class="mandarin-chars-main d-flex align-items-center justify-content-between">
+													<div class="mandarin-chars">
+													
+														<span v-for="sentence in examples.sentence" v-if="sentence.s" class="mandarin-char position-relative">
+															<span class="fs-2">{{ sentence.s }}</span>
+															<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
+																<div class="fs-2 mb-2">{{ sentence.s }}</div>
+																<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
+																<div class="border-top pt-1">{{ sentence.en }}</div>
+															</div>
+														</span>
+													
+													
+													</div>
+													<div class="play-audio icon fs-5">
+														<i class="bi bi-volume-up-fill"></i>
+														<audio>
+															<source :src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+examples.audio" type="audio/mp3">
+															Your browser does not support the audio element.
+														</audio>
+													</div>
+												</div>
+												<div class="translation-group fs-5">
+													<div class="pinyin-writing-main d-flex align-items-center justify-content-between">
+														<div class="pinyin-writing show-hide-txt my-3">
+															<span>...</span>
+															<span>{{ pinyinConvert(examples.p) }}</span>
+														</div>
+														<div class="icon toggle-show-hide fs-5">
+															<i class="bi bi-eye-slash-fill"></i>
+														</div>
+													</div>
+													<div class="english-translation-main d-flex align-items-center justify-content-between">
+														<div class="english-translation show-hide-txt">
+															<span>...</span>
+															<span>{{ examples.en }}</span>
+														</div>
+														<div class="icon toggle-show-hide fs-5">
+															<i class="bi bi-eye-slash-fill"></i>
+														</div>
+													</div>
+												</div>
+												<hr>
+											</div>
+											
+										</li>
+										
+									</ul>
+
+									<p v-if="!expansion" class="warning">Vocabulary not found</p>
+									
+								</div>
+							</div>
+
+						</div>
+
+						<div class="tab-pane fade" id="nav-grammar" role="tabpanel" aria-labelledby="nav-grammar-tab">
+							<div class="grammar-main">
+								<div class="grammar py-3">
+									
+									<ul v-if="grammar" class="list-group d-block d-sm-flex w-100 list-group-horizontal" style="flex-wrap: wrap;">
+										<li v-for="exp in grammar" class="list-group-item w-100 w-md-100 p-4 mb-3" style="border-width:1px !important">
+											<div class="alert alert-info">
+												<h3>{{ exp.grammar.name }}: <span>{{ exp.grammar.introduction }}</span></h3>
+												<p>{{ exp.grammar.tree }}</p>
+											</div>
+											<div v-for="examples in exp.examples" class="mb-3">
+												<div class="mandarin-chars-main d-flex align-items-center justify-content-between">
+													<div class="mandarin-chars">
+													
+														<span v-for="sentence in examples.sentence" v-if="sentence.s" class="mandarin-char position-relative">
+															<span class="fs-2">{{ sentence.s }}</span>
+															<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
+																<div class="fs-2 mb-2">{{ sentence.s }}</div>
+																<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
+																<div class="border-top pt-1">{{ sentence.en }}</div>
+															</div>
+														</span>
+													
+													
+													</div>
+													<div class="play-audio icon fs-5">
+														<i class="bi bi-volume-up-fill"></i>
+														<audio>
+															<source v-if="!examples.audio.includes('http')" :src="'https://s3contents.chinesepod.com/grammar/grammar_'+exp.grammar.id+'/'+exp.grammar.id+'/expansion/translation/mp3/'+examples.audio" type="audio/mp3">
+															<source v-if="examples.audio.includes('http')" :src="examples.audio" type="audio/mp3">
+															Your browser does not support the audio element.
+														</audio>
+													</div>
+												</div>
+												<div class="translation-group fs-5">
+													<div class="pinyin-writing-main d-flex align-items-center justify-content-between">
+														<div class="pinyin-writing show-hide-txt my-3">
+															<span>...</span>
+															<span>{{ pinyinConvert(examples.p) }}</span>
+														</div>
+														<div class="icon toggle-show-hide fs-5">
+															<i class="bi bi-eye-slash-fill"></i>
+														</div>
+													</div>
+													<div class="english-translation-main d-flex align-items-center justify-content-between">
+														<div class="english-translation show-hide-txt">
+															<span>...</span>
+															<span>{{ examples.en }}</span>
+														</div>
+														<div class="icon toggle-show-hide fs-5">
+															<i class="bi bi-eye-slash-fill"></i>
+														</div>
+													</div>
+												</div>
+												<hr>
+											</div>
+											
+										</li>
+										
+									</ul>
+
+									<p v-if="!grammar" class="warning">Vocabulary not found</p>
 									
 								</div>
 							</div>

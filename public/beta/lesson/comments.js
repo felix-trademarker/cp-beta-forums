@@ -70,18 +70,18 @@ postcomment_form.onsubmit = (e) => {
     return false;
 }
 
-if (document.cookie.includes('true')) {
-    userImgePath = 'images/1.jpg';
-    let comment_avatar = document.querySelector('.comment-avatar');
-    comment_avatar.style.background = 'none';
-    let avatar_in_form_icon = ` <img class="avatar-img" src="${userImgePath}">`;
-    let avatar_in_form = document.querySelector('.avatar-in-form');
-    avatar_in_form.innerHTML = avatar_in_form_icon;
-} else {
-    let avatar_in_form_icon = ` <i class="bi bi-person-fill"></i>`;
-    let avatar_in_form = document.querySelector('.avatar-in-form');
-    avatar_in_form.innerHTML = avatar_in_form_icon;
-}
+// if (document.cookie.includes('true')) {
+//     userImgePath = 'images/1.jpg';
+//     let comment_avatar = document.querySelector('.comment-avatar');
+//     comment_avatar.style.background = 'none';
+//     let avatar_in_form_icon = ` <img class="avatar-img" src="${userImgePath}">`;
+//     let avatar_in_form = document.querySelector('.avatar-in-form');
+//     avatar_in_form.innerHTML = avatar_in_form_icon;
+// } else {
+//     let avatar_in_form_icon = ` <i class="bi bi-person-fill"></i>`;
+//     let avatar_in_form = document.querySelector('.avatar-in-form');
+//     avatar_in_form.innerHTML = avatar_in_form_icon;
+// }
 
 let addComments = () => {
     if (document.cookie.includes('true')) {
