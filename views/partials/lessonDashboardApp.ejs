@@ -18,6 +18,24 @@
             questions: {},
             course: {},
             comments: {},
+            choiceCard : true,
+            matchingCard: false,
+            reArrangeCard: false,
+            audioCard: false,
+            exerciseResult: false,
+            exerciseResultLoader: true,
+            choiceStep : 0,
+            matchingStep : 0,
+            rearrangeStep : 0,
+            dictationStep : 0,
+            matchEn : [],
+            matchHanzi : [],
+            matchAns : [],
+            audioAns: [],
+            exerciseResults: {
+                score: 0,
+                total: 0,
+            }
         },
         methods: {
 
@@ -45,11 +63,241 @@
                 return PinyinConverter.convert(pinyin);
             },
 
+            nextChoice: function(ndx,selectedChoice) {
+                console.log("ans",ndx,selectedChoice);
+                this.questions.choice[ndx].selectedChoice = selectedChoice;
+
+                this.choiceStep++
+                if (this.choiceStep >= this.questions.choice.length) {
+                    console.log("show next set of cards");
+                    this.choiceCard = false;
+                    this.matchingCard = true;
+                }
+            },
+
+            rumbleArray: function(arr, max) {
+                let ndxA, ndxB, ndxC;
+              
+                ndxA = Math.floor(Math.random() * (max + 1));
+                ndxB = Math.floor(Math.random() * (max + 1));
+                ndxC = Math.floor(Math.random() * (max + 1));
+                console.log(ndxA,ndxB,ndxC);
+                var tmp = arr[ndxA];
+                arr[ndxA] = arr[ndxB];
+                arr[ndxB] = tmp;
+
+                var tmp2 = arr[ndxA];
+                arr[ndxA] = arr[ndxC];
+                arr[ndxC] = tmp2;
+               
+
+                return arr;
+            },
+
+            setMatchq: function(id){
+                if (this.matchHanzi.length < 5) {
+                    console.log("ID>>",id);
+                    if (!this.matchHanzi.includes(id)) 
+                    this.matchHanzi.push(id)
+                    
+                } else {
+                    // abort selecttion show warning
+                }
+
+                console.log(this.matchHanzi);
+                this.nextReArrange()
+
+            },
+            setMatcha: function(id){
+                if (this.matchEn.length < 5) {
+                    console.log("ID>>",id);
+                    if (!this.matchEn.includes(id)) 
+                    this.matchEn.push(id)
+                } else {
+                    // abort selecttion show warning
+                }
+                console.log(this.matchEn);
+                this.nextReArrange()
+            },
+
+            nextReArrange : function () {
+
+                if (this.matchEn.length >= 5 && this.matchHanzi.length >= 5) {
+                    this.matchingStep++;
+                    console.log("next step", this.matchingStep);
+                    this.matchAns.push({
+                        'matchEn' : this.matchEn,
+                        'matchHanzi' : this.matchHanzi
+                    })
+
+                    this.matchEn = []
+                    this.matchHanzi = []
+                }
+
+                if (this.matchingStep >= this.questions.matching.length ) {
+                    this.reArrangeCard = true
+                    this.matchingCard = false
+
+                    $(".sortableList").sortable({
+                    revert: true,
+
+                    });
+
+                }
+            },
+
+            nextCardTallyOrder : function () {
+                this.rearrangeStep ++
+
+                if (this.rearrangeStep >= this.questions.rearrange.length) {
+                    this.audioCard = true
+                    this.reArrangeCard = false
+                }
+            },
+
+            nextAudio : function () {
+                this.dictationStep ++
+
+                if (this.dictationStep >= this.questions.audio.length) {
+                    this.audioCard = false
+                    this.exerciseResult = true
+                    this.showResults()
+                }
+            },
+
+            showResults : function () {
+                let this_ = this
+                console.log("fetching results");
+                // choice
+                if (this.questions && this.questions.choice)
+                this.questions.choice.forEach((choice)=> {
+                    if (choice.answer.id == choice.selectedChoice) {
+                        this_.exerciseResults.score += choice.score
+                    }
+
+                    this_.exerciseResults.total += choice.score
+                });
+
+                // matching type
+                if (this.questions && this.questions.matching){
+                    this.questions.matching.forEach((matching, ndx)=> {
+                        this_.exerciseResults.total += matching.score
+                    });
+
+                    this.matchAns.forEach((ans, ndx) => {
+                        ans.matchHanzi.forEach((hanziId, hanziNdx) => {
+                            if(hanziId == this.matchAns[ndx].matchEn[hanziNdx]) {
+                                this_.exerciseResults.score ++
+                            }
+                        });
+                    });
+                }
+
+                if (this.questions && this.questions.matching){
+                    this.questions.matching.forEach((matching, ndx)=> {
+                        this_.exerciseResults.total += matching.score
+                    });
+
+                    this.matchAns.forEach((ans, ndx) => {
+                        ans.matchHanzi.forEach((hanziId, hanziNdx) => {
+                            if(hanziId == this.matchAns[ndx].matchEn[hanziNdx]) {
+                                this_.exerciseResults.score ++
+                            }
+                        });
+                    });
+                }
+
+                // let reaarangeChildren = document.getElementById('list').children;
+                // reaarangeChildren.forEach((c, ndx) => {
+                //     console.log("segment ID === ", c.id);
+                // })
+
+                
+                this.exerciseResultLoader = false;
+
+            },
+
+            playAudio : function (id) {
+                let play_audio = document.getElementById(id);
+                play_audio.play();
+            },
+
+            setClassHanzi : function(id){
+            
+                let active=false;
+                let ndx = null;
+
+                if (this.matchHanzi.includes(id)) {
+                    active = true
+                    ndx = this.matchHanzi.findIndex(x => x === id);
+                    ndx = ndx+1
+                }
+
+                let data = {
+                    'selected': active,
+                    'btn-primary': active && ndx == 1, 
+                    'btn-success': active && ndx == 2, 
+                    'btn-info': active && ndx == 3, 
+                    'btn-warning': active && ndx == 4, 
+                    'btn-danger': active && ndx == 5
+                }
+
+                return data;
+                
+            },
+
+            setClassEn : function(id){
+            
+                let active=false;
+                let ndx = null;
+
+                if (this.matchEn.includes(id)) {
+                    active = true
+                    ndx = this.matchEn.findIndex(x => x === id);
+                    ndx = ndx+1
+                }
+
+                let data = {
+                    'selected': active,
+                    'btn-primary': active && ndx == 1, 
+                    'btn-success': active && ndx == 2, 
+                    'btn-info': active && ndx == 3, 
+                    'btn-warning': active && ndx == 4, 
+                    'btn-danger': active && ndx == 5
+                }
+
+                return data;
+            
+            },
+            dragstart : function (ev) {
+                ev.dataTransfer.effectAllowed = "move";
+                ev.dataTransfer.setData("srcId", ev.currentTarget.id);
+                ev.dataTransfer.setDragImage(ev.currentTarget, 0, 0);
+            },
+
+            dragend : function(ev) {
+                ev.dataTransfer.clearData("srcId");
+            },
+            
+            dragover : function(ev) {
+                ev.preventDefault();
+            },
+            
+            drop : function(ev, ndx) {
+                var srcId = ev.dataTransfer.getData("srcId");
+                var srcObj = document.getElementById(srcId)
+                if(srcObj != ev.currentTarget){
+                    var list = document.getElementById('list')
+                    list.insertBefore(srcObj, ev.currentTarget);
+                }
+            }
+
+            
         },
         computed: {
             fetchLessons: async function(){
                 this.lesson = await this.getAPIFetch('/api/v1/lessons/get-lesson?slug=<%= slug %>');
-
+                // this.lesson = {"id":"1670","title":"Asking Height and Weight","slug":"asking-height-and-weight","introduction":"Just by being a foreigner in China, you're a fair target for all sorts of personal questions.  So don't be surprised when you're asked how tall you are, or how much you weigh.  In this lesson, learn to answer these questions.  Remember: for personal questions like these, truth is optional.","hash_code":"02e7a24f936f36a5c290b8863db5f3cfdaff5053","image":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/images/3ls6s94iIcxyGbfnvXJVAg.jpg","type":"lesson","level":"Elementary","hosts":"Jason,Jenny","publication_timestamp":"2011-05-12T06:00:00.000Z","saved":false,"studied":false,"video":null,"mp3_dialogue":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/chinesepod_B1670dg.mp3","mp3_public":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/chinesepod_B1670pb.mp3","mp3_private":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/chinesepod_B1670pr.mp3","mp3_thefix":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/chinesepod_B1670rv.mp3","pdf1":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/pdf/chinesepod_B1670.pdf","pdf2":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/pdf/chinesepod_B1670trad.pdf","extra":false}
                 if (this.lesson && this.lesson.id) {
 
                     let courseId = '<%= courseId %>'
@@ -62,8 +310,10 @@
                     this.grammar = await this.getAPIFetch('/api/v1/lessons/get-grammar?lessonId='+this.lesson.id);
                     this.downloads = await this.getAPIFetch('/api/v1/lessons/get-downloads?lessonId='+this.lesson.id);
                     this.comments = await this.getAPIFetch('/api/v1/lessons/get-comments?lessonId='+this.lesson.id);
-                    // this.questions = await this.getAPIFetch('/api/v1/lessons/get-questions?lessonId='+this.lesson.id);
+                    this.questions = await this.getAPIFetch('/api/v1/lessons/get-questions?lessonId='+this.lesson.id);
 
+                    // this.questions = {"matching":[{"id":88103,"scope":"1670","score":5,"type_id":1,"status":1,"question":{"segments":[{"id":2,"s":"胖","t":"胖","p":"pàng","e":"fat"},{"id":3,"s":"重","t":"重","p":"zhòng","e":"heavy"},{"id":5,"s":"矮","t":"矮","p":"ǎi","e":"short"},{"id":1,"s":"轻","t":"輕","p":"qīng","e":"light"},{"id":4,"s":"高","t":"高","p":"gāo","e":"tall"}]},"createdAt":"2011-05-04T01:59:46.000Z"},{"id":88104,"scope":"1670","score":5,"type_id":1,"status":1,"question":{"segments":[{"id":3,"s":"公斤","t":"公斤","p":"gōngjīn","e":"kilogram"},{"id":1,"s":"大概","t":"大概","p":"dàgài","e":"approximately"},{"id":2,"s":"斤","t":"斤","p":"jīn","e":"half a kilogram"},{"id":4,"s":"米","t":"米","p":"mǐ","e":"meter"},{"id":5,"s":"别","t":"別","p":"bié","e":"don't"}]},"createdAt":"2011-05-04T01:59:46.000Z"},{"id":88105,"scope":"1670","score":5,"type_id":1,"status":1,"question":{"segments":[{"id":3,"s":"多重","t":"多重","p":"duō zhòng","e":"how heavy"},{"id":4,"s":"瘦","t":"瘦","p":"shòu","e":"thin"},{"id":5,"s":"多高","t":"多高","p":"duō gāo","e":"how tall"},{"id":2,"s":"这么","t":"這麼","p":"zhème","e":"so, this"},{"id":1,"s":"吓死","t":"嚇死","p":"xià sǐ","e":"to scare to death"}]},"createdAt":"2011-05-04T01:59:46.000Z"}],"audio":[{"id":88121,"scope":"1670","score":1,"type_id":4,"status":1,"question":{"audio":"http://s3.amazonaws.com/chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/64/chinesepod_5844_expansion_82233_prototype_58866_12099_75682_25239_6187_68026.mp3"},"answer":{"s":"她大概一百一十斤。","t":"她大概一百一十斤。","p":"tā dàgài yībǎi yīshí jīn.","e":"She's about 1 hundred and 16 jin."},"createdAt":"2011-05-04T03:36:30.000Z"},{"id":88122,"scope":"1670","score":1,"type_id":4,"status":1,"question":{"audio":"http://s3.amazonaws.com/chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/64/chinesepod_5844_expansion_82238_prototype_103817_193680.mp3"},"answer":{"s":"苹果多少钱一公斤？","t":"蘋果多少錢一公斤？","p":"píngguǒ duōshǎo qián yī gōngjīn?","e":"How much is one kilogram of apples?"},"createdAt":"2011-05-04T03:36:30.000Z"},{"id":88123,"scope":"1670","score":1,"type_id":4,"status":1,"question":{"audio":"http://s3.amazonaws.com/chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/64/chinesepod_5844_expansion_82227_prototype_159001_43863.mp3"},"answer":{"s":"公园的树很高。","t":"公園的樹很高。","p":"gōngyuán de shù hěn gāo.","e":"The trees in the park are really tall."},"createdAt":"2011-05-04T03:36:30.000Z"},{"id":88124,"scope":"1670","score":1,"type_id":4,"status":1,"question":{"audio":"http://s3.amazonaws.com/chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/64/chinesepod_5844_expansion_82237_prototype_4352_24068.mp3"},"answer":{"s":"往前走五百米。","t":"往前走五百米。","p":"wǎng qián zǒu wǔbǎi mǐ.","e":"Walk forward for 500 meters."},"createdAt":"2011-05-04T03:36:30.000Z"}],"choice":[{"id":88111,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"往前走五百_____。","t":"往前走五百_____。","p":"wǎng qián zǒu wǔbǎi _____.","choices":[{"id":1,"s":"重","t":"重","p":"zhòng","e":"heavy"},{"id":2,"s":"一下","t":"一下","p":"yīxià","e":"a bit"},{"id":3,"s":"长","t":"長","p":"cháng","e":"long"},{"id":4,"s":"米","t":"米","p":"mǐ","e":"meter"}]},"answer":{"id":4,"s":"往前走五百米。","t":"往前走五百米。","p":"往前走五百米。","e":"Walk forward for 500 meters."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88112,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"现在_____五点钟。","t":"現在_____五點鐘。","p":"xiànzài _____ wǔ diǎnzhōng.","choices":[{"id":1,"s":"这么","t":"這麼","p":"zhème","e":"this"},{"id":2,"s":"一半","t":"一半","p":"yíbàn","e":"one half"},{"id":3,"s":"大概","t":"大概","p":"dàgài","e":"approximately"},{"id":4,"s":"别","t":"別","p":"bié","e":"don't"}]},"answer":{"id":3,"s":"现在大概五点钟。","t":"现在大概五点钟。","p":"现在大概五点钟。","e":"It's about 5 o'clock right now."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88113,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"她_____一百一十斤。","t":"她_____一百一十斤。","p":"tā _____ yībǎi yīshí jīn.","choices":[{"id":1,"s":"大概","t":"大概","p":"dàgài","e":"approximately"},{"id":2,"s":"多高","t":"多高","p":"duō gāo","e":"how tall"},{"id":3,"s":"可以","t":"可以","p":"kěyǐ","e":"to be able to, can"},{"id":4,"s":"多少","t":"多少","p":"duōshǎo","e":"to some extent"}]},"answer":{"id":1,"s":"她大概一百一十斤。","t":"她大概一百一十斤。","p":"她大概一百一十斤。","e":"She's about 1 hundred and 16 jin."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88114,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"一_____二以下的孩子不用买票。","t":"一_____二以下的孩子不用買票。","p":"yī _____ èr yǐxià de háizi bùyòng mǎi piào.","choices":[{"id":1,"s":"米","t":"米","p":"mǐ","e":"meter"},{"id":2,"s":"瘦","t":"瘦","p":"shòu","e":"skinny, thin"},{"id":3,"s":"斤","t":"斤","p":"jīn","e":"half a kilogram"},{"id":4,"s":"轻","t":"輕","p":"qīng","e":"light"}]},"answer":{"id":1,"s":"一米二以下的孩子不用买票。","t":"一米二以下的孩子不用买票。","p":"一米二以下的孩子不用买票。","e":"Children below 1.2 meters don't have to buy tickets."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88115,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"你儿子多_____？","t":"你兒子多_____？","p":"nǐ érzi duō _____?","choices":[{"id":1,"s":"公斤","t":"公斤","p":"gōngjīn","e":"kilogram"},{"id":2,"s":"矮","t":"矮","p":"ǎi","e":"short (of height)"},{"id":3,"s":"长","t":"長","p":"cháng","e":"long"},{"id":4,"s":"重","t":"重","p":"zhòng","e":"heavy"}]},"answer":{"id":4,"s":"你儿子多重？","t":"你儿子多重？","p":"你儿子多重？","e":"How much does your son weigh?"},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88116,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"五块钱一斤，也就是十块钱一_____。","t":"五塊錢一斤，也就是十塊錢一_____。","p":"wǔ kuàiqián yī jīn,yějiùshì shí kuàiqián yī _____.","choices":[{"id":1,"s":"胖","t":"胖","p":"pàng","e":"fat"},{"id":2,"s":"公斤","t":"公斤","p":"gōngjīn","e":"kilogram"},{"id":3,"s":"可能","t":"可能","p":"kěnéng","e":"possible"},{"id":4,"s":"大概","t":"大概","p":"dàgài","e":"roughly"}]},"answer":{"id":2,"s":"五块钱一斤，也就是十块钱一公斤。","t":"五块钱一斤，也就是十块钱一公斤。","p":"五块钱一斤，也就是十块钱一公斤。","e":"Five kuai for one jin means it's ten kuai for one kilogram."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88117,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"我买了五_____大米。","t":"我買了五_____大米。","p":"wǒ mǎi le wǔ _____ dàmǐ.","choices":[{"id":1,"s":"个","t":"個","p":"gè","e":"measure word"},{"id":2,"s":"条","t":"條","p":"tiáo","e":"[measure word]"},{"id":3,"s":"公斤","t":"公斤","p":"gōngjīn","e":"kilogram"},{"id":4,"s":"根","t":"根","p":"gēn","e":"[measure word]"}]},"answer":{"id":3,"s":"我买了五公斤大米。","t":"我买了五公斤大米。","p":"我买了五公斤大米。","e":"I bought five kilograms of rice."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88118,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"我的行李很_____。","t":"我的行李很_____。","p":"wǒ de xíngli hěn _____.","choices":[{"id":1,"s":"瘦","t":"瘦","p":"shòu","e":"thin"},{"id":2,"s":"胖","t":"胖","p":"pàng","e":"fat"},{"id":3,"s":"重","t":"重","p":"zhòng","e":"heavy"},{"id":4,"s":"找","t":"找","p":"zhǎo","e":"to look for"}]},"answer":{"id":3,"s":"我的行李很重。","t":"我的行李很重。","p":"我的行李很重。","e":"My luggage is really heavy."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88119,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"他多_____？","t":"他多_____？","p":"tā duō _____?","choices":[{"id":1,"s":"吓","t":"嚇","p":"xià","e":"to frighten"},{"id":2,"s":"斤","t":"斤","p":"jīn","e":"half a kilogram"},{"id":3,"s":"很","t":"很","p":"hěn","e":"very"},{"id":4,"s":"高","t":"高","p":"gāo","e":"tall"}]},"answer":{"id":4,"s":"他多高？","t":"他多高？","p":"他多高？","e":"How tall is he?"},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88120,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"他_____三十岁。","t":"他_____三十歲。","p":"tā _____ sānshí suì.","choices":[{"id":1,"s":"大概","t":"大概","p":"dàgài","e":"approximately"},{"id":2,"s":"这么","t":"這麼","p":"zhème","e":"so, this"},{"id":3,"s":"多高","t":"多高","p":"duō gāo","e":"how tall"},{"id":4,"s":"多久","t":"多久","p":"duōjiǔ","e":"how long"}]},"answer":{"id":1,"s":"他大概三十岁。","t":"他大概三十岁。","p":"他大概三十岁。","e":"He's about 30 years old."},"createdAt":"2011-05-04T01:59:49.000Z"}],"rearrange":[{"id":88106,"scope":"1670","score":6,"type_id":2,"status":1,"question":{"segments":[{"s":"你多高？","t":"你多高？","p":"nǐ duō gāo?","e":"How tall are you?","id":1},{"s":"一米七八。","t":"一米七八。","p":"yī mǐ qī bā.","e":"1 meter and 78 centimeters.","id":2},{"s":"多重？","t":"多重？","p":"duō zhòng?","e":"How heavy?","id":3},{"s":"大概一百二十公斤。","t":"大概一百二十公斤。","p":"dàgài yībǎi èrshí gōngjīn.","e":"About 120 kilograms.","id":4},{"s":"啊？你这么胖？","t":"啊？你這麼胖？","p":"ǎ?nǐ zhème pàng?","e":"Huh? You're that fat?","id":5},{"s":"哦，不对，不对。是六十公斤，一百二十斤。","t":"哦，不對，不對。是六十公斤，一百二十斤。","p":"ò,bù duì,bù duì.shì liùshí gōngjīn,yībǎi èrshí jīn.","e":"Oh, no. That's not right. I'm 60 kilograms and 120 jin.","id":6},{"s":"哎哟，你别吓死我！","t":"哎喲，你別嚇死我！","p":"āiyōu,nǐ bié xiàsǐ wǒ!","e":"Gosh, don't scare me!","id":7}]},"createdAt":"2011-05-04T01:59:46.000Z"}]}
+                    // console.log(this.questions);
                     let toggle_show_hide = document.querySelectorAll('.toggle-show-hide');
 
                     toggle_show_hide.forEach((toggle, i) => {
@@ -124,6 +374,8 @@
                 }
             },
 
+            
+
         }
 
     })
@@ -131,8 +383,8 @@
     lessonDashboardApp.fetchLessons
 
     function printStrokePoints(data) {
-    var pointStrs = data.drawnPath.points.map((point) => `{x: ${point.x}, y: ${point.y}}`);
-    console.log(`[${pointStrs.join(', ')}]`);
+        var pointStrs = data.drawnPath.points.map((point) => `{x: ${point.x}, y: ${point.y}}`);
+        console.log(`[${pointStrs.join(', ')}]`);
     }
 
     window.onload = function () {
@@ -161,7 +413,19 @@
 
         })
 
+        
+
 
     };
+
+    // test drag
+    // $(document).ready(function () {
+    //     $(".sortableList").sortable({
+    //     revert: true,
+
+    //     });
+    // })
+
+    
 
 </script>

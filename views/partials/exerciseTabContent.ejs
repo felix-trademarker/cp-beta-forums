@@ -1,0 +1,94 @@
+<div v-if="questions.choice" class="">
+    <div v-if="choiceCard" class="exer-choice">
+        <p>CHOOSE THE RIGHT OPTION<br>1 POINT</p>
+        <div v-for="(ndx, q) in questions.choice" v-if="ndx == choiceStep" class="choice-q">
+            <h5>{{ q.question.t }}</h5>
+            <h6>{{ q.question.p }}</h6>
+            <ul class="exe-options">
+                <li v-for="choices in q.question.choices"  >
+                    <button @click="nextChoice(ndx,choices.id)" class="btn btn-info">{{ choices.t }} <br>{{ choices.p }}</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div v-if="matchingCard" class="">
+        <p class="text-center">MATCH THE PHRASE WITH THE TRANSLATION<br>5 POINT</p>
+        <div v-for="(ndx, m) in questions.matching" v-if="ndx == matchingStep" class="exer-matching">
+
+            <ul>
+                <li  v-for="matching in rumbleArray(m.question.segments,m.question.segments.length)" v-if="matching.id"  >
+                    <button v-bind:class="setClassHanzi( matching.id )" class="btn" @click="setMatchq(matching.id)">{{ matching.t }}<br>{{ matching.p }}</button>
+                </li>
+            </ul>
+
+            <ul>
+                <li v-for="matching in rumbleArray(m.question.segments,m.question.segments.length)" v-if="matching.id" >
+                    <button v-bind:class="setClassEn( matching.id )" @click="setMatcha(matching.id)" class="btn">{{ matching.e }}</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div v-if="reArrangeCard" class="">
+        <p class="text-center">RE-ORDER THE SEGMENTS<br>6 POINT</p>
+        <div v-for="(ndx, r) in questions.rearrange" v-if="ndx == rearrangeStep" :class="'choice-q'+ndx">
+
+            <div>
+                <ul id="list" class='sortableList rearrange-list'>
+                    <li v-for="segments in rumbleArray(r.question.segments)" :id='segments.id' draggable @dragstart="dragstart($event)" @drop="drop($event,ndx)" @dragover.prevent @dragenter.prevent>
+                        <div class="card-body row">
+                            <div class="col-2 col-sm-1">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <i class="text-lg bi bi-arrows-alt-v"></i>
+                                        <i class="text-lg bi bi-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-10 col-sm-11">
+                                <span class="characters">{{ segments.t }}</span>
+                                <footer class="pinyin">{{ segments.p }}</footer>
+                            </div>
+                            
+                        </div>
+                    </li>
+                </ul>
+
+                <input type="button" class="btn btn-primary" value="Next Exercise" @click="nextCardTallyOrder">
+            </div>
+        </div>
+    </div>
+
+    <div v-if="audioCard" class="">
+        <div v-for="(ndx, audio) in questions.audio" v-if="ndx == dictationStep" :class="'choice-q'+ndx">
+
+            <div class="form-group">
+                <div class="play-audio icon fs-5">
+                    <i @click="playAudio('audio-'+ndx+'-'+audio.question.id)" class="vol-ico bi bi-volume-up-fill"></i>
+                    <input v-model="audioAns[ndx]" type="text" class="form-control audioInput">
+                    <audio :id="'audio-'+ndx+'-'+audio.question.id">
+                        <source :src="audio.question.audio" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+
+                <p>To type in Chinese, you'll need to first install a Chinese keyboard on your phone or computer. To write in Pinyin, you can use an English keyboard and use numbers for tones. e.g. ni3hao3</p>
+                
+                
+                <input type="button"  class="btn btn-primary" value="Next Exercise" @click="nextAudio">
+            </div>
+        </div>
+    </div>
+
+    <div v-if="exerciseResult" class="">
+        <div v-if="exerciseResultLoader" class="">
+            <h2>Please wait while evaluating results...</h2>
+        </div>
+        <div v-if="!exerciseResultLoader" class="">
+            <h4>Show Results</h4>
+            <p>Total Score: {{exerciseResults.score}} / {{exerciseResults.total}}</p>
+        </div>
+    </div>
+
+</div>

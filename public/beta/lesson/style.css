@@ -364,3 +364,73 @@ button.active{
     --bs-text-opacity: 1;
     color: #fff !important;
 }
+
+/* EXERCISE STYLES */
+.exer-choice{
+    text-align: center;
+}
+
+.exer-choice .exe-options{
+    padding: 0;
+    margin: 0;
+}
+
+.exer-choice .exe-options li{
+    list-style: none;
+    width: 40%;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.exer-choice .exe-options li button{
+    width: 90%;
+
+}
+
+.exer-matching{
+    display: flex;
+    justify-content: space-around;
+}
+
+.exer-matching ul{
+    margin: 0;
+    padding: 0;
+    width: 45%;
+}
+
+.exer-matching ul li{
+    display: block;
+    /* padding: 20px; */
+    margin-bottom: 20px;
+}
+
+.exer-matching ul li button{
+    width: 100%;
+}
+
+.rearrange-list{
+    margin: 0;
+    padding: 0;
+}
+
+.rearrange-list li{
+    list-style: none;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    background: #e9ecef;
+}
+
+.play-audio{
+    position: relative;
+}
+
+.play-audio .vol-ico{
+    position: absolute;
+    left: 7px;
+    top: 9px;
+}
+
+.play-audio .audioInput{
+    padding-left: 30px;
+}

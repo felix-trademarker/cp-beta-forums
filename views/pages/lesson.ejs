@@ -179,6 +179,8 @@
 							
 							<button class="nav-link" id="nav-grammar-tab" data-bs-toggle="tab" data-bs-target="#nav-grammar" type="button" role="tab" aria-controls="nav-grammar" aria-selected="false">Grammar</button>
 
+							<button class="nav-link" id="nav-exercise-tab" data-bs-toggle="tab" data-bs-target="#nav-exercise" type="button" role="tab" aria-controls="nav-exercise" aria-selected="false">Exercise</button>
+
 							<button class="nav-link" id="nav-comments-tab" data-bs-toggle="tab" data-bs-target="#nav-comments" type="button" role="tab" aria-controls="nav-comments" aria-selected="true">Comments</button>
 
 							<button class="nav-link" id="nav-downloads-tab" data-bs-toggle="tab" data-bs-target="#nav-downloads" type="button" role="tab" aria-controls="nav-downloads" aria-selected="false">Downloads</button>
@@ -408,6 +410,17 @@
 									</ul>
 
 									<p v-if="!grammar" class="warning">Vocabulary not found</p>
+									
+								</div>
+							</div>
+
+						</div>
+
+						<div class="tab-pane fade" id="nav-exercise" role="tabpanel" aria-labelledby="nav-exercise-tab">
+							<div class="exercise-main">
+								<div class="exercise py-3">
+									
+									<%- include('../partials/exerciseTabContent'); %>
 									
 								</div>
 							</div>
