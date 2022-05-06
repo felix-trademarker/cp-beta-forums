@@ -48,8 +48,8 @@ input[type="submit"]:hover {
 }
 
 .main-content {
-    max-width: 1400px;
-    margin: auto;
+    /* max-width: 1400px;
+    margin: auto; */
 }
 
 .in-main-content {
