@@ -69,7 +69,7 @@
 
                 this.choiceStep++
                 if (this.choiceStep >= this.questions.choice.length) {
-                    console.log("show next set of cards");
+                    console.log("show next set of cards",this.questions);
                     this.choiceCard = false;
                     this.matchingCard = true;
                 }
@@ -138,10 +138,7 @@
                     this.reArrangeCard = true
                     this.matchingCard = false
 
-                    $(".sortableList").sortable({
-                    revert: true,
-
-                    });
+                    
 
                 }
             },
@@ -177,6 +174,7 @@
 
                     this_.exerciseResults.total += choice.score
                 });
+                console.log("compute matching");
 
                 // matching type
                 if (this.questions && this.questions.matching){
@@ -193,24 +191,38 @@
                     });
                 }
 
-                if (this.questions && this.questions.matching){
-                    this.questions.matching.forEach((matching, ndx)=> {
-                        this_.exerciseResults.total += matching.score
-                    });
 
-                    this.matchAns.forEach((ans, ndx) => {
-                        ans.matchHanzi.forEach((hanziId, hanziNdx) => {
-                            if(hanziId == this.matchAns[ndx].matchEn[hanziNdx]) {
-                                this_.exerciseResults.score ++
-                            }
-                        });
-                    });
+                // total rearrange
+                if (this_.questions && this_.questions.rearrange) {
+
+                    let reorders = document.querySelectorAll(".rearrange-list");
+                    reorders.forEach((reorder, i) => {
+                        this_.exerciseResults.total += this_.questions.rearrange[i].score
+                        let children = [...reorder.children]
+                        let score = 0;
+                        children.forEach((c, ndx) => {
+                            if (ndx+1 == c.id) score++
+                        })
+
+                        if (score > 0) this_.exerciseResults.score += (score-1)
+                    })
                 }
 
-                // let reaarangeChildren = document.getElementById('list').children;
-                // reaarangeChildren.forEach((c, ndx) => {
-                //     console.log("segment ID === ", c.id);
-                // })
+                // total audio
+                if (this_.questions && this_.questions.audio) {
+                    this_.questions.audio.forEach((audio,i) => {
+                        this_.exerciseResults.total += audio.score
+
+                        if (   ( this_.audioAns[i] && audio.answer.e.trim() === this_.audioAns[i].trim()) 
+                            || ( this_.audioAns[i] && audio.answer.p.trim() === this_.pinyinConvert(this_.audioAns[i].trim()) )
+                            || ( this_.audioAns[i] && audio.answer.t.trim() === this_.audioAns[i].trim())
+                            || ( this_.audioAns[i] && audio.answer.s.trim() === this_.audioAns[i].trim())
+                        ) {
+                            this_.exerciseResults.score += audio.score
+                        }
+                    })
+                }
+ 
 
                 
                 this.exerciseResultLoader = false;
@@ -268,28 +280,6 @@
 
                 return data;
             
-            },
-            dragstart : function (ev) {
-                ev.dataTransfer.effectAllowed = "move";
-                ev.dataTransfer.setData("srcId", ev.currentTarget.id);
-                ev.dataTransfer.setDragImage(ev.currentTarget, 0, 0);
-            },
-
-            dragend : function(ev) {
-                ev.dataTransfer.clearData("srcId");
-            },
-            
-            dragover : function(ev) {
-                ev.preventDefault();
-            },
-            
-            drop : function(ev, ndx) {
-                var srcId = ev.dataTransfer.getData("srcId");
-                var srcObj = document.getElementById(srcId)
-                if(srcObj != ev.currentTarget){
-                    var list = document.getElementById('list')
-                    list.insertBefore(srcObj, ev.currentTarget);
-                }
             }
 
             
@@ -417,6 +407,14 @@
 
 
     };
+
+
+	$( function() {
+		$( ".rearrange-list" ).sortable({
+			revert: true
+		});
+	} );
+	
 
     // test drag
     // $(document).ready(function () {

@@ -1,7 +1,16 @@
-<div v-if="questions.choice" class="">
-    <div v-if="choiceCard" class="exer-choice">
+    <div :class="exerciseResult ? 'd-block':'d-none'">
+        <div v-if="exerciseResultLoader" class="">
+            <h2>Please wait while evaluating results...</h2>
+        </div>
+        <div v-if="!exerciseResultLoader" class="">
+            <h4>Show Results</h4>
+            <p>Total Score: {{exerciseResults.score}} / {{exerciseResults.total}}</p>
+        </div>
+    </div>
+
+    <div :class="choiceCard || exerciseResult ? 'exer-choice d-block':'exer-choice d-none'">
         <p>CHOOSE THE RIGHT OPTION<br>1 POINT</p>
-        <div v-for="(ndx, q) in questions.choice" v-if="ndx == choiceStep" class="choice-q">
+        <div v-for="(ndx, q) in questions.choice" :class="ndx == choiceStep || exerciseResult ? 'd-block choice-q' : 'd-none choice-q'">
             <h5>{{ q.question.t }}</h5>
             <h6>{{ q.question.p }}</h6>
             <ul class="exe-options">
@@ -9,42 +18,46 @@
                     <button @click="nextChoice(ndx,choices.id)" class="btn btn-info">{{ choices.t }} <br>{{ choices.p }}</button>
                 </li>
             </ul>
+            <p v-if="exerciseResult">Answer: {{ q.answer.t }}</p>
+            <hr>
         </div>
     </div>
 
-    <div v-if="matchingCard" class="">
+    <div :class="matchingCard || exerciseResult ? 'd-block':'d-none'">
         <p class="text-center">MATCH THE PHRASE WITH THE TRANSLATION<br>5 POINT</p>
-        <div v-for="(ndx, m) in questions.matching" v-if="ndx == matchingStep" class="exer-matching">
+        <div v-for="(ndx, m) in questions.matching" :class="(ndx == matchingStep || exerciseResult ? 'd-block exer-matching':'d-none exer-matching')">
 
-            <ul>
+            <ul style="float:left">
                 <li  v-for="matching in rumbleArray(m.question.segments,m.question.segments.length)" v-if="matching.id"  >
-                    <button v-bind:class="setClassHanzi( matching.id )" class="btn" @click="setMatchq(matching.id)">{{ matching.t }}<br>{{ matching.p }}</button>
+                    <button v-bind:class="setClassHanzi( matching.id )" class="btn" @click="setMatchq(matching.id)">{{ matching.t }}<br>{{ matching.p }} <span class="answer" v-if="exerciseResult">({{ matching.id }})</span></button>
                 </li>
             </ul>
 
-            <ul>
+            <ul style="float:right">
                 <li v-for="matching in rumbleArray(m.question.segments,m.question.segments.length)" v-if="matching.id" >
-                    <button v-bind:class="setClassEn( matching.id )" @click="setMatcha(matching.id)" class="btn">{{ matching.e }}</button>
+                    <button v-bind:class="setClassEn( matching.id )" @click="setMatcha(matching.id)" class="btn">{{ matching.e }} <span class="answer" v-if="exerciseResult">({{ matching.id }})</span></button>
                 </li>
             </ul>
+            <div style="clear:both"></div>
+            <hr>
         </div>
     </div>
 
-    <div v-if="reArrangeCard" class="">
+    <div id="rearrange-block" :class="reArrangeCard || exerciseResult ? 'exer-choice d-block':'exer-choice d-none'">
         <p class="text-center">RE-ORDER THE SEGMENTS<br>6 POINT</p>
-        <div v-for="(ndx, r) in questions.rearrange" v-if="ndx == rearrangeStep" :class="'choice-q'+ndx">
+        <div v-for="(ndx, r) in questions.rearrange" :class="ndx == rearrangeStep || exerciseResult ? 'd-block':'d-none'">
 
             <div>
-                <ul id="list" class='sortableList rearrange-list'>
-                    <li v-for="segments in rumbleArray(r.question.segments)" :id='segments.id' draggable @dragstart="dragstart($event)" @drop="drop($event,ndx)" @dragover.prevent @dragenter.prevent>
+                <ul :id="'list-'+r.id" class="ui-sortable rearrange-list">
+    
+                    <li v-for="segments in rumbleArray(r.question.segments)" 
+                        :id='segments.id' 
+                        class="ui-state-default ui-sortable-handle"
+                    >
                         <div class="card-body row">
                             <div class="col-2 col-sm-1">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <i class="text-lg bi bi-arrows-alt-v"></i>
-                                        <i class="text-lg bi bi-bars"></i>
-                                    </div>
-                                </div>
+                                <span class="answer" v-if="exerciseResult">({{ segments.id }})</span>
+                                <i style="font-size:32px; position: relative;top: 10px;" class="bi bi-arrows-move"></i>
                             </div>
                             <div class="col-10 col-sm-11">
                                 <span class="characters">{{ segments.t }}</span>
@@ -53,15 +66,18 @@
                             
                         </div>
                     </li>
+
                 </ul>
 
-                <input type="button" class="btn btn-primary" value="Next Exercise" @click="nextCardTallyOrder">
+
+                <input v-if="!exerciseResult" type="button" class="btn btn-primary" value="Next Exercise" @click="nextCardTallyOrder">
             </div>
+            <hr>
         </div>
     </div>
 
-    <div v-if="audioCard" class="">
-        <div v-for="(ndx, audio) in questions.audio" v-if="ndx == dictationStep" :class="'choice-q'+ndx">
+    <div :class="audioCard || exerciseResult ? 'd-block':'d-none'">
+        <div v-for="(ndx, audio) in questions.audio" :class="ndx == dictationStep || exerciseResult ? 'd-block':'d-none'">
 
             <div class="form-group">
                 <div class="play-audio icon fs-5">
@@ -73,22 +89,22 @@
                     </audio>
                 </div>
 
-                <p>To type in Chinese, you'll need to first install a Chinese keyboard on your phone or computer. To write in Pinyin, you can use an English keyboard and use numbers for tones. e.g. ni3hao3</p>
+                <p v-if="!exerciseResult">To type in Chinese, you'll need to first install a Chinese keyboard on your phone or computer. To write in Pinyin, you can use an English keyboard and use numbers for tones. e.g. ni3hao3</p>
+                <p v-if="exerciseResult">
+                    <span class="answer">English: {{ audio.answer.e }}</span>
+                    <span class="answer">Pinyin: {{ audio.answer.p }}</span>
+                    <span class="answer">Traditional: {{ audio.answer.t }}</span>
+                    <span class="answer">Simplified: {{ audio.answer.s }}</span>
+                </p>
                 
                 
-                <input type="button"  class="btn btn-primary" value="Next Exercise" @click="nextAudio">
+                <input v-if="!exerciseResult" type="button"  class="btn btn-primary" value="Next Exercise" @click="nextAudio">
             </div>
+            
         </div>
     </div>
 
-    <div v-if="exerciseResult" class="">
-        <div v-if="exerciseResultLoader" class="">
-            <h2>Please wait while evaluating results...</h2>
-        </div>
-        <div v-if="!exerciseResultLoader" class="">
-            <h4>Show Results</h4>
-            <p>Total Score: {{exerciseResults.score}} / {{exerciseResults.total}}</p>
-        </div>
-    </div>
 
-</div>
+
+
+

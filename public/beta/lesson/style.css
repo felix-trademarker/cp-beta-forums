@@ -434,3 +434,10 @@ button.active{
 .play-audio .audioInput{
     padding-left: 30px;
 }
+
+span.answer {
+    display: block;
+    color: #007bff;
+    font-style: italic;
+    font-weight: 600;
+}
