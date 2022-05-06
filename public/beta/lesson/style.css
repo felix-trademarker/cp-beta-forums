@@ -1,39 +1,5 @@
-:root {
-    --accent-color: #e1001e;
-}
-
-/* body {
-    background: #f8f9fe !important;
-} */
 
 
-.nav-link {
-    color: var(--accent-color) !important;
-    text-decoration: none !important;
-}
-
-a {
-    color: #2487C1 !important;
-    text-decoration: none !important;
-}
-
-.card a {
-    color: #212529 !important;
-    text-decoration: none;
-}
-
-.nav-link.active {
-    color: #fff !important;
-}
-
-.primary-btn {
-    background: var(--accent-color) !important;
-}
-
-button,
-input[type="submit"] {
-    box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%) !important;
-}
 
 .save__button {
     width: 100%;
@@ -76,8 +42,8 @@ input[type="submit"]:hover {
 }
 
 .main-content {
-    max-width: 1400px;
-    margin: auto;
+    /* max-width: 1400px; */
+    /* margin: auto; */
 }
 
 .in-main-content {
