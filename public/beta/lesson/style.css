@@ -434,3 +434,7 @@ span.answer {
     box-shadow: none !important;
     color: #fff;
 }
+
+.in-this-lesson{
+    margin-bottom: 30px;
+}
