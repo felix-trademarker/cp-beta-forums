@@ -21,7 +21,7 @@
 					<button @click="saveLesson" type="button" v-bind:class="{is-active: lesson.saved}" class="btn w-100 bg-white">
 						<strong>Save</strong>
 					</button>
-					<button @click="studyCompleted" type="button" v-bind:class="{is-active: (lesson.studied > 0 ? false : true)}" class="btn w-100 text-white">
+					<button @click="studyCompleted" type="button" v-bind:class="{is-active: (lesson.studied > 0 ? false : true)}" class="btn w-100 bg-white">
 						<strong>Complete</strong>
 					</button>
 				</div>
