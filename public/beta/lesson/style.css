@@ -420,7 +420,7 @@ span.answer {
     font-weight: 600;
 }
 
-.isactive, .active {
+.isactive {
     background-color: #e11e1d !important;
     color: #fff;
 }
