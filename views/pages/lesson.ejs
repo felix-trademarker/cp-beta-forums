@@ -189,15 +189,25 @@
 					<div class="tab-content" id="nav-tabContent">
 						<div class="tab-pane fade show active" id="nav-dialogue" role="tabpanel" aria-labelledby="nav-profile-tab">
 							<div class="dialogue-main">
+								
 								<div class="dialogue py-3">
+									<div class="mb-3">
+										<button type="button" class="btn d-block float-right btn-default btn-sm"><i class="fas fa-print"></i> Print</button>
+										<button type="button" @click="setCharset('simplified')" v-if="vuex.userInfo.charSet == 'traditional'" class="btn float-right btn-default btn-sm">Simp: 汉字</button>
+										<button type="button" @click="setCharset('traditional')" v-if="vuex.userInfo.charSet == 'simplified'" class="btn float-right btn-default btn-sm">Trad: 漢字</button>
+										<h2 class="h2">Dialogue</h2>
+									</div>
+				
 									<ul v-if="dialogue" class="list-group d-block d-sm-flex w-100 list-group-horizontal" style="flex-wrap: wrap;">
 										<li v-for="dia in dialogue.dialogue" class="list-group-item w-50 w-md-50 p-4" style="border-width:1px !important">
 											<div class="mandarin-chars-main d-flex align-items-center justify-content-between">
 												<div class="mandarin-chars">
 													<span v-for="sentence in dia.sentence" v-if="sentence.s" class="mandarin-char position-relative">
-														<span class="fs-2">{{ sentence.s }}</span>
+														<span class="fs-2" v-if="vuex.userInfo.charSet == 'simplified'">{{ sentence.s }}</span>
+														<span class="fs-2" v-if="vuex.userInfo.charSet == 'traditional'">{{ sentence.t }}</span>
 														<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
-															<div class="fs-2 mb-2">{{ sentence.s }}</div>
+															<div v-if="vuex.userInfo.charSet == 'simplified'" class="fs-2 mb-2">{{ sentence.s }}</div>
+															<div v-if="vuex.userInfo.charSet == 'traditional'" class="fs-2 mb-2">{{ sentence.t }}</div>
 															<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
 															<div class="border-top pt-1">{{ sentence.en }}</div>
 														</div>
