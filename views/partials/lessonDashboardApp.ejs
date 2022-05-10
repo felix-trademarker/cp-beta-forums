@@ -92,7 +92,7 @@
 
                 this.lesson.studied = this.lesson.studied > 0 ? 0 : 1;
 
-                let toogleSave = await this.postAPIFetch("https://www.chinesepod.com/api/v1/dashboard/toggle-studied")
+                let toogleSave = await this.postAPIFetch("https://www.chinesepod.com/api/v1/dashboard/toggle-studied", params)
             },
 
             saveLesson: async function() {
@@ -104,7 +104,7 @@
 
                 this.lesson.saved = !this.lesson.saved
 
-                let toogleSave = await this.postAPIFetch("https://www.chinesepod.com/api/v1/dashboard/toggle-saved")
+                let toogleSave = await this.postAPIFetch("https://www.chinesepod.com/api/v1/dashboard/toggle-saved", params)
             },
 
             pinyinConvert: function(pinyin) {
