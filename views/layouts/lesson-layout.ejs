@@ -450,10 +450,10 @@
         <link rel="stylesheet" href="/beta/lesson/comments.css">
     </head>
 <body class="g-sidenav-pinned g-sidenav-show">
-    <div class="wrapper">
+    <div id="lessonDashboardApp" class="wrapper">
         <%- include('../partials/side-name'); %>
 
-        <div id="lessonDashboardApp" class="main-content">
+        <div  class="main-content">
             <div class="content">
                <nav class="navbar navbar-top border-bottom navbar-expand navbar-expand-lg bg-">
                   <div class="container-fluid">
@@ -526,22 +526,22 @@
                            </form>
                         </ul>
                         <div class="ml-auto">
-                           <div data-v-9e976cde="" class="dropdown">
-                              <div data-v-9e976cde="" type="primary">
-                                 <a data-v-9e976cde="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link pr-0">
-                                    <div data-v-9e976cde="" class="media align-items-center">
-                                       <span data-v-9e976cde="" class="avatar avatar-sm rounded-circle"><img data-v-9e976cde="" alt="Image placeholder" src="https://www.chinesepod.com/home/img/brand/symbol-black-center.svg" onerror="this.src='https://www.chinesepod.com/home/img/brand/symbol-black-center.svg'" class="bg-white"></span>
-                                       <div data-v-9e976cde="" class="media-body ml-2"><span data-v-9e976cde="" class="mb-0 text-sm font-weight-bold">username</span></div>
+                           <div  class="dropdown">
+                              <div  type="primary">
+                                 <a  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link pr-0">
+                                    <div  class="media align-items-center">
+                                       <span  class="avatar avatar-sm rounded-circle"><img  alt="Image placeholder" :src="vuex.userInfo.userAvatar" onerror="this.src='https://www.chinesepod.com/home/img/brand/symbol-black-center.svg'" class="bg-white"></span>
+                                       <div  class="media-body ml-2"><span  class="mb-0 text-sm font-weight-bold">{{ vuex.userInfo.username }}</span></div>
                                     </div>
                                  </a>
                               </div>
-                              <ul data-v-9e976cde="" class="dropdown-menu dropdown-menu-right">
-                                 <div data-v-9e976cde="" class="dropdown-header noti-title">
-                                    <h6 data-v-9e976cde="" class="text-overflow m-0">Welcome!</h6>
+                              <ul  class="dropdown-menu dropdown-menu-right">
+                                 <div  class="dropdown-header noti-title">
+                                    <h6  class="text-overflow m-0">Welcome!</h6>
                                  </div>
-                                 <a href="/profile" class="dropdown-item" data-v-9e976cde=""><i class="ni ni-single-02"></i><span>Profile</span></a><a href="/settings" class="dropdown-item" data-v-9e976cde=""><i class="ni ni-settings-gear-65"></i><span>Settings</span></a><a data-v-9e976cde="" href="https://support.chinesepod.com/" class="dropdown-item"><i data-v-9e976cde="" class="ni ni-support-16"></i><span data-v-9e976cde="">Support</span></a><a data-v-9e976cde="" href="/blog/the-chinesepod-tour/" class="dropdown-item"><i data-v-9e976cde="" class="ni ni-compass-04"></i><span data-v-9e976cde="">Tutorials</span></a><a href="/feedback" class="dropdown-item" data-v-9e976cde=""><i class="fas fa-comments"></i><span>Leave Feedback</span></a><a data-v-9e976cde="" href="/contact" class="dropdown-item"><i data-v-9e976cde="" class="fas fa-exclamation-triangle"></i><span data-v-9e976cde="">Report Issue</span></a>
-                                 <div data-v-9e976cde="" class="dropdown-divider"></div>
-                                 <a data-v-9e976cde="" class="dropdown-item"><i data-v-9e976cde="" class="ni ni-user-run"></i><span data-v-9e976cde="">Log out</span></a>
+                                 <a href="/profile" class="dropdown-item" ><i class="ni ni-single-02"></i><span>Profile</span></a><a href="/settings" class="dropdown-item" ><i class="ni ni-settings-gear-65"></i><span>Settings</span></a><a  href="https://support.chinesepod.com/" class="dropdown-item"><i  class="ni ni-support-16"></i><span >Support</span></a><a  href="/blog/the-chinesepod-tour/" class="dropdown-item"><i  class="ni ni-compass-04"></i><span >Tutorials</span></a><a href="/feedback" class="dropdown-item" ><i class="fas fa-comments"></i><span>Leave Feedback</span></a><a  href="/contact" class="dropdown-item"><i  class="fas fa-exclamation-triangle"></i><span >Report Issue</span></a>
+                                 <div  class="dropdown-divider"></div>
+                                 <a  class="dropdown-item"><i  class="ni ni-user-run"></i><span >Log out</span></a>
                               </ul>
                            </div>
                         </div>
@@ -549,11 +549,11 @@
                   </div>
                </nav>
                <div>
-                  <div data-v-5409838c="">
-                     <div data-v-5409838c="" class="header pb-md-6">
+                  <div >
+                     <div  class="header pb-md-6">
                         
                      </div>
-                     <div data-v-5409838c="" tabindex="0" aria-label="Loading" class="vld-overlay is-active is-full-page" style="display: none;">
+                     <div  tabindex="0" aria-label="Loading" class="vld-overlay is-active is-full-page" style="display: none;">
                         <div class="vld-background" style="backdrop-filter: blur(2px);"></div>
                         <div class="vld-icon">
                            <svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" width="64" height="64" stroke="#E1001E">
@@ -568,10 +568,10 @@
                            </svg>
                         </div>
                      </div>
-                     <div data-v-5409838c="" class="container-fluid mt-md--6">
+                     <div  class="container-fluid mt-md--6">
                         <%- body %>
                      </div>
-                     <div data-v-5409838c="" class="v-tour">
+                     <div  class="v-tour">
                         <!---->
                      </div>
                   </div>

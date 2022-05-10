@@ -1,48 +1,4 @@
-// ### open sign up popup for user authentication
-let signUp = document.querySelector('.sign-up-section');
-// let video_player = document.querySelector('.video-player');
 
-// if (document.cookie.includes('false')) {
-//     setTimeout(() => {
-//         video_player.innerHTML = `<div class="alert-message-main"><div class="alert-message"><a href="#">Sign up</a> to continue</div></div>`;
-//         signUpFunc();
-//     }, 20000);
-// }
-
-let signUpFunc = () => {
-    // signUp.style.display = 'block';
-}
-
-// let signUpBtn = document.querySelector('#btn-form-top-submit');
-
-// signUpBtn.onclick = () => {
-//     const emailDiv = document.querySelector('.form-block__input');
-//     const formErrorDiv = document.querySelector('.invalid-feedback');
-
-//     const emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-//     if (emailDiv.value.match(emailformat)) {
-//         emailDiv.style.border = "1px solid green";
-//         emailDiv.style.transition = "0.3s";
-//         formErrorDiv.style.display = 'none';
-//         signUp.style.display = 'none'
-//         insertLesson();
-//         video_player_iframe_height();
-//         if (Notification.permission === 'granted') {
-//             signUpNotification();
-//         } else if (Notification.permission != "denied") {
-//             Notification.requestPermission().then(permission => {
-//                 if (permission === "granted") {
-//                     signUpNotification();
-//                 }
-//             })
-//         }
-//     } else {
-//         emailDiv.style.border = "1px solid red";
-//         emailDiv.style.transition = "0.3s";
-//         formErrorDiv.style.display = 'block';
-//     }
-// }
 
 // ### maintaining video player's height
 let video_player_iframe_height = () => {

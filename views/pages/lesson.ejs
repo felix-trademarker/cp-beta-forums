@@ -1,10 +1,10 @@
-<section>
+<section style="padding-top:30px">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-9">
 				<div class="video-header">
 					<h1><%= content.title %></h1>
-					<div class="breadcrumb">
+					<div class="breadcrumb" style="padding: 15px 30px">
 						<nav style="--bs-breadcrumb-divider: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#39;http://www.w3.org/2000/svg&#39; width=&#39;8&#39; height=&#39;8&#39;%3E%3Cpath d=&#39;M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z&#39; fill=&#39;currentColor&#39;/%3E%3C/svg%3E&quot;);" aria-label="breadcrumb">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -18,10 +18,10 @@
 			</div>
 			<div class="col-lg-3">
 				<div class="my-btn-group d-flex align-items-center mt-2 gap-3 mb-4 mb-lg-0">
-					<button type="button" class="btn w-100 bg-white">
+					<button @click="saveLesson" type="button" v-bind:calss="is-active: lesson.saved" class="btn w-100 bg-white">
 						<strong>Save</strong>
 					</button>
-					<button type="button" class="btn w-100 text-white primary-btn">
+					<button @click="studyCompleted" type="button" v-bind:class="is-active: (lesson.studied > 0 ? false : true)" class="btn w-100 text-white">
 						<strong>Complete</strong>
 					</button>
 				</div>
