@@ -413,3 +413,8 @@ span.answer {
     font-style: italic;
     font-weight: 600;
 }
+
+.isactive {
+    background-color: #e11e1d !important;
+    color: #fff;
+}
