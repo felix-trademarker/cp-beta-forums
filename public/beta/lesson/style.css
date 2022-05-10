@@ -425,6 +425,6 @@ span.answer {
     color: #fff;
 }
 
-i{
-    font-size: 14px;
+.icon i{
+    font-size: 24px !important;
 }
