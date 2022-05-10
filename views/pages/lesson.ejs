@@ -18,7 +18,7 @@
 			</div>
 			<div class="col-lg-3">
 				<div class="my-btn-group d-flex align-items-center mt-2 gap-3 mb-4 mb-lg-0">
-					<button @click="saveLesson" type="button" v-bind:class="{is-active: lesson.saved}" class="btn w-100 bg-white">
+					<button @click="saveLesson" type="button" v-bind:class="{ is-active: true }" class="btn w-100 bg-white">
 						<strong>Save</strong>
 					</button>
 					<button @click="studyCompleted" type="button" v-bind:class="{is-active: (lesson.studied > 0 ? false : true)}" class="btn w-100 bg-white">
