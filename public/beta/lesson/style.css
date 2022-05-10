@@ -338,7 +338,7 @@ small a {
 }
 
 button.active{
-    background: var(--accent-color) !important;
+    background: #e1001e !important;
     --bs-text-opacity: 1;
     color: #fff !important;
 }
