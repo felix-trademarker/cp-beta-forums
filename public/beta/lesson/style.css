@@ -428,3 +428,8 @@ span.answer {
 .icon i{
     font-size: 24px !important;
 }
+
+.form-control:focus{
+    background-color: transparent;
+    box-shadow: none;
+}
