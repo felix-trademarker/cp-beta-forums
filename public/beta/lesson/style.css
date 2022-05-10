@@ -2,6 +2,12 @@
     color: #e1001e;
 }
 
+a {
+    color: #5e72e4;
+    background-color: transparent;
+    text-decoration: none;
+}
+
 button,
 input[type="submit"] {
     box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%) !important;
@@ -414,7 +420,7 @@ span.answer {
     font-weight: 600;
 }
 
-.isactive {
+.isactive, .active {
     background-color: #e11e1d !important;
     color: #fff;
 }

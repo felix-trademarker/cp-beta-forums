@@ -129,11 +129,11 @@
 
 				<div class="nav my-btn-group mt-3 mb-5 lessons-btn" id="myTab" role="tablist">
 					<% if(content.video){ %>
-					<button data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="true" type="button" class="btn me-3 px-5 py-2 active">
+					<button data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="true" type="button" class="btn me-3 px-5 py-2 isactive">
 						<strong>Video Lesson</strong>
 					</button>
 					<% } %>
-					<button data-bs-toggle="tab" data-bs-target="#nav-audio" type="button" role="tab" aria-controls="nav-audio" aria-selected="false" type="button" class="btn bg-white px-5 me-3 py-2 <%= !content.video ? 'active' : '' %>">
+					<button data-bs-toggle="tab" data-bs-target="#nav-audio" type="button" role="tab" aria-controls="nav-audio" aria-selected="false" type="button" class="btn bg-white px-5 me-3 py-2 <%= !content.video ? 'isactive' : '' %>">
 						<strong>Audio Lesson</strong>
 					</button>
 					<button type="button" class="btn bg-white px-5 py-2">
