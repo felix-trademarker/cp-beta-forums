@@ -37,6 +37,9 @@ input[type="submit"]:hover {
 
 .nav-tabs button:hover {
     margin-top: 0;
+    background: #e1001e !important;
+    --bs-text-opacity: 1;
+    color: #fff !important;
 }
 
 .form-control:focus {
@@ -126,7 +129,7 @@ input[type="submit"]:hover {
 }
 
 .mandarin-char span:hover {
-    background: var(--accent-color);
+    background: #e1001e;
     color: #fff;
 }
 
@@ -136,7 +139,7 @@ input[type="submit"]:hover {
     width: 200px;
     transition: 0.3s;
     z-index: 1;
-    border: solid 1px var(--accent-color);
+    border: solid 1px #e1001e;
     box-shadow: 0 7px 14px rgb(50 50 93 / 10%), 0 3px 6px rgb(0 0 0 / 8%) !important;
 }
 

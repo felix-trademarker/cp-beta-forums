@@ -192,9 +192,9 @@
 								
 								<div class="dialogue py-3">
 									<div class="mb-3">
-										<button type="button" class="btn d-block float-right btn-default btn-sm"><i class="fas fa-print"></i> Print</button>
-										<button type="button" @click="setCharset('simplified')" v-if="vuex.userInfo.charSet == 'traditional'" class="btn float-right btn-default btn-sm">Simp: 汉字</button>
-										<button type="button" @click="setCharset('traditional')" v-if="vuex.userInfo.charSet == 'simplified'" class="btn float-right btn-default btn-sm">Trad: 漢字</button>
+										<button type="button" @click="printContent('dialogue')" class="btn d-block float-right btn-light btn-sm"><i class="fas fa-print"></i> Print</button>
+										<button type="button" @click="setCharset('simplified')" v-if="vuex.userInfo.charSet == 'traditional'" class="btn float-right btn-light btn-sm">Simp: 汉字</button>
+										<button type="button" @click="setCharset('traditional')" v-if="vuex.userInfo.charSet == 'simplified'" class="btn float-right btn-light btn-sm">Trad: 漢字</button>
 										<h2 class="h2">Dialogue</h2>
 									</div>
 				
@@ -256,11 +256,17 @@
 
 						<div class="tab-pane fade" id="nav-vocab" role="tabpanel" aria-labelledby="nav-vocab-tab">
 							<div class="vocab-main">
+								<div class="mb-3">
+									<button type="button" @click="printContent('vocabulary')" class="btn d-block float-right btn-light btn-sm"><i class="fas fa-print"></i> Print</button>
+									<button type="button" @click="setCharset('simplified')" v-if="vuex.userInfo.charSet == 'traditional'" class="btn float-right btn-light btn-sm">Simp: 汉字</button>
+									<button type="button" @click="setCharset('traditional')" v-if="vuex.userInfo.charSet == 'simplified'" class="btn float-right btn-light btn-sm">Trad: 漢字</button>
+									<h2 class="h2">Vocabulary</h2>
+								</div>
 								<div class="vocab py-3">
 									<table v-if="vocab" class="table">
 										<thead>
 											<tr>
-												<th style="width:35%">Traditional</th>
+												<th style="width:35%">{{ vuex.userInfo.charSet == 'traditional' ? 'Traditional' : 'Simplified' }}</th>
 												<th style="width:25%">Pinyin</th>
 												<th style="width:25%">English</th>
 												<th></th>
@@ -270,7 +276,8 @@
 											<tr v-for="voc in vocab">
 												
 												<td>
-													<div v-for="ndx in voc.t.length" :id="'target-'+ndx+'-'+voc.id" :class="'js-animate-'+ndx+'-'+voc.id" style="display: inline-block;width:70px;"></div>
+													<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" v-for="ndx in voc.t.length" :id="'target-t-'+ndx+'-'+voc.id" :class="'js-animate-t-'+ndx+'-'+voc.id" style="display: inline-block;width:70px;"></div>
+													<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" v-for="ndx in voc.s.length" :id="'target-s-'+ndx+'-'+voc.id" :class="'js-animate-s-'+ndx+'-'+voc.id" style="display: inline-block;width:70px;"></div>
 												</td>
 												<td>{{ voc.p }}</td>
 												<td>{{ voc.en }}</td>
