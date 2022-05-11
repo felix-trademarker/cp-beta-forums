@@ -83,6 +83,30 @@
 
             },
 
+            putAPIFetch: async function(api, params) {
+
+            let options = {
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                },
+                method: "PUT",
+                body: JSON.stringify(params)
+            }
+
+            let results = await fetch(api,options)
+                .then(resp => resp.json())
+                .then(res => {
+                    console.log("this res", res);
+                    return res;
+            })
+
+            return results;
+
+            },
+
             studyCompleted: async function() {
 
                 let params = {
@@ -115,7 +139,7 @@
                 this.vuex.userInfo.charSet = charSet
                 localStorage.setItem('vuex', this.vuex);
 
-                let toogleSave = await this.postAPIFetch("https://www.chinesepod.com/api/v1/account/settings/update", params)
+                let toogleSave = await this.putAPIFetch("https://www.chinesepod.com/api/v1/account/settings/update", params)
             },
 
             printContent: async function(contentId) {
