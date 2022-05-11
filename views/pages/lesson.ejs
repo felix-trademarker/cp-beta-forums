@@ -209,7 +209,7 @@
 															<div v-if="vuex.userInfo.charSet == 'simplified'" class="fs-2 mb-2">{{ sentence.s }}</div>
 															<div v-if="vuex.userInfo.charSet == 'traditional'" class="fs-2 mb-2">{{ sentence.t }}</div>
 															<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
-															<div class="border-top pt-1">{{ sentence.en }}</div>
+															<div class="border-top pt-1" v-html="sentence.en"></div>
 														</div>
 													</span>
 												
@@ -256,13 +256,15 @@
 
 						<div class="tab-pane fade" id="nav-vocab" role="tabpanel" aria-labelledby="nav-vocab-tab">
 							<div class="vocab-main">
-								<div class="mb-3">
-									<button type="button" @click="printContent('vocabulary')" class="btn d-block float-right btn-light btn-sm"><i class="fas fa-print"></i> Print</button>
-									<button type="button" @click="setCharset('simplified')" v-if="vuex.userInfo.charSet == 'traditional'" class="btn float-right btn-light btn-sm">Simp: 汉字</button>
-									<button type="button" @click="setCharset('traditional')" v-if="vuex.userInfo.charSet == 'simplified'" class="btn float-right btn-light btn-sm">Trad: 漢字</button>
-									<h2 class="h2">Vocabulary</h2>
-								</div>
+								
 								<div class="vocab py-3">
+									<div class="mb-3">
+										<button type="button" @click="printContent('vocabulary')" class="btn d-block float-right btn-light btn-sm"><i class="fas fa-print"></i> Print</button>
+										<button type="button" @click="setCharset('simplified')" v-if="vuex.userInfo.charSet == 'traditional'" class="btn float-right btn-light btn-sm">Simp: 汉字</button>
+										<button type="button" @click="setCharset('traditional')" v-if="vuex.userInfo.charSet == 'simplified'" class="btn float-right btn-light btn-sm">Trad: 漢字</button>
+										<h2 class="h2">Vocabulary</h2>
+									</div>
+
 									<table v-if="vocab" class="table">
 										<thead>
 											<tr>
@@ -304,10 +306,17 @@
 						<div class="tab-pane fade" id="nav-expansion" role="tabpanel" aria-labelledby="nav-expansion-tab">
 							<div class="expansion-main">
 								<div class="expansion py-3">
+
+									<div class="mb-3">
+										<button type="button" @click="printContent('expansion')" class="btn d-block float-right btn-light btn-sm"><i class="fas fa-print"></i> Print</button>
+										<button type="button" @click="setCharset('simplified')" v-if="vuex.userInfo.charSet == 'traditional'" class="btn float-right btn-light btn-sm">Simp: 汉字</button>
+										<button type="button" @click="setCharset('traditional')" v-if="vuex.userInfo.charSet == 'simplified'" class="btn float-right btn-light btn-sm">Trad: 漢字</button>
+										<h2 class="h2">Expansion</h2>
+									</div>
 									
 									<ul v-if="expansion" class="list-group d-block d-sm-flex w-100 list-group-horizontal" style="flex-wrap: wrap;">
 										<li v-for="exp in expansion" class="list-group-item w-50 w-md-50 p-4" style="border-width:1px !important">
-											{{ exp.phrase }}
+											<h4 style="background: #e11e1d;padding: 5px;border-radius: 4px;display: inline-block;color: #fff;">{{ exp.phrase }}</h4>
 											<div v-for="examples in exp.examples" class="mb-3">
 												<div class="mandarin-chars-main d-flex align-items-center justify-content-between">
 													<div class="mandarin-chars">
@@ -315,7 +324,8 @@
 														<span v-for="sentence in examples.sentence" v-if="sentence.s" class="mandarin-char position-relative">
 															<span class="fs-2">{{ sentence.s }}</span>
 															<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
-																<div class="fs-2 mb-2">{{ sentence.s }}</div>
+																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" class="fs-2 mb-2">{{ sentence.s }}</div>
+																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" class="fs-2 mb-2">{{ sentence.t }}</div>
 																<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
 																<div class="border-top pt-1">{{ sentence.en }}</div>
 															</div>
@@ -368,6 +378,13 @@
 						<div class="tab-pane fade" id="nav-grammar" role="tabpanel" aria-labelledby="nav-grammar-tab">
 							<div class="grammar-main">
 								<div class="grammar py-3">
+
+									<div class="mb-3">
+										<button type="button" @click="printContent('grammar')" class="btn d-block float-right btn-light btn-sm"><i class="fas fa-print"></i> Print</button>
+										<button type="button" @click="setCharset('simplified')" v-if="vuex.userInfo.charSet == 'traditional'" class="btn float-right btn-light btn-sm">Simp: 汉字</button>
+										<button type="button" @click="setCharset('traditional')" v-if="vuex.userInfo.charSet == 'simplified'" class="btn float-right btn-light btn-sm">Trad: 漢字</button>
+										<h2 class="h2">Grammar</h2>
+									</div>
 									
 									<ul v-if="grammar" class="list-group d-block d-sm-flex w-100 list-group-horizontal" style="flex-wrap: wrap;">
 										<li v-for="exp in grammar" class="list-group-item w-100 w-md-100 p-4 mb-3" style="border-width:1px !important">
@@ -380,9 +397,11 @@
 													<div class="mandarin-chars">
 													
 														<span v-for="sentence in examples.sentence" v-if="sentence.s" class="mandarin-char position-relative">
-															<span class="fs-2">{{ sentence.s }}</span>
+															<span v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" class="fs-2">{{ sentence.s }}</span>
+															<span v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" class="fs-2">{{ sentence.t }}</span>
 															<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
-																<div class="fs-2 mb-2">{{ sentence.s }}</div>
+																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" class="fs-2 mb-2">{{ sentence.s }}</div>
+																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" class="fs-2 mb-2">{{ sentence.t }}</div>
 																<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
 																<div class="border-top pt-1">{{ sentence.en }}</div>
 															</div>
@@ -436,6 +455,13 @@
 						<div class="tab-pane fade" id="nav-exercise" role="tabpanel" aria-labelledby="nav-exercise-tab">
 							<div class="exercise-main">
 								<div class="exercise py-3">
+
+									<div class="mb-3">
+										<button type="button" @click="printContent('exercise')" class="btn d-block float-right btn-light btn-sm"><i class="fas fa-print"></i> Print</button>
+										<button type="button" @click="setCharset('simplified')" v-if="vuex.userInfo.charSet == 'traditional'" class="btn float-right btn-light btn-sm">Simp: 汉字</button>
+										<button type="button" @click="setCharset('traditional')" v-if="vuex.userInfo.charSet == 'simplified'" class="btn float-right btn-light btn-sm">Trad: 漢字</button>
+										<h2 class="h2">Exercise</h2>
+									</div>
 									
 									<%- include('../partials/exerciseTabContent'); %>
 									

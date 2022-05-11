@@ -527,14 +527,14 @@
                         </ul>
                         <div class="ml-auto">
                            <div  class="dropdown">
-                              <div  type="primary">
+                             
                                  <a  role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link pr-0">
                                     <div  class="media align-items-center">
                                        <span  class="avatar avatar-sm rounded-circle"><img  alt="Image placeholder" :src="vuex.userInfo.userAvatar" onerror="this.src='https://www.chinesepod.com/home/img/brand/symbol-black-center.svg'" class="bg-white"></span>
-                                       <div  class="media-body ml-2"><span  class="mb-0 text-sm font-weight-bold">{{ vuex.userInfo.username }}</span></div>
+                                       <div  class="media-body ml-2"><span  class="mb-0 text-sm font-weight-bold">{{ vuex.userInfo.username ? vuex.userInfo.username : 'username' }}</span></div>
                                     </div>
                                  </a>
-                              </div>
+                             
                               <ul  class="dropdown-menu dropdown-menu-right">
                                  <div  class="dropdown-header noti-title">
                                     <h6  class="text-overflow m-0">Welcome!</h6>

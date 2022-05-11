@@ -11,14 +11,14 @@
     <div :class="choiceCard || exerciseResult ? 'exer-choice d-block':'exer-choice d-none'">
         <p>CHOOSE THE RIGHT OPTION<br>1 POINT</p>
         <div v-for="(ndx, q) in questions.choice" :class="ndx == choiceStep || exerciseResult ? 'd-block choice-q' : 'd-none choice-q'">
-            <h5>{{ q.question.t }}</h5>
+            <h5>{{ (vuex.userInfo.charSet == 'simplified' ? q.question.s : q.question.t) }}</h5>
             <h6>{{ q.question.p }}</h6>
             <ul class="exe-options">
                 <li v-for="choices in q.question.choices"  >
                     <button @click="nextChoice(ndx,choices.id)" class="btn btn-info">{{ choices.t }} <br>{{ choices.p }}</button>
                 </li>
             </ul>
-            <p v-if="exerciseResult">Answer: {{ q.answer.t }}</p>
+            <p v-if="exerciseResult">Answer: {{ ( vuex.userInfo.charSet == 'simplified' ? q.answer.s : q.answer.t ) }}</p>
             <hr>
         </div>
     </div>
@@ -29,7 +29,7 @@
 
             <ul style="float:left">
                 <li  v-for="matching in rumbleArray(m.question.segments,m.question.segments.length)" v-if="matching.id"  >
-                    <button v-bind:class="setClassHanzi( matching.id )" class="btn" @click="setMatchq(matching.id)">{{ matching.t }}<br>{{ matching.p }} <span class="answer" v-if="exerciseResult">({{ matching.id }})</span></button>
+                    <button v-bind:class="setClassHanzi( matching.id )" class="btn" @click="setMatchq(matching.id)">{{ ( vuex.userInfo.charSet == 'simplified' ? matching.s : matching.t) }}<br>{{ matching.p }} <span class="answer" v-if="exerciseResult">({{ matching.id }})</span></button>
                 </li>
             </ul>
 
@@ -60,7 +60,7 @@
                                 <i style="font-size:32px; position: relative;top: 10px;" class="bi bi-arrows-move"></i>
                             </div>
                             <div class="col-10 col-sm-11">
-                                <span class="characters">{{ segments.t }}</span>
+                                <span class="characters">{{ ( vuex.userInfo.charSet == 'simplified' ? segments.s : segments.t ) }}</span>
                                 <footer class="pinyin">{{ segments.p }}</footer>
                             </div>
                             
@@ -88,6 +88,8 @@
                         Your browser does not support the audio element.
                     </audio>
                 </div>
+
+                <p v-if="!exerciseResult">{{ ndx+1 }} of {{ questions.audio.length }}</p>
 
                 <p v-if="!exerciseResult">To type in Chinese, you'll need to first install a Chinese keyboard on your phone or computer. To write in Pinyin, you can use an English keyboard and use numbers for tones. e.g. ni3hao3</p>
                 <p v-if="exerciseResult">

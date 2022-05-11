@@ -146,6 +146,7 @@ input[type="submit"]:hover {
 .mandarin-char span:hover~.mandarin-char-tooltip {
     visibility: visible;
     opacity: 1;
+    z-index: 10;
 }
 
 .mandarin-chars .mandarin-char:not(:first-of-type) {
@@ -440,4 +441,9 @@ span.answer {
 
 .in-this-lesson{
     margin-bottom: 30px;
+}
+
+.dropdown-menu[data-bs-popper]{
+    right: 0;
+    left: unset;
 }
