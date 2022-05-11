@@ -139,7 +139,7 @@
                 this.vuex.userInfo.charSet = charSet
                 localStorage.setItem('vuex',  JSON.stringify(this.vuex));
 
-                // let toogleSave = await this.putAPIFetch("https://www.chinesepod.com/api/v1/account/settings/update", params)
+                let toogleSave = await this.putAPIFetch("https://www.chinesepod.com/api/v1/account/settings/update", params)
             },
 
             printContent: async function(contentId) {
