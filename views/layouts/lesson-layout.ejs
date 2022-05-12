@@ -465,15 +465,16 @@
                                  <div class="sidenav-toggler-inner"><i class="sidenav-toggler-line"></i><i class="sidenav-toggler-line"></i><i class="sidenav-toggler-line"></i></div>
                               </div>
                            </li>
-                           <form id="navbar-search-main" class="navbar-search form-inline mr-sm-3 navbar-search-dark">
+                           
+                           <form @submit.prevent="searchQuery" id="navbar-search-main" class="navbar-search form-inline mr-sm-3 navbar-search-dark">
                               <div class="form-group mb-0">
                                  <div class="input-group input-group-alternative input-group-merge">
                                     <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></div>
-                                    <input placeholder="Search Lessons" type="text" class="form-control">
+                                    <input v-model="searchString" placeholder="Search Lessons" type="text" class="form-control">
                                     <div class="d-none d-xl-flex input-group-append text-center">
                                        <div class="bg-newbie text-center p-0">
                                           <div class="custom-control custom-checkbox my-2">
-                                             <input id="762f987a43112" type="checkbox" class="custom-control-input">
+                                             <input id="762f987a43112" v-model="searchType" value="newbie=true" type="checkbox" class="custom-control-input">
                                              <label for="762f987a43112" class="custom-control-label">
                                                 <!---->
                                              </label>
@@ -481,7 +482,7 @@
                                        </div>
                                        <div class="bg-elementary text-center p-0">
                                           <div class="custom-control custom-checkbox my-2">
-                                             <input id="9d14f58049e7" type="checkbox" class="custom-control-input">
+                                             <input id="9d14f58049e7" v-model="searchType" value="elementary=true" type="checkbox" class="custom-control-input">
                                              <label for="9d14f58049e7" class="custom-control-label">
                                                 <!---->
                                              </label>
@@ -489,7 +490,7 @@
                                        </div>
                                        <div class="bg-preint text-center p-0">
                                           <div class="custom-control custom-checkbox my-2">
-                                             <input id="009fedd749eb2" type="checkbox" class="custom-control-input">
+                                             <input id="009fedd749eb2" v-model="searchType" value="pre intermediate=true" type="checkbox" class="custom-control-input">
                                              <label for="009fedd749eb2" class="custom-control-label">
                                                 <!---->
                                              </label>
@@ -497,7 +498,7 @@
                                        </div>
                                        <div class="bg-intermediate text-center p-0">
                                           <div class="custom-control custom-checkbox my-2">
-                                             <input id="5235899f7dbe1" type="checkbox" class="custom-control-input">
+                                             <input id="5235899f7dbe1" v-model="searchType" value="intermediate=true" type="checkbox" class="custom-control-input">
                                              <label for="5235899f7dbe1" class="custom-control-label">
                                                 <!---->
                                              </label>
@@ -505,7 +506,7 @@
                                        </div>
                                        <div class="bg-upperint text-center p-0">
                                           <div class="custom-control custom-checkbox my-2">
-                                             <input id="315994c7e7b39" type="checkbox" class="custom-control-input">
+                                             <input id="315994c7e7b39" v-model="searchType" value="upper intermediate=true" type="checkbox" class="custom-control-input">
                                              <label for="315994c7e7b39" class="custom-control-label">
                                                 <!---->
                                              </label>
@@ -513,7 +514,7 @@
                                        </div>
                                        <div class="bg-advanced text-center p-0">
                                           <div class="custom-control custom-checkbox my-2">
-                                             <input id="64f8e00f2999d" type="checkbox" class="custom-control-input">
+                                             <input id="64f8e00f2999d" v-model="searchType" value="advanced=true" type="checkbox" class="custom-control-input">
                                              <label for="64f8e00f2999d" class="custom-control-label">
                                                 <!---->
                                              </label>
@@ -526,6 +527,29 @@
                                              </span>
                                           </span>
                                        </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div id="searchToolTip" class="el-popover el-popper search-popover popover-shadow" tabindex="0" style="">
+                                 <!---->
+                                 <div class="toolbar-text">
+                                    <div class="d-flex flex-wrap m-0 p-0">
+                                       <div class="row-1-box-1 pl-4"> Newbie </div>
+                                       <div class="row-1-box-2"></div>
+                                       <div class="row-1-box-3"></div>
+                                       <div class="row-1-box-4"></div>
+                                       <div class="row-1-box-5"></div>
+                                       <div class="row-1-box-6 pr-4"> Advanced </div>
+                                    </div>
+                                    <div class="d-flex flex-wrap m-0 p-0">
+                                       <div class="row-2-box-1 pl-4"> Elementary </div>
+                                       <div class="row-2-box-2"></div>
+                                       <div class="row-2-box-3"></div>
+                                       <div class="row-2-box-4 pr-4"> Upper-Intermediate </div>
+                                    </div>
+                                    <div class="d-flex flex-wrap m-0 p-0">
+                                       <div class="row-3-box-1 pl-4"> Pre-Intermediate </div>
+                                       <div class="row-3-box-2 pr-4"> Intermediate </div>
                                     </div>
                                  </div>
                               </div>
@@ -621,7 +645,7 @@
     <script src="/beta/lesson/comments.js"></script>
     <!-- <script src="/beta/hanzi-writer.js"></script> -->
 
-
+   
 
 
 </body></html>

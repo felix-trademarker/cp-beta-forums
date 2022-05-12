@@ -447,3 +447,13 @@ span.answer {
     right: 0;
     left: unset;
 }
+
+#searchToolTip{
+    width: 600px; 
+    transform-origin: center top; 
+    z-index: 2001; 
+    display: none;
+    top: 60px;
+    left: 122px;
+}
+

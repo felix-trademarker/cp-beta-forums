@@ -35,7 +35,9 @@
             exerciseResults: {
                 score: 0,
                 total: 0,
-            }
+            },
+            searchString: "",
+            searchType: []
         },
         methods: {
 
@@ -367,6 +369,24 @@
 
                 return data;
             
+            },
+
+            searchQuery: function(){
+
+                let queryString = ""
+                let queryStringType = ""
+
+                if (this.searchString) 
+                queryString = "search="+this.searchString
+                
+                queryStringType = this.searchType.join("&")
+
+                if (queryStringType) 
+                queryString += "&" + queryStringType
+                
+                if(queryString)
+                window.location.href = "/explore?"+queryString
+                
             }
 
             
@@ -517,7 +537,6 @@
 
         })
 
-        
 
 
     };
@@ -526,10 +545,17 @@
 	$( function() {
 		$( ".rearrange-list" ).sortable({
 			revert: true
-		});
+        });
+        
+        $( "#navbar-search-main .input-group-append" ).mouseenter(function(){
+            $("#searchToolTip").show()
+        })
+
+        $( "#navbar-search-main .input-group-append" ).mouseleave(function(){
+            $("#searchToolTip").hide()
+        })
 	} );
 	
-
     // test drag
     // $(document).ready(function () {
     //     $(".sortableList").sortable({
