@@ -248,7 +248,20 @@
 									</ul>
 
 									<p v-if="!dialogue" class="warning">Dialogue not found</p>
-									
+
+									<!-- printable content -->
+									<div id="printable-dialogue" class="">
+										<h4>Dialogue</h4>
+
+										<ol v-if="dialogue">
+											<li v-for="dia in dialogue.dialogue">
+												<p>Traditional: {{ pinyinConvert(dia.t) }}</p>
+												<p>Simplified: {{ pinyinConvert(dia.s) }}</p>
+												<p>Pinyin: {{ pinyinConvert(dia.p) }}</p>
+												<p>English: {{ pinyinConvert(dia.en) }}</p>
+											</li>
+										</ol>
+									</div>
 								</div>
 							</div>
 
@@ -549,12 +562,17 @@
 						<div class="tab-pane fade show" id="nav-downloads" role="tabpanel" aria-labelledby="nav-profile-tab">
 							
 							<ul class="dl-List" v-if="downloads">
-								<li v-if="downloads.downloads.lesson"><a target="_blank" download :href="downloads.downloads.lesson" class="btn btn-info">Lesson</a></li>
-								<li v-if="downloads.downloads.dialogue"><a target="_blank" download :href="downloads.downloads.dialogue" class="btn btn-info">Dialogue</a></li>
-								<li v-if="downloads.downloads.review"><a target="_blank" download :href="downloads.downloads.review" class="btn btn-info">Review</a></li>
-								<li v-if="downloads.downloads.pdf1"><a target="_blank" download :href="downloads.downloads.pdf1" class="btn btn-info">Notes (Simp)</a></li>
-								<li v-if="downloads.downloads.pdf2"><a target="_blank" download :href="downloads.downloads.pdf2" class="btn btn-info">Notes (Trad)</a></li>
+								<li v-if="downloads.downloads.lesson"><a @click.prevent="downloadURI(downloads.downloads.lesson,'lesson')" href="#" class="btn btn-info">Lesson</a></li>
+								<li v-if="downloads.downloads.dialogue"><a @click.prevent="downloadURI(downloads.downloads.dialogue,'dialogue')" href="#" class="btn btn-info">Dialogue</a></li>
+								<li v-if="downloads.downloads.review"><a @click.prevent="downloadURI(downloads.downloads.review,'review')" href="#" class="btn btn-info">Review</a></li>
+								<li v-if="downloads.downloads.pdf1"><a @click.prevent="downloadURI(downloads.downloads.pdf1,'pdf1')" href="#" class="btn btn-info">Notes (Simp)</a></li>
+								<li v-if="downloads.downloads.pdf2"><a @click.prevent="downloadURI(downloads.downloads.pdf2,'pdf2')" href="#" class="btn btn-info">Notes (Trad)</a></li>
 							</ul>
+							<p v-if="fileLoader" style="overflow:hidden;position:relative;border: 1px solid #e11e1d;border-radius: 14px;" class="text-center">
+								<span :style="'display: block;background: #e11e1d;position: absolute;left: 0;top: 0;height:100%;width:'+filePercent+'%;'"></span>
+								<span style="position:relative;z-index:100">Downloading {{ fileDownloadName }} {{ filePercent }}%</span>
+							</p>
+							<p></p>
 
 							<p v-if="!downloads">No downloads to show right now.</p>
 						</div>

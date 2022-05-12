@@ -37,7 +37,10 @@
                 total: 0,
             },
             searchString: "",
-            searchType: []
+            searchType: [],
+            filePercent: 0,
+            fileLoader: false,
+            fileDownloadName: ''
         },
         methods: {
 
@@ -142,10 +145,6 @@
                 localStorage.setItem('vuex',  JSON.stringify(this.vuex));
 
                 let toogleSave = await this.putAPIFetch("https://www.chinesepod.com/api/v1/account/settings/update", params)
-            },
-
-            printContent: async function(contentId) {
-                alert('Sorry, this function is not yet available')
             },
 
             pinyinConvert: function(pinyin) {
@@ -387,7 +386,63 @@
                 if(queryString)
                 window.location.href = "/explore?"+queryString
                 
-            }
+            },
+
+            downloadURI: function(uri, name) {
+                console.log("called DL");
+                this.fileLoader = true
+                this.fileDownloadName = name
+                // var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4";
+                var this_ = this
+                $.ajax({
+                    url: uri,
+                    method: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    xhr: function () {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.addEventListener("progress", function (evt) {
+                            if(evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                this_.filePercent = parseInt(percentComplete * 100)
+                                // console.log(percentComplete);
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    success: function (data) {
+                        // console.log(data);
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = name;
+                        document.body.append(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                        this_.fileLoader = false
+                        this_.filePercent = 0
+                    }
+                });
+            },
+            printContent: function(divId) {
+
+                let body = document.getElementById("printable-"+divId)
+
+                var mywindow = window.open('', divId, 'height=400,width=600');
+                mywindow.document.write('<html><head><title>Chinesepod Lesson</title>');
+                mywindow.document.write('<link rel="stylesheet" href="/beta/stylesheets/printable.css" type="text/css" />');
+                mywindow.document.write('</head><body >');
+                mywindow.document.write(body.innerHTML);
+                mywindow.document.write('</body></html>');
+                mywindow.document.close();
+                mywindow.focus();
+                setTimeout(function(){mywindow.print();},1000);
+                // mywindow.close();
+
+                // return true;
+            },
 
             
         },
