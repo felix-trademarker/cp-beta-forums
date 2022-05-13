@@ -205,7 +205,7 @@
 													<span v-for="sentence in dia.sentence" v-if="sentence.s" class="mandarin-char position-relative">
 														<span class="fs-2" v-if="vuex.userInfo.charSet == 'simplified'">{{ sentence.s }}</span>
 														<span class="fs-2" v-if="vuex.userInfo.charSet == 'traditional'">{{ sentence.t }}</span>
-														<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
+														<div style="margin-top:-5px;" class="mandarin-char-tooltip position-absolute start-0 rounded p-3 bg-light fs-5">
 															<div v-if="vuex.userInfo.charSet == 'simplified'" class="fs-2 mb-2">{{ sentence.s }}</div>
 															<div v-if="vuex.userInfo.charSet == 'traditional'" class="fs-2 mb-2">{{ sentence.t }}</div>
 															<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
@@ -251,7 +251,7 @@
 
 									<!-- printable content -->
 									<div id="printable-dialogue" class="d-none">
-										<h4>Dialogue</h4>
+										<h3>Dialogue</h3>
 
 										<ol v-if="dialogue">
 											<li v-for="dia in dialogue.dialogue">
@@ -308,6 +308,19 @@
 											</tr>
 										</tbody>
 									</table>
+
+									<div id="printable-vocabulary" class="d-none">
+										<h3>Vocabulary</h3>
+
+										<ol v-if="vocab">
+											<li v-for="voc in vocab">
+												<p>Traditional: {{ pinyinConvert(voc.t) }}</p>
+												<p>Simplified: {{ pinyinConvert(voc.s) }}</p>
+												<p>Pinyin: {{ pinyinConvert(voc.p) }}</p>
+												<p>English: {{ pinyinConvert(voc.en) }}</p>
+											</li>
+										</ol>
+									</div>
 
 									<p v-if="!vocab" class="warning">Vocabulary not found</p>
 									
@@ -380,6 +393,25 @@
 										</li>
 										
 									</ul>
+
+									<div id="printable-expansion" class="d-none">
+										<h3>Expansion</h3>
+										<div v-if="expansion">
+											<div v-for="exp in expansion">
+												<h4 >{{ exp.phrase }}</h4>
+												<ol >
+													<li v-for="examples in exp.examples" >
+														<p>Traditional: {{ pinyinConvert(examples.t) }}</p>
+														<p>Simplified: {{ pinyinConvert(examples.s) }}</p>
+														<p>Pinyin: {{ pinyinConvert(examples.p) }}</p>
+														<p>English: {{ pinyinConvert(examples.en) }}</p>
+													</li>
+												</ol>
+											</div>
+
+										</div>
+										
+									</div>
 
 									<p v-if="!expansion" class="warning">Vocabulary not found</p>
 									
@@ -458,6 +490,26 @@
 										
 									</ul>
 
+									<div id="printable-grammar" class="d-none">
+										<h3>Grammar</h3>
+										<div v-if="grammar">
+											<div v-for="exp in grammar">
+												<h4>{{ exp.grammar.name }}</h4>
+												<h5>{{ exp.grammar.introduction }}</h5>
+												<ol >
+													<li v-for="examples in exp.examples" >
+														<p>Traditional: {{ pinyinConvert(examples.t) }}</p>
+														<p>Simplified: {{ pinyinConvert(examples.s) }}</p>
+														<p>Pinyin: {{ pinyinConvert(examples.p) }}</p>
+														<p>English: {{ pinyinConvert(examples.en) }}</p>
+													</li>
+												</ol>
+											</div>
+
+										</div>
+										
+									</div>
+
 									<p v-if="!grammar" class="warning">Vocabulary not found</p>
 									
 								</div>
@@ -477,6 +529,65 @@
 									</div>
 									
 									<%- include('../partials/exerciseTabContent'); %>
+
+									<div id="printable-exercise" class="d-none">
+										<h3>Exercise</h3>
+
+										<h4>CHOOSE THE RIGHT OPTION<br>1 POINT</h4>
+										<ol >
+											<li v-for="(ndx, q) in questions.choice" >
+												<h5>{{ (vuex.userInfo.charSet == 'simplified' ? q.question.s : q.question.t) }}</h5>
+												<h6>{{ q.question.p }}</h6>
+												<ul class="exe-options">
+													<li v-for="choices in q.question.choices"  style="float: left;width:20%">
+														{{ choices.t }} <br>{{ choices.p }}
+													</li>
+												</ul>
+												<div style="clear:both"></div>
+											</li>
+										</ol>
+
+										<h4>MATCH THE PHRASE WITH THE TRANSLATION<br>5 POINT</h4>
+										<ol>
+											<li v-for="(ndx, m) in questions.matching">
+
+												<ul style="float:left; width:35%" >
+													<li  v-for="matching in rumbleArray(m.question.segments,m.question.segments.length)" v-if="matching.id"  >
+														<p >{{ ( vuex.userInfo.charSet == 'simplified' ? matching.s : matching.t) }}<br>{{ matching.p }}</p>
+													</li>
+												</ul>
+									
+												<ul style="float:left; width:35%">
+													<li v-for="matching in rumbleArray(m.question.segments,m.question.segments.length)" v-if="matching.id">
+														<p>{{ matching.e }}</p>
+													</li>
+												</ul>
+												<div style="clear:both"></div>
+												<hr>
+											</li>
+										</ol>
+
+										<h4>RE-ORDER THE SEGMENTS<br>6 POINT</h4>
+
+										<ol >
+											<li v-for="(ndx, r) in questions.rearrange">
+
+												<ul>
+													<li v-for="segments in rumbleArray(r.question.segments)" >
+														<div class="col-10 col-sm-11">
+															<span class="characters">{{ ( vuex.userInfo.charSet == 'simplified' ? segments.s : segments.t ) }}</span>
+															<footer class="pinyin">{{ segments.p }}</footer>
+														</div>
+													</li>
+												</ul>
+									
+					
+												<div style="clear:both"></div>
+												<hr>
+											</li>
+										</ol>
+
+									</div>
 									
 								</div>
 							</div>
