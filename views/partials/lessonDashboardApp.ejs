@@ -56,7 +56,7 @@
                 })
                 .then(resp => resp.json())
                 .then(res => {
-                    console.log("this res", res);
+                    // console.log("this res", res);
                     return res;
                 })
 
@@ -80,7 +80,7 @@
                 let results = await fetch(api,options)
                     .then(resp => resp.json())
                     .then(res => {
-                        console.log("this res", res);
+                        // console.log("this res", res);
                         return res;
                 })
 
@@ -104,7 +104,7 @@
             let results = await fetch(api,options)
                 .then(resp => resp.json())
                 .then(res => {
-                    console.log("this res", res);
+                    // console.log("this res", res);
                     return res;
             })
 
@@ -152,7 +152,7 @@
             },
 
             nextChoice: function(ndx,selectedChoice) {
-                console.log("ans",ndx,selectedChoice);
+                // console.log("ans",ndx,selectedChoice);
                 this.questions.choice[ndx].selectedChoice = selectedChoice;
 
                 this.choiceStep++
@@ -169,7 +169,7 @@
                 ndxA = Math.floor(Math.random() * (max + 1));
                 ndxB = Math.floor(Math.random() * (max + 1));
                 ndxC = Math.floor(Math.random() * (max + 1));
-                console.log(ndxA,ndxB,ndxC);
+                // console.log(ndxA,ndxB,ndxC);
                 var tmp = arr[ndxA];
                 arr[ndxA] = arr[ndxB];
                 arr[ndxB] = tmp;
@@ -184,7 +184,7 @@
 
             setMatchq: function(id){
                 if (this.matchHanzi.length < 5) {
-                    console.log("ID>>",id);
+                    // console.log("ID>>",id);
                     if (!this.matchHanzi.includes(id)) 
                     this.matchHanzi.push(id)
                     
@@ -192,19 +192,19 @@
                     // abort selecttion show warning
                 }
 
-                console.log(this.matchHanzi);
+                // console.log(this.matchHanzi);
                 this.nextReArrange()
 
             },
             setMatcha: function(id){
                 if (this.matchEn.length < 5) {
-                    console.log("ID>>",id);
+                    // console.log("ID>>",id);
                     if (!this.matchEn.includes(id)) 
                     this.matchEn.push(id)
                 } else {
                     // abort selecttion show warning
                 }
-                console.log(this.matchEn);
+                // console.log(this.matchEn);
                 this.nextReArrange()
             },
 
@@ -212,7 +212,7 @@
 
                 if (this.matchEn.length >= 5 && this.matchHanzi.length >= 5) {
                     this.matchingStep++;
-                    console.log("next step", this.matchingStep);
+                    // console.log("next step", this.matchingStep);
                     this.matchAns.push({
                         'matchEn' : this.matchEn,
                         'matchHanzi' : this.matchHanzi
@@ -389,7 +389,7 @@
             },
 
             downloadURI: function(uri, name) {
-                console.log("called DL");
+                // console.log("called DL");
                 this.fileLoader = true
                 this.fileDownloadName = name
                 // var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4";
@@ -444,10 +444,11 @@
                 // return true;
             },
 
-            lookupHanzi: function(hanzi) {
-                let hanziLookup = getAPIFetch('/beta/api/v1/lookup-hanzi/'+hanzi)
+            lookupHanzi: async function(hanzi) {
+                console.log("=================");
+                let hanziLookup = await this.getAPIFetch('/beta/api/v1/lookup-hanzi/'+hanzi)
 
-                console.log(hanziLookup);
+                console.log("lookup",hanziLookup);
 
                 return hanziLookup
             }
@@ -472,7 +473,7 @@
                     this.comments = await this.getAPIFetch('/api/v1/lessons/get-comments?lessonId='+this.lesson.id);
                     this.questions = await this.getAPIFetch('/api/v1/exercises/get-questions?lessonId='+this.lesson.id);
 
-                    // this.dialogue = {"speakers":["A","B","A","B","A","B","A"],"dialogue":[{"display_order":1,"speaker":"A","row_2":"How tall are you?","audio":"mp3/64/chinesepod_5844_dialogue_51003_prototype_78063_23587.mp3","v3_id":"1670","vocabulary":[{"s":"你s","t":"你t","p":"ni3","en":"you"},{"s":"q多高","t":"t多高","p":"duo1 gao1","en":"how tall"}],"sentence":[{"s":"你s","t":"你t","p":"ni3","en":"you"},{"s":"多高","t":"多高","p":"duo1 gao1","en":"how tall"},"？"],"en":"How tall are you?","p":"ni3 duo1 gao1 ？","t":"你多高？","s":"你多高？"},{"display_order":2,"speaker":"B","row_2":"1 meter and 78 centimeters.","audio":"mp3/64/chinesepod_5844_dialogue_51004_prototype_54956_37001.mp3","v3_id":"1670","vocabulary":[{"s":"一米七八","t":"一米七八","p":"yi1 mi3 qi1 ba1","en":"1 meter and 78 centimeters"}],"sentence":[{"s":"一米七八","t":"一米七八","p":"yi1 mi3 qi1 ba1","en":"1 meter and 78 centimeters"},"。"],"en":"1 meter and 78 centimeters.","p":"yi1 mi3 qi1 ba1 。","t":"一米七八。","s":"一米七八。"},{"display_order":3,"speaker":"A","row_2":"How heavy?","audio":"mp3/64/chinesepod_5844_dialogue_51005_prototype_98163_35551.mp3","v3_id":"1670","vocabulary":[{"s":"多重","t":"多重","p":"duo1 zhong4","en":"how heavy"}],"sentence":[{"s":"多重","t":"多重","p":"duo1 zhong4","en":"how heavy"},"？"],"en":"How heavy?","p":"duo1 zhong4 ？","t":"多重？","s":"多重？"},{"display_order":4,"speaker":"B","row_2":"About 120 kilograms.","audio":"mp3/64/chinesepod_5844_dialogue_51006_prototype_17603_21059.mp3","v3_id":"1670","vocabulary":[{"s":"大概","t":"大概","p":"da4gai4","en":"approximately"},{"s":"一百二十","t":"一百二十","p":"yi1bai3 er4shi2","en":"120"},{"s":"公斤","t":"公斤","p":"gong1jin1","en":"kilograms"}],"sentence":[{"s":"大概","t":"大概","p":"da4gai4","en":"approximately"},{"s":"一百二十","t":"一百二十","p":"yi1bai3 er4shi2","en":"120"},{"s":"公斤","t":"公斤","p":"gong1jin1","en":"kilograms"},"。"],"en":"About 120 kilograms.","p":"da4gai4 yi1bai3 er4shi2 gong1jin1 。","t":"大概一百二十公斤。","s":"大概一百二十公斤。"},{"display_order":5,"speaker":"A","row_2":"Huh? You're that fat?","audio":"mp3/64/chinesepod_5844_dialogue_51007_prototype_21891_25291.mp3","v3_id":"1670","vocabulary":[{"s":"啊","t":"啊","p":"a3","en":"[emphatic sound]"},{"s":"你","t":"你","p":"ni3","en":"you"},{"s":"这么","t":"這麼","p":"zhe4me5","en":"so, this"},{"s":"胖","t":"胖","p":"pang4","en":"fat"}],"sentence":[{"s":"啊","t":"啊","p":"a3","en":"[emphatic sound]"},"？",{"s":"你","t":"你","p":"ni3","en":"you"},{"s":"这么","t":"這麼","p":"zhe4me5","en":"so, this"},{"s":"胖","t":"胖","p":"pang4","en":"fat"},"？"],"en":"Huh? You're that fat?","p":"a3 ？ni3 zhe4me5 pang4 ？","t":"啊？你這麼胖？","s":"啊？你这么胖？"},{"display_order":6,"speaker":"B","row_2":"Oh, no. That's not right. I'm 60 kilograms and 120 jin.","audio":"mp3/64/chinesepod_5844_dialogue_51008_prototype_7767_20641.mp3","v3_id":"1670","vocabulary":[{"s":"哦","t":"哦","p":"o4","en":"\\&#039;oh\\&#039;"},{"s":"不对","t":"不對","p":"bu4 dui4","en":"incorrect"},{"s":"不对","t":"不對","p":"bu4 dui4","en":"incorrect"},{"s":"是","t":"是","p":"shi4","en":"to be"},{"s":"六十","t":"六十","p":"liu4shi2","en":"60"},{"s":"公斤","t":"公斤","p":"gong1jin1","en":"kilogram"},{"s":"一百二十","t":"一百二十","p":"yi1bai3 er4shi2","en":"120"},{"s":"斤","t":"斤","p":"jin1","en":"jin"}],"sentence":[{"s":"哦","t":"哦","p":"o4","en":"\\&#039;oh\\&#039;"},"，",{"s":"不对","t":"不對","p":"bu4 dui4","en":"incorrect"},"，",{"s":"不对","t":"不對","p":"bu4 dui4","en":"incorrect"},"。",{"s":"是","t":"是","p":"shi4","en":"to be"},{"s":"六十","t":"六十","p":"liu4shi2","en":"60"},{"s":"公斤","t":"公斤","p":"gong1jin1","en":"kilogram"},"，",{"s":"一百二十","t":"一百二十","p":"yi1bai3 er4shi2","en":"120"},{"s":"斤","t":"斤","p":"jin1","en":"jin"},"。"],"en":"Oh, no. That's not right. I'm 60 kilograms and 120 jin.","p":"o4 ，bu4 dui4 ，bu4 dui4 。shi4 liu4shi2 gong1jin1 ，yi1bai3 er4shi2 jin1 。","t":"哦，不對，不對。是六十公斤，一百二十斤。","s":"哦，不对，不对。是六十公斤，一百二十斤。"},{"display_order":7,"speaker":"A","row_2":"Gosh, don't scare me!","audio":"mp3/64/chinesepod_5844_dialogue_51009_prototype_13917_20013.mp3","v3_id":"1670","vocabulary":[{"s":"哎哟","t":"哎喲","p":"ai1you1","en":"\\&#039;geez\\&#039;"},{"s":"你","t":"你","p":"ni3","en":"you"},{"s":"别","t":"別","p":"bie2","en":"don’t"},{"s":"吓死","t":"嚇死","p":"xia4si3","en":"to scare to death"},{"s":"我","t":"我","p":"wo3","en":"me"}],"sentence":[{"s":"哎哟","t":"哎喲","p":"ai1you1","en":"\\&#039;geez\\&#039;"},"，",{"s":"你","t":"你","p":"ni3","en":"you"},{"s":"别","t":"別","p":"bie2","en":"don’t"},{"s":"吓死","t":"嚇死","p":"xia4si3","en":"to scare to death"},{"s":"我","t":"我","p":"wo3","en":"me"},"！"],"en":"Gosh, don't scare me!","p":"ai1you1 ，ni3 bie2 xia4si3 wo3 ！","t":"哎喲，你別嚇死我！","s":"哎哟，你别吓死我！"}]}
+                    // this.dialogue = {"speakers":["A","B","A","B","A","B","A"],"dialogue":[{"display_order":1,"speaker":"A","row_2":"How tall are you?","audio":"mp3/64/chinesepod_5844_dialogue_51003_prototype_78063_23587.mp3","v3_id":"1670","vocabulary":[{"s":"你","t":"你t","p":"ni3","en":"you"},{"s":"q多高","t":"t多高","p":"duo1 gao1","en":"how tall"}],"sentence":[{"s":"你","t":"你t","p":"ni3","en":"you"},{"s":"多高","t":"多高","p":"duo1 gao1","en":"how tall"},"？"],"en":"How tall are you?","p":"ni3 duo1 gao1 ？","t":"你多高？","s":"你多高？"},{"display_order":2,"speaker":"B","row_2":"1 meter and 78 centimeters.","audio":"mp3/64/chinesepod_5844_dialogue_51004_prototype_54956_37001.mp3","v3_id":"1670","vocabulary":[{"s":"一米七八","t":"一米七八","p":"yi1 mi3 qi1 ba1","en":"1 meter and 78 centimeters"}],"sentence":[{"s":"一米七八","t":"一米七八","p":"yi1 mi3 qi1 ba1","en":"1 meter and 78 centimeters"},"。"],"en":"1 meter and 78 centimeters.","p":"yi1 mi3 qi1 ba1 。","t":"一米七八。","s":"一米七八。"},{"display_order":3,"speaker":"A","row_2":"How heavy?","audio":"mp3/64/chinesepod_5844_dialogue_51005_prototype_98163_35551.mp3","v3_id":"1670","vocabulary":[{"s":"多重","t":"多重","p":"duo1 zhong4","en":"how heavy"}],"sentence":[{"s":"多重","t":"多重","p":"duo1 zhong4","en":"how heavy"},"？"],"en":"How heavy?","p":"duo1 zhong4 ？","t":"多重？","s":"多重？"},{"display_order":4,"speaker":"B","row_2":"About 120 kilograms.","audio":"mp3/64/chinesepod_5844_dialogue_51006_prototype_17603_21059.mp3","v3_id":"1670","vocabulary":[{"s":"大概","t":"大概","p":"da4gai4","en":"approximately"},{"s":"一百二十","t":"一百二十","p":"yi1bai3 er4shi2","en":"120"},{"s":"公斤","t":"公斤","p":"gong1jin1","en":"kilograms"}],"sentence":[{"s":"大概","t":"大概","p":"da4gai4","en":"approximately"},{"s":"一百二十","t":"一百二十","p":"yi1bai3 er4shi2","en":"120"},{"s":"公斤","t":"公斤","p":"gong1jin1","en":"kilograms"},"。"],"en":"About 120 kilograms.","p":"da4gai4 yi1bai3 er4shi2 gong1jin1 。","t":"大概一百二十公斤。","s":"大概一百二十公斤。"},{"display_order":5,"speaker":"A","row_2":"Huh? You're that fat?","audio":"mp3/64/chinesepod_5844_dialogue_51007_prototype_21891_25291.mp3","v3_id":"1670","vocabulary":[{"s":"啊","t":"啊","p":"a3","en":"[emphatic sound]"},{"s":"你","t":"你","p":"ni3","en":"you"},{"s":"这么","t":"這麼","p":"zhe4me5","en":"so, this"},{"s":"胖","t":"胖","p":"pang4","en":"fat"}],"sentence":[{"s":"啊","t":"啊","p":"a3","en":"[emphatic sound]"},"？",{"s":"你","t":"你","p":"ni3","en":"you"},{"s":"这么","t":"這麼","p":"zhe4me5","en":"so, this"},{"s":"胖","t":"胖","p":"pang4","en":"fat"},"？"],"en":"Huh? You're that fat?","p":"a3 ？ni3 zhe4me5 pang4 ？","t":"啊？你這麼胖？","s":"啊？你这么胖？"},{"display_order":6,"speaker":"B","row_2":"Oh, no. That's not right. I'm 60 kilograms and 120 jin.","audio":"mp3/64/chinesepod_5844_dialogue_51008_prototype_7767_20641.mp3","v3_id":"1670","vocabulary":[{"s":"哦","t":"哦","p":"o4","en":"\\&#039;oh\\&#039;"},{"s":"不对","t":"不對","p":"bu4 dui4","en":"incorrect"},{"s":"不对","t":"不對","p":"bu4 dui4","en":"incorrect"},{"s":"是","t":"是","p":"shi4","en":"to be"},{"s":"六十","t":"六十","p":"liu4shi2","en":"60"},{"s":"公斤","t":"公斤","p":"gong1jin1","en":"kilogram"},{"s":"一百二十","t":"一百二十","p":"yi1bai3 er4shi2","en":"120"},{"s":"斤","t":"斤","p":"jin1","en":"jin"}],"sentence":[{"s":"哦","t":"哦","p":"o4","en":"\\&#039;oh\\&#039;"},"，",{"s":"不对","t":"不對","p":"bu4 dui4","en":"incorrect"},"，",{"s":"不对","t":"不對","p":"bu4 dui4","en":"incorrect"},"。",{"s":"是","t":"是","p":"shi4","en":"to be"},{"s":"六十","t":"六十","p":"liu4shi2","en":"60"},{"s":"公斤","t":"公斤","p":"gong1jin1","en":"kilogram"},"，",{"s":"一百二十","t":"一百二十","p":"yi1bai3 er4shi2","en":"120"},{"s":"斤","t":"斤","p":"jin1","en":"jin"},"。"],"en":"Oh, no. That's not right. I'm 60 kilograms and 120 jin.","p":"o4 ，bu4 dui4 ，bu4 dui4 。shi4 liu4shi2 gong1jin1 ，yi1bai3 er4shi2 jin1 。","t":"哦，不對，不對。是六十公斤，一百二十斤。","s":"哦，不对，不对。是六十公斤，一百二十斤。"},{"display_order":7,"speaker":"A","row_2":"Gosh, don't scare me!","audio":"mp3/64/chinesepod_5844_dialogue_51009_prototype_13917_20013.mp3","v3_id":"1670","vocabulary":[{"s":"哎哟","t":"哎喲","p":"ai1you1","en":"\\&#039;geez\\&#039;"},{"s":"你","t":"你","p":"ni3","en":"you"},{"s":"别","t":"別","p":"bie2","en":"don’t"},{"s":"吓死","t":"嚇死","p":"xia4si3","en":"to scare to death"},{"s":"我","t":"我","p":"wo3","en":"me"}],"sentence":[{"s":"哎哟","t":"哎喲","p":"ai1you1","en":"\\&#039;geez\\&#039;"},"，",{"s":"你","t":"你","p":"ni3","en":"you"},{"s":"别","t":"別","p":"bie2","en":"don’t"},{"s":"吓死","t":"嚇死","p":"xia4si3","en":"to scare to death"},{"s":"我","t":"我","p":"wo3","en":"me"},"！"],"en":"Gosh, don't scare me!","p":"ai1you1 ，ni3 bie2 xia4si3 wo3 ！","t":"哎喲，你別嚇死我！","s":"哎哟，你别吓死我！"}]}
                     // this.vocab = [{"id":7236527,"s":"高","t":"高","p":"gāo","en":"tall; high","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77088_prototype_2559.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236528,"s":"多高","t":"多高","p":"duō gāo","en":"how tall","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77089_prototype_5269_3079.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236529,"s":"米","t":"米","p":"mǐ","en":"meter","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77090_prototype_3487_2086.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236526,"s":"重","t":"重","p":"zhòng","en":"heavy","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77091_prototype_22896_21223.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236524,"s":"多重","t":"多重","p":"duō zhòng","en":"how heavy","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77092_prototype_5095_13973.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236525,"s":"大概","t":"大概","p":"dàgài","en":"approximately","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77095_prototype_23260_19983.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236522,"s":"一百二十","t":"一百二十","p":"yībǎi èrshí","en":"120","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77096_prototype_8888_32697.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236523,"s":"公斤","t":"公斤","p":"gōngjīn","en":"kilogram","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77097_prototype_11705_4505.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236520,"s":"这么","t":"這麼","p":"zhème","en":"so, this","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77098_prototype_27655_46506.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236521,"s":"胖","t":"胖","p":"pàng","en":"fat","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77099_prototype_18186_26112.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236518,"s":"斤","t":"斤","p":"jīn","en":"jin (unit of weight)","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77101_prototype_35591_9918.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236519,"s":"别","t":"別","p":"bié","en":"don’t","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77102_prototype_14874_44479.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236517,"s":"吓死","t":"嚇死","p":"xiàsǐ","en":"to scare to death","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77103_prototype_25234_49201.mp3","vocabulary_class":"Key Vocabulary"},{"id":7236516,"s":"磅","t":"磅","p":"bàng","en":"pound","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77077_prototype_5994_68062.mp3","vocabulary_class":"Supplementary"},{"id":7236514,"s":"尺","t":"尺","p":"chǐ","en":"foot","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77078_prototype_59958_3263.mp3","vocabulary_class":"Supplementary"},{"id":7236515,"s":"寸","t":"寸","p":"cùn","en":"inch","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77079_prototype_50275_56817.mp3","vocabulary_class":"Supplementary"},{"id":7236513,"s":"瘦","t":"瘦","p":"shòu","en":"skinny, thin","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77080_prototype_7905_61727.mp3","vocabulary_class":"Supplementary"},{"id":7236512,"s":"矮","t":"矮","p":"ǎi","en":"short","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77081_prototype_112065_113839.mp3","vocabulary_class":"Supplementary"},{"id":7236511,"s":"轻","t":"輕","p":"qīng","en":"light","audio":"mp3/glossary/source/chinesepod_5844_vocabulary_77082_prototype_58447_63814_184480_125819.mp3","vocabulary_class":"Supplementary"}]
                     // this.questions = {"matching":[{"id":88103,"scope":"1670","score":5,"type_id":1,"status":1,"question":{"segments":[{"id":2,"s":"胖","t":"胖","p":"pàng","e":"fat"},{"id":3,"s":"重","t":"重","p":"zhòng","e":"heavy"},{"id":5,"s":"矮","t":"矮","p":"ǎi","e":"short"},{"id":1,"s":"轻","t":"輕","p":"qīng","e":"light"},{"id":4,"s":"高","t":"高","p":"gāo","e":"tall"}]},"createdAt":"2011-05-04T01:59:46.000Z"},{"id":88104,"scope":"1670","score":5,"type_id":1,"status":1,"question":{"segments":[{"id":3,"s":"公斤","t":"公斤","p":"gōngjīn","e":"kilogram"},{"id":1,"s":"大概","t":"大概","p":"dàgài","e":"approximately"},{"id":2,"s":"斤","t":"斤","p":"jīn","e":"half a kilogram"},{"id":4,"s":"米","t":"米","p":"mǐ","e":"meter"},{"id":5,"s":"别","t":"別","p":"bié","e":"don't"}]},"createdAt":"2011-05-04T01:59:46.000Z"},{"id":88105,"scope":"1670","score":5,"type_id":1,"status":1,"question":{"segments":[{"id":3,"s":"多重","t":"多重","p":"duō zhòng","e":"how heavy"},{"id":4,"s":"瘦","t":"瘦","p":"shòu","e":"thin"},{"id":5,"s":"多高","t":"多高","p":"duō gāo","e":"how tall"},{"id":2,"s":"这么","t":"這麼","p":"zhème","e":"so, this"},{"id":1,"s":"吓死","t":"嚇死","p":"xià sǐ","e":"to scare to death"}]},"createdAt":"2011-05-04T01:59:46.000Z"}],"audio":[{"id":88121,"scope":"1670","score":1,"type_id":4,"status":1,"question":{"audio":"http://s3.amazonaws.com/chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/64/chinesepod_5844_expansion_82233_prototype_58866_12099_75682_25239_6187_68026.mp3"},"answer":{"s":"她大概一百一十斤。","t":"她大概一百一十斤。","p":"tā dàgài yībǎi yīshí jīn.","e":"She's about 1 hundred and 16 jin."},"createdAt":"2011-05-04T03:36:30.000Z"},{"id":88122,"scope":"1670","score":1,"type_id":4,"status":1,"question":{"audio":"http://s3.amazonaws.com/chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/64/chinesepod_5844_expansion_82238_prototype_103817_193680.mp3"},"answer":{"s":"苹果多少钱一公斤？","t":"蘋果多少錢一公斤？","p":"píngguǒ duōshǎo qián yī gōngjīn?","e":"How much is one kilogram of apples?"},"createdAt":"2011-05-04T03:36:30.000Z"},{"id":88123,"scope":"1670","score":1,"type_id":4,"status":1,"question":{"audio":"http://s3.amazonaws.com/chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/64/chinesepod_5844_expansion_82227_prototype_159001_43863.mp3"},"answer":{"s":"公园的树很高。","t":"公園的樹很高。","p":"gōngyuán de shù hěn gāo.","e":"The trees in the park are really tall."},"createdAt":"2011-05-04T03:36:30.000Z"},{"id":88124,"scope":"1670","score":1,"type_id":4,"status":1,"question":{"audio":"http://s3.amazonaws.com/chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/64/chinesepod_5844_expansion_82237_prototype_4352_24068.mp3"},"answer":{"s":"往前走五百米。","t":"往前走五百米。","p":"wǎng qián zǒu wǔbǎi mǐ.","e":"Walk forward for 500 meters."},"createdAt":"2011-05-04T03:36:30.000Z"}],"choice":[{"id":88111,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"往前走五百_____。","t":"往前走五百_____。","p":"wǎng qián zǒu wǔbǎi _____.","choices":[{"id":1,"s":"重","t":"重","p":"zhòng","e":"heavy"},{"id":2,"s":"一下","t":"一下","p":"yīxià","e":"a bit"},{"id":3,"s":"长","t":"長","p":"cháng","e":"long"},{"id":4,"s":"米","t":"米","p":"mǐ","e":"meter"}]},"answer":{"id":4,"s":"往前走五百米。","t":"往前走五百米。","p":"往前走五百米。","e":"Walk forward for 500 meters."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88112,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"现在_____五点钟。","t":"現在_____五點鐘。","p":"xiànzài _____ wǔ diǎnzhōng.","choices":[{"id":1,"s":"这么","t":"這麼","p":"zhème","e":"this"},{"id":2,"s":"一半","t":"一半","p":"yíbàn","e":"one half"},{"id":3,"s":"大概","t":"大概","p":"dàgài","e":"approximately"},{"id":4,"s":"别","t":"別","p":"bié","e":"don't"}]},"answer":{"id":3,"s":"现在大概五点钟。","t":"现在大概五点钟。","p":"现在大概五点钟。","e":"It's about 5 o'clock right now."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88113,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"她_____一百一十斤。","t":"她_____一百一十斤。","p":"tā _____ yībǎi yīshí jīn.","choices":[{"id":1,"s":"大概","t":"大概","p":"dàgài","e":"approximately"},{"id":2,"s":"多高","t":"多高","p":"duō gāo","e":"how tall"},{"id":3,"s":"可以","t":"可以","p":"kěyǐ","e":"to be able to, can"},{"id":4,"s":"多少","t":"多少","p":"duōshǎo","e":"to some extent"}]},"answer":{"id":1,"s":"她大概一百一十斤。","t":"她大概一百一十斤。","p":"她大概一百一十斤。","e":"She's about 1 hundred and 16 jin."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88114,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"一_____二以下的孩子不用买票。","t":"一_____二以下的孩子不用買票。","p":"yī _____ èr yǐxià de háizi bùyòng mǎi piào.","choices":[{"id":1,"s":"米","t":"米","p":"mǐ","e":"meter"},{"id":2,"s":"瘦","t":"瘦","p":"shòu","e":"skinny, thin"},{"id":3,"s":"斤","t":"斤","p":"jīn","e":"half a kilogram"},{"id":4,"s":"轻","t":"輕","p":"qīng","e":"light"}]},"answer":{"id":1,"s":"一米二以下的孩子不用买票。","t":"一米二以下的孩子不用买票。","p":"一米二以下的孩子不用买票。","e":"Children below 1.2 meters don't have to buy tickets."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88115,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"你儿子多_____？","t":"你兒子多_____？","p":"nǐ érzi duō _____?","choices":[{"id":1,"s":"公斤","t":"公斤","p":"gōngjīn","e":"kilogram"},{"id":2,"s":"矮","t":"矮","p":"ǎi","e":"short (of height)"},{"id":3,"s":"长","t":"長","p":"cháng","e":"long"},{"id":4,"s":"重","t":"重","p":"zhòng","e":"heavy"}]},"answer":{"id":4,"s":"你儿子多重？","t":"你儿子多重？","p":"你儿子多重？","e":"How much does your son weigh?"},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88116,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"五块钱一斤，也就是十块钱一_____。","t":"五塊錢一斤，也就是十塊錢一_____。","p":"wǔ kuàiqián yī jīn,yějiùshì shí kuàiqián yī _____.","choices":[{"id":1,"s":"胖","t":"胖","p":"pàng","e":"fat"},{"id":2,"s":"公斤","t":"公斤","p":"gōngjīn","e":"kilogram"},{"id":3,"s":"可能","t":"可能","p":"kěnéng","e":"possible"},{"id":4,"s":"大概","t":"大概","p":"dàgài","e":"roughly"}]},"answer":{"id":2,"s":"五块钱一斤，也就是十块钱一公斤。","t":"五块钱一斤，也就是十块钱一公斤。","p":"五块钱一斤，也就是十块钱一公斤。","e":"Five kuai for one jin means it's ten kuai for one kilogram."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88117,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"我买了五_____大米。","t":"我買了五_____大米。","p":"wǒ mǎi le wǔ _____ dàmǐ.","choices":[{"id":1,"s":"个","t":"個","p":"gè","e":"measure word"},{"id":2,"s":"条","t":"條","p":"tiáo","e":"[measure word]"},{"id":3,"s":"公斤","t":"公斤","p":"gōngjīn","e":"kilogram"},{"id":4,"s":"根","t":"根","p":"gēn","e":"[measure word]"}]},"answer":{"id":3,"s":"我买了五公斤大米。","t":"我买了五公斤大米。","p":"我买了五公斤大米。","e":"I bought five kilograms of rice."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88118,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"我的行李很_____。","t":"我的行李很_____。","p":"wǒ de xíngli hěn _____.","choices":[{"id":1,"s":"瘦","t":"瘦","p":"shòu","e":"thin"},{"id":2,"s":"胖","t":"胖","p":"pàng","e":"fat"},{"id":3,"s":"重","t":"重","p":"zhòng","e":"heavy"},{"id":4,"s":"找","t":"找","p":"zhǎo","e":"to look for"}]},"answer":{"id":3,"s":"我的行李很重。","t":"我的行李很重。","p":"我的行李很重。","e":"My luggage is really heavy."},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88119,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"他多_____？","t":"他多_____？","p":"tā duō _____?","choices":[{"id":1,"s":"吓","t":"嚇","p":"xià","e":"to frighten"},{"id":2,"s":"斤","t":"斤","p":"jīn","e":"half a kilogram"},{"id":3,"s":"很","t":"很","p":"hěn","e":"very"},{"id":4,"s":"高","t":"高","p":"gāo","e":"tall"}]},"answer":{"id":4,"s":"他多高？","t":"他多高？","p":"他多高？","e":"How tall is he?"},"createdAt":"2011-05-04T01:59:49.000Z"},{"id":88120,"scope":"1670","score":1,"type_id":5,"status":1,"question":{"s":"他_____三十岁。","t":"他_____三十歲。","p":"tā _____ sānshí suì.","choices":[{"id":1,"s":"大概","t":"大概","p":"dàgài","e":"approximately"},{"id":2,"s":"这么","t":"這麼","p":"zhème","e":"so, this"},{"id":3,"s":"多高","t":"多高","p":"duō gāo","e":"how tall"},{"id":4,"s":"多久","t":"多久","p":"duōjiǔ","e":"how long"}]},"answer":{"id":1,"s":"他大概三十岁。","t":"他大概三十岁。","p":"他大概三十岁。","e":"He's about 30 years old."},"createdAt":"2011-05-04T01:59:49.000Z"}],"rearrange":[{"id":88106,"scope":"1670","score":6,"type_id":2,"status":1,"question":{"segments":[{"s":"你多高？","t":"你多高？","p":"nǐ duō gāo?","e":"How tall are you?","id":1},{"s":"一米七八。","t":"一米七八。","p":"yī mǐ qī bā.","e":"1 meter and 78 centimeters.","id":2},{"s":"多重？","t":"多重？","p":"duō zhòng?","e":"How heavy?","id":3},{"s":"大概一百二十公斤。","t":"大概一百二十公斤。","p":"dàgài yībǎi èrshí gōngjīn.","e":"About 120 kilograms.","id":4},{"s":"啊？你这么胖？","t":"啊？你這麼胖？","p":"ǎ?nǐ zhème pàng?","e":"Huh? You're that fat?","id":5},{"s":"哦，不对，不对。是六十公斤，一百二十斤。","t":"哦，不對，不對。是六十公斤，一百二十斤。","p":"ò,bù duì,bù duì.shì liùshí gōngjīn,yībǎi èrshí jīn.","e":"Oh, no. That's not right. I'm 60 kilograms and 120 jin.","id":6},{"s":"哎哟，你别吓死我！","t":"哎喲，你別嚇死我！","p":"āiyōu,nǐ bié xiàsǐ wǒ!","e":"Gosh, don't scare me!","id":7}]},"createdAt":"2011-05-04T01:59:46.000Z"}]}
                     // this.expansion = [{"phrase":"高","examples":[{"id":223119,"vocabulary":"高","audio":"mp3/64/chinesepod_5844_expansion_82226_prototype_137401_14486_149387_203145.mp3","sentence":[{"s":"你","t":"你","p":"ni3","en":"your"},{"s":"男朋友","t":"男朋友","p":"nan2 peng2you5","en":"boyfriend"},{"s":"真","t":"真","p":"zhen1","en":"really"},{"s":"高","t":"高","p":"gao1","en":"tall"},"！"],"target":"Your boyfriend is really tall!","en":"Your boyfriend is really tall!","p":"ni3 nan2 peng2you5 zhen1 gao1 ！","s":"你男朋友真高！","t":"你男朋友真高！"},{"id":223120,"vocabulary":"高","audio":"mp3/64/chinesepod_5844_expansion_82227_prototype_159001_43863.mp3","sentence":[{"s":"公园","t":"公園","p":"gong1yuan2","en":"park"},{"s":"的","t":"的","p":"de5","en":""},{"s":"树","t":"樹","p":"shu4","en":"tree"},{"s":"很","t":"很","p":"hen3","en":"very"},{"s":"高","t":"高","p":"gao1","en":"tall"},"。"],"target":"The trees in the park are really tall.","en":"The trees in the park are really tall.","p":"gong1yuan2 de5 shu4 hen3 gao1 。","s":"公园的树很高。","t":"公園的樹很高。"},{"id":223121,"vocabulary":"高","audio":"mp3/64/chinesepod_5844_expansion_82228_prototype_14184_14007.mp3","sentence":[{"s":"他","t":"他","p":"ta1","en":"he"},{"s":"多高","t":"多高","p":"duo1 gao1","en":"how tall"},"？"],"target":"How tall is he?","en":"How tall is he?","p":"ta1 duo1 gao1 ？","s":"他多高？","t":"他多高？"}]},{"phrase":"重","examples":[{"id":223122,"vocabulary":"重","audio":"mp3/64/chinesepod_5844_expansion_82229_prototype_26297_37576.mp3","sentence":[{"s":"我的","t":"我的","p":"wo3 de5","en":"my"},{"s":"行李","t":"行李","p":"xing2li5","en":"luggage"},{"s":"很","t":"很","p":"hen3","en":"very"},{"s":"重","t":"重","p":"zhong4","en":"heavy"},"。"],"target":"My luggage is really heavy.","en":"My luggage is really heavy.","p":"wo3 de5 xing2li5 hen3 zhong4 。","s":"我的行李很重。","t":"我的行李很重。"},{"id":223123,"vocabulary":"重","audio":"mp3/64/chinesepod_5844_expansion_82230_prototype_298_36027.mp3","sentence":[{"s":"你的","t":"你的","p":"ni3 de5","en":"your"},{"s":"包","t":"包","p":"bao1","en":"bag"},{"s":"怎么","t":"怎麼","p":"zen3me5","en":"how"},{"s":"这么","t":"這麼","p":"zhe4me5","en":"so, this"},{"s":"重","t":"重","p":"zhong4","en":"heavy"},"？"],"target":"How is your bag so heavy?","en":"How is your bag so heavy?","p":"ni3 de5 bao1 zen3me5 zhe4me5 zhong4 ？","s":"你的包怎么这么重？","t":"你的包怎麼這麼重？"},{"id":223124,"vocabulary":"重","audio":"mp3/64/chinesepod_5844_expansion_82231_prototype_57991_53145.mp3","sentence":[{"s":"你","t":"你","p":"ni3","en":"your"},{"s":"儿子","t":"兒子","p":"er2zi5","en":"son"},{"s":"多重","t":"多重","p":"duo1 zhong4","en":"how heavy"},"？"],"target":"How much does your son weigh?","en":"How much does your son weigh?","p":"ni3 er2zi5 duo1 zhong4 ？","s":"你儿子多重？","t":"你兒子多重？"}]},{"phrase":"大概","examples":[{"id":223125,"vocabulary":"大概","audio":"mp3/64/chinesepod_5844_expansion_82232_prototype_35574_20691.mp3","sentence":[{"s":"现在","t":"現在","p":"xian4zai4","en":"now"},{"s":"大概","t":"大概","p":"da4gai4","en":"approximately"},{"s":"五点钟","t":"五點鐘","p":"wu3 dian3zhong1","en":"5 o\\&#039;clock"},"。"],"target":"It's about 5 o'clock right now.","en":"It's about 5 o'clock right now.","p":"xian4zai4 da4gai4 wu3 dian3zhong1 。","s":"现在大概五点钟。","t":"現在大概五點鐘。"},{"id":223126,"vocabulary":"大概","audio":"mp3/64/chinesepod_5844_expansion_82233_prototype_58866_12099_75682_25239_6187_68026.mp3","sentence":[{"s":"她","t":"她","p":"ta1","en":"she"},{"s":"大概","t":"大概","p":"da4gai4","en":"probably"},{"s":"一百一十","t":"一百一十","p":"yi1bai3 yi1shi2","en":"one hundred"},{"s":"斤","t":"斤","p":"jin1","en":"jin"},"。"],"target":"She's about 1 hundred and 10 jin.","en":"She's about 1 hundred and 10 jin.","p":"ta1 da4gai4 yi1bai3 yi1shi2 jin1 。","s":"她大概一百一十斤。","t":"她大概一百一十斤。"},{"id":223127,"vocabulary":"大概","audio":"mp3/64/chinesepod_5844_expansion_82234_prototype_186741_111595.mp3","sentence":[{"s":"他","t":"他","p":"ta1","en":"he"},{"s":"大概","t":"大概","p":"da4gai4","en":"approximately"},{"s":"三十岁","t":"三十歲","p":"san1shi2 sui4","en":"30 years old"},"。"],"target":"He's about 30 years old.","en":"He's about 30 years old.","p":"ta1 da4gai4 san1shi2 sui4 。","s":"他大概三十岁。","t":"他大概三十歲。"}]},{"phrase":"米","examples":[{"id":223128,"vocabulary":"米","audio":"mp3/64/chinesepod_5844_expansion_82235_prototype_44885_56329_80362_41953.mp3","sentence":[{"s":"她","t":"她","p":"ta1","en":"she"},{"s":"一","t":"一","p":"yi1","en":"one"},{"s":"米","t":"米","p":"mi3","en":"meter"},{"s":"六","t":"六","p":"liu4","en":"six"},{"s":"三","t":"三","p":"san1","en":"three"},"。"],"target":"She's one meter and sixty-three centimeters.","en":"She's one meter and sixty-three centimeters.","p":"ta1 yi1 mi3 liu4 san1 。","s":"她一米六三。","t":"她一米六三。"},{"id":223129,"vocabulary":"米","audio":"mp3/64/chinesepod_5844_expansion_82236_prototype_62833_42850.mp3","sentence":[{"s":"一","t":"一","p":"yi1","en":"one"},{"s":"米","t":"米","p":"mi3","en":"meter"},{"s":"二","t":"二","p":"er4","en":"two"},{"s":"以下","t":"以下","p":"yi3xia4","en":"below"},{"s":"的","t":"的","p":"de5","en":""},{"s":"孩子","t":"孩子","p":"hai2zi5","en":"child"},{"s":"不用","t":"不用","p":"bu4yong4","en":"need not"},{"s":"买","t":"買","p":"mai3","en":"to buy"},{"s":"票","t":"票","p":"piao4","en":"ticket"},"。"],"target":"Children below 1.2 meters don't have to buy tickets.","en":"Children below 1.2 meters don't have to buy tickets.","p":"yi1 mi3 er4 yi3xia4 de5 hai2zi5 bu4yong4 mai3 piao4 。","s":"一米二以下的孩子不用买票。","t":"一米二以下的孩子不用買票。"},{"id":223130,"vocabulary":"米","audio":"mp3/64/chinesepod_5844_expansion_82237_prototype_4352_24068.mp3","sentence":[{"s":"往","t":"往","p":"wang3","en":"towards"},{"s":"前","t":"前","p":"qian2","en":"ahead"},{"s":"走","t":"走","p":"zou3","en":"to walk"},{"s":"五百","t":"五百","p":"wu3bai3","en":"500"},{"s":"米","t":"米","p":"mi3","en":"meters"},"。"],"target":"Walk forward for 500 meters.","en":"Walk forward for 500 meters.","p":"wang3 qian2 zou3 wu3bai3 mi3 。","s":"往前走五百米。","t":"往前走五百米。"}]},{"phrase":"公斤","examples":[{"id":223131,"vocabulary":"公斤","audio":"mp3/64/chinesepod_5844_expansion_82240_prototype_106700_86997_147158_167824.mp3","sentence":[{"s":"五块钱","t":"五塊錢","p":"wu3 kuai4qian2","en":"5 RMB"},{"s":"一","t":"一","p":"yi1","en":"one"},{"s":"斤","t":"斤","p":"jin1","en":"jin"},"，",{"s":"也就是","t":"也就是","p":"ye3jiu4shi4","en":"is the same as"},{"s":"十块钱","t":"十塊錢","p":"shi2 kuai4qian2","en":"ten kuai"},{"s":"一","t":"一","p":"yi1","en":"one"},{"s":"公斤","t":"公斤","p":"gong1jin1","en":"kilogram"},"。"],"target":"Five kuai for one jin means it's ten kuai for one kilogram.","en":"Five kuai for one jin means it's ten kuai for one kilogram.","p":"wu3 kuai4qian2 yi1 jin1 ，ye3jiu4shi4 shi2 kuai4qian2 yi1 gong1jin1 。","s":"五块钱一斤，也就是十块钱一公斤。","t":"五塊錢一斤，也就是十塊錢一公斤。"},{"id":223132,"vocabulary":"公斤","audio":"mp3/64/chinesepod_5844_expansion_82239_prototype_61304_156196.mp3","sentence":[{"s":"我","t":"我","p":"wo3","en":"I"},{"s":"买","t":"買","p":"mai3","en":"to buy"},{"s":"了","t":"了","p":"le5","en":""},{"s":"五","t":"五","p":"wu3","en":"five"},{"s":"公斤","t":"公斤","p":"gong1jin1","en":"kilogram"},{"s":"大米","t":"大米","p":"da4mi3","en":"rice"},"。"],"target":"I bought five kilograms of rice.","en":"I bought five kilograms of rice.","p":"wo3 mai3 le5 wu3 gong1jin1 da4mi3 。","s":"我买了五公斤大米。","t":"我買了五公斤大米。"},{"id":223133,"vocabulary":"公斤","audio":"mp3/64/chinesepod_5844_expansion_82238_prototype_103817_193680.mp3","sentence":[{"s":"苹果","t":"蘋果","p":"ping2guo3","en":"apple"},{"s":"多少钱","t":"多少錢","p":"duo1shao3 qian2","en":"how much money"},{"s":"一","t":"一","p":"yi1","en":"one"},{"s":"公斤","t":"公斤","p":"gong1jin1","en":"kilogram"},"？"],"target":"How much is one kilogram of apples?","en":"How much is one kilogram of apples?","p":"ping2guo3 duo1shao3 qian2 yi1 gong1jin1 ？","s":"苹果多少钱一公斤？","t":"蘋果多少錢一公斤？"}]}]
@@ -537,6 +538,110 @@
                             }
                         }
                     });
+
+                    if (this.dialogue) {
+                        for (let i=0; i < this.dialogue.dialogue.length; i++) {
+                            let d = this.dialogue.dialogue[i]
+
+                            let sentence=[];
+                            
+                            if(d.sentence)
+                            for (let i=0; i < d.sentence.length; i++) {
+                                let characters = d.sentence[i]
+
+                                if (characters.s && characters.s.length > 1 && isNaN(characters.s)) {
+                                    for(let ndx=0; ndx < characters.s.length; ndx++) {
+                                        let hanziLookup = await this.getAPIFetch('/beta/api/v1/lookup-hanzi/'+characters.s[ndx])
+                                        sentence.push({
+                                            en:hanziLookup.definition,
+                                            p:hanziLookup.pinyin,
+                                            s:hanziLookup.simplified,
+                                            t:hanziLookup.traditional,
+                                        })
+                                    }
+                                   
+
+                                } else {
+                                    sentence.push(characters)
+                                }
+                            }
+
+                            this.dialogue.dialogue[i].sentence = sentence
+                        }
+                    }
+
+                    if (this.expansion) {
+                        for (let ndxExp=0; ndxExp < this.expansion.length; ndxExp++) {
+                            let e = this.expansion[ndxExp]
+
+                            if(e.examples)
+                            for (let ndxEx=0; ndxEx < e.examples.length; ndxEx++) {
+                                let example = e.examples[ndxEx]
+                                let expansionSentence=[];
+
+                                for (let ndxs=0; ndxs < example.sentence.length; ndxs++) {
+                                    let sentence = example.sentence[ndxs]
+
+                                    if (sentence.s && sentence.s.length > 1 && isNaN(sentence.s)) {
+                                        for(let ndx=0; ndx < sentence.s.length; ndx++) {
+                                            let hanziLookup = await this.getAPIFetch('/beta/api/v1/lookup-hanzi/'+sentence.s[ndx])
+                                            expansionSentence.push({
+                                                en:hanziLookup.definition,
+                                                p:hanziLookup.pinyin,
+                                                s:hanziLookup.simplified,
+                                                t:hanziLookup.traditional,
+                                            })
+                                        }
+                                    
+
+                                    } else {
+                                        expansionSentence.push(sentence)
+                                    }
+                                }
+
+                                this.expansion[ndxExp].examples[ndxEx].sentence = expansionSentence
+                            }
+
+                        }
+                    }
+
+                    if (this.grammar) {
+                        for (let gNdx=0; gNdx < this.grammar.length; gNdx++) {
+                            let e = this.grammar[gNdx]
+
+                            if(e.examples)
+                            for (let eNdx=0; eNdx < e.examples.length; eNdx++) {
+                                let example = e.examples[eNdx]
+                                let grammarSentence=[];
+
+                                for (let sNdx=0; sNdx < example.sentence.length; sNdx++) {
+                                    let sentence = example.sentence[sNdx]
+
+                                    if (sentence.s && sentence.s.length > 1 && isNaN(sentence.s)) {
+                                        for(let ndx=0; ndx < sentence.s.length; ndx++) {
+                                            let hanziLookup = await this.getAPIFetch('/beta/api/v1/lookup-hanzi/'+sentence.s[ndx])
+                                            grammarSentence.push({
+                                                en:hanziLookup.definition,
+                                                p:hanziLookup.pinyin,
+                                                s:hanziLookup.simplified,
+                                                t:hanziLookup.traditional,
+                                            })
+                                        }
+                                    
+
+                                    } else {
+                                        grammarSentence.push(sentence)
+                                    }
+                                // })
+                                }
+
+                                this.grammar[gNdx].examples[eNdx].sentence = grammarSentence
+                            }
+
+                            
+                        }
+                    }
+
                 } else {
                     console.log("lesson not found");
                 }

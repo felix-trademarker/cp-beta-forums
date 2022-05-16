@@ -1,7 +1,7 @@
 var rpoTopics = require('../../repositories/topics');
 var rpoSubTopics = require('../../repositories/subTopics');
 var rpoComments = require('../../repositories/comments');
-// var rpoComments = require('../../repositories/comments');
+var rpoHanziDefinitions = require('../../repositories/hanziDefinitions');
 var path = require('path')
 var helpers = require('../../helpers')
 const { toInteger } = require('lodash'); 
@@ -12,6 +12,8 @@ let rpoUsers = require('../../repositories/users');
 let mailService = require('../../services/mailService')
 
 let activityService = require('../../services/activityLogService')
+
+let hanzi = require("hanzi");
 
 exports.fetchSubTopic = async function(req, res, next) {
   let results = await rpoSubTopics.find(req.params.topicId)
@@ -265,20 +267,55 @@ exports.getTopics = async function(req, res, next) {
 
 exports.lookupHanzi = async function(req, res, next) {
   
-  var hanzi = require("hanzi");
-
-  hanzi.start();
+  try{
 
   let lookup=[];
   if (req.params.hanzi) {
-    lookup = hanzi.definitionLookup(req.params.hanzi)
-  }
+// check mongo or else fetch definition in hanzi lib
+    let hanziDefinition = await rpoHanziDefinitions.findQuery({simplified:req.params.hanzi})
 
-  if (lookup.length > 0) {
-    lookup = lookup[0]
-  }
+    if (hanziDefinition && hanziDefinition.length > 0) { // found
+      lookup = hanziDefinition[0]
+      console.log("=====fetch in mongo", req.params.hanzi);
+    } else { // fetch in hanzi lib
+      hanzi.start();
+      lookup = hanzi.definitionLookup(req.params.hanzi)
+      console.log("=====lookup hanzi library", req.params.hanzi);
 
+      if (lookup && lookup.length > 0) {
+        if (lookup[0].definition.includes("surname")) {
+          if(lookup.length > 1){
+            lookup = lookup[1]
+          } else {
+            lookup = lookup[0]
+          }
+        } else {
+          lookup = lookup[0]
+        }
+
+        // store definition 
+        console.log("store hanzi",req.params.hanzi, lookup);
+        rpoHanziDefinitions.put(lookup)
+      }
+
+      // lookup = lookup[0]
+
+      // change definition to radical if found
+      // let radicalDefinition = hanzi.getRadicalMeaning(lookup.simplified)
+      // console.log("******** definition *******", radicalDefinition);
+      // if(radicalDefinition && radicalDefinition !== "N/A"){
+      //   lookup.definition = radicalDefinition
+      // }
+      
+      
+    } // else
+    
+  }
+  lookup.definition = lookup.definition.replaceAll("/", " / ")
   res.json(lookup);
+  } catch(err) {
+    res.json([]);
+  }
 }
 
 

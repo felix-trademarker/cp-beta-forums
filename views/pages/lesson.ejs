@@ -204,7 +204,7 @@
 												<div class="mandarin-chars">
 													<span v-for="sentence in dia.sentence" v-if="sentence.s">
 
-														<span v-if="sentence.s" class="mandarin-char position-relative">
+														<span class="mandarin-char position-relative">
 															<span class="fs-2" v-if="vuex.userInfo.charSet == 'simplified'">{{ sentence.s }}</span>
 															<span class="fs-2" v-if="vuex.userInfo.charSet == 'traditional'">{{ sentence.t }}</span>
 															<div style="margin-top:-5px;" class="mandarin-char-tooltip position-absolute start-0 rounded p-3 bg-light fs-5">
