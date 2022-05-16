@@ -22,4 +22,7 @@ router.post('/delete-comment/', genericController.deleteComments);
 router.get('/check-auth/:email', genericController.getAuth);
 router.post('/check-auth/', genericController.getAuth);
 
+// LESSON API GET INFO ON HANZI
+router.get('/lookup-hanzi/:hanzi', genericController.lookupHanzi);
+
 module.exports = router;

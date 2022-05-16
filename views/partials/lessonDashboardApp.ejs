@@ -444,6 +444,14 @@
                 // return true;
             },
 
+            lookupHanzi: function(hanzi) {
+                let hanziLookup = getAPIFetch('/beta/api/v1/lookup-hanzi/'+hanzi)
+
+                console.log(hanziLookup);
+
+                return hanziLookup
+            }
+
             
         },
         computed: {

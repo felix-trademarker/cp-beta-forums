@@ -36,6 +36,7 @@
     "formidable": "^1.2.2",
     "gender-detection-from-name": "^1.7.2",
     "geoip-lite": "^1.4.2",
+    "hanzi": "^2.1.5",
     "helmet": "^5.0.1",
     "html-pdf": "^3.0.1",
     "http-errors": "~1.6.3",

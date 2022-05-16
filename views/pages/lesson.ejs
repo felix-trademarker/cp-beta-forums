@@ -202,15 +202,29 @@
 										<li v-for="dia in dialogue.dialogue" class="list-group-item w-50 w-md-50 p-4" style="border-width:1px !important">
 											<div class="mandarin-chars-main d-flex align-items-center justify-content-between">
 												<div class="mandarin-chars">
-													<span v-for="sentence in dia.sentence" v-if="sentence.s" class="mandarin-char position-relative">
-														<span class="fs-2" v-if="vuex.userInfo.charSet == 'simplified'">{{ sentence.s }}</span>
-														<span class="fs-2" v-if="vuex.userInfo.charSet == 'traditional'">{{ sentence.t }}</span>
-														<div style="margin-top:-5px;" class="mandarin-char-tooltip position-absolute start-0 rounded p-3 bg-light fs-5">
-															<div v-if="vuex.userInfo.charSet == 'simplified'" class="fs-2 mb-2">{{ sentence.s }}</div>
-															<div v-if="vuex.userInfo.charSet == 'traditional'" class="fs-2 mb-2">{{ sentence.t }}</div>
-															<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
-															<div class="border-top pt-1" v-html="sentence.en"></div>
-														</div>
+													<span v-for="sentence in dia.sentence" v-if="sentence.s">
+
+														<span v-if="sentence.s" class="mandarin-char position-relative">
+															<span class="fs-2" v-if="vuex.userInfo.charSet == 'simplified'">{{ sentence.s }}</span>
+															<span class="fs-2" v-if="vuex.userInfo.charSet == 'traditional'">{{ sentence.t }}</span>
+															<div style="margin-top:-5px;" class="mandarin-char-tooltip position-absolute start-0 rounded p-3 bg-light fs-5">
+																<div v-if="vuex.userInfo.charSet == 'simplified'" class="fs-2 mb-2">{{ sentence.s }}</div>
+																<div v-if="vuex.userInfo.charSet == 'traditional'" class="fs-2 mb-2">{{ sentence.t }}</div>
+																<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
+																<div class="border-top pt-1" v-html="sentence.en"></div>
+															</div>
+														</span>
+
+														<!-- <span v-if="sentence.s.length > 1" v-for="(ndx, s) in sentence.s" class="mandarin-char position-relative">
+															<span class="fs-2" v-if="vuex.userInfo.charSet == 'simplified'">{{ sentence.s[ndx] }}</span>
+															<span class="fs-2" v-if="vuex.userInfo.charSet == 'traditional'">{{ sentence.t[ndx] }}</span>
+															<div style="margin-top:-5px;" class="mandarin-char-tooltip position-absolute start-0 rounded p-3 bg-light fs-5">
+																<div v-if="vuex.userInfo.charSet == 'simplified'" class="fs-2 mb-2">{{ sentence.s[ndx] }}</div>
+																<div v-if="vuex.userInfo.charSet == 'traditional'" class="fs-2 mb-2">{{ sentence.t[ndx] }}</div>
+																<div class="mb-2">{{ pinyinConvert(lookupHanzi(sentence.s[ndx]).pinyin) }}</div>
+																<div class="border-top pt-1" v-html="sentence.en"></div>
+															</div>
+														</span> -->
 													</span>
 												
 												</div>

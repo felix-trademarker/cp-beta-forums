@@ -263,5 +263,22 @@ exports.getTopics = async function(req, res, next) {
   res.json(topics);
 }
 
+exports.lookupHanzi = async function(req, res, next) {
+  
+  var hanzi = require("hanzi");
+
+  hanzi.start();
+
+  let lookup=[];
+  if (req.params.hanzi) {
+    lookup = hanzi.definitionLookup(req.params.hanzi)
+  }
+
+  if (lookup.length > 0) {
+    lookup = lookup[0]
+  }
+
+  res.json(lookup);
+}
 
 
