@@ -277,9 +277,13 @@ exports.lookupHanzi = async function(req, res, next) {
     if (hanziDefinition && hanziDefinition.length > 0) { // found
       lookup = hanziDefinition[0]
       console.log("=====fetch in mongo", req.params.hanzi);
+
     } else { // fetch in hanzi lib
       hanzi.start();
+
+      if (hanzi.ifComponentExists(req.params.hanzi))
       lookup = hanzi.definitionLookup(req.params.hanzi)
+
       console.log("=====lookup hanzi library", req.params.hanzi);
 
       if (lookup && lookup.length > 0) {
@@ -293,6 +297,13 @@ exports.lookupHanzi = async function(req, res, next) {
           lookup = lookup[0]
         }
 
+
+        // change definition to radical if found
+        // let radicalDefinition = hanzi.getRadicalMeaning(lookup.simplified)
+        // if(radicalDefinition && radicalDefinition !== "N/A"){
+        //   lookup.definition = radicalDefinition
+        // }
+
         // store definition 
         console.log("store hanzi",req.params.hanzi, lookup);
         rpoHanziDefinitions.put(lookup)
@@ -300,12 +311,7 @@ exports.lookupHanzi = async function(req, res, next) {
 
       // lookup = lookup[0]
 
-      // change definition to radical if found
-      // let radicalDefinition = hanzi.getRadicalMeaning(lookup.simplified)
-      // console.log("******** definition *******", radicalDefinition);
-      // if(radicalDefinition && radicalDefinition !== "N/A"){
-      //   lookup.definition = radicalDefinition
-      // }
+      
       
       
     } // else

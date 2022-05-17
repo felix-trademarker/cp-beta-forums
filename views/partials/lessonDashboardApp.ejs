@@ -147,6 +147,18 @@
                 let toogleSave = await this.putAPIFetch("https://www.chinesepod.com/api/v1/account/settings/update", params)
             },
 
+            addVocab: async function(vocab) {
+
+                vocab.lessonId = this.lesson.id
+                // let params = {type: "charSet", value: charSet}
+
+
+                // this.vuex.userInfo.charSet = charSet
+                // localStorage.setItem('vuex',  JSON.stringify(this.vuex));
+
+                let toogleSave = await this.putAPIFetch("https://www.chinesepod.com/api/v1/vocabulary/words/create", vocab)
+            },
+
             pinyinConvert: function(pinyin) {
                 return PinyinConverter.convert(pinyin);
             },

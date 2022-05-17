@@ -38,7 +38,7 @@ exports.landing = async function(req, res, next) {
     }
 
   }
-    
+
   res.render('dashboard/', { 
     title: '',
     description: '',
@@ -366,6 +366,8 @@ exports.weNeedYou = async function(req, res, next) {
 }
 
 exports.ourMission = async function(req, res, next) {
+
+  
     
   res.render('pages/ourmission', { 
     title: '',
@@ -387,6 +389,8 @@ exports.enroll = async function(req, res, next) {
 
 exports.about = async function(req, res, next) {
     
+
+
   res.render('pages/about', { 
     title: '',
     description: '',

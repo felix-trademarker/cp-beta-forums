@@ -124,7 +124,7 @@ input[type="submit"]:hover {
 .mandarin-chars > span > span{
     border-radius: 5px;
     padding: 0.2rem 0;
-    cursor: pointer;
+
     transition: 0.3s;
 }
 
@@ -232,11 +232,6 @@ input[type="submit"]:hover {
 
 .form-block__checkbox input[type=checkbox] {
     width: 0;
-    height: 0;
-    opacity: 0;
-}
-
-.form-block__checkbox input[type=checkbox]:checked+.form-block__checkbox-block {
     background: url(../images/Tick.svg) center center no-repeat;
     background-size: cover;
 }
@@ -457,3 +452,24 @@ span.answer {
     left: 122px;
 }
 
+.addVocab{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #dfdfdf;
+    line-height: 6px;
+    font-size: 12px;
+    box-shadow: 0px 0px 8px #ccc;
+    border-radius: 4px;
+}
+
+.addVocab:hover{
+    background: #e11e1d;
+    color: #fff;
+}
+
+.c-hand{
+    cursor: pointer;
+}

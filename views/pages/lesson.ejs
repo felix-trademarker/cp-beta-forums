@@ -171,19 +171,19 @@
 					<!-- tabs start -->
 					<nav>
 						<div class="nav nav-tabs" id="nav-tab" role="tablist">
-							<button class="nav-link active" id="nav-dialogue-tab" data-bs-toggle="tab" data-bs-target="#nav-dialogue" type="button" role="tab" aria-controls="nav-dialogue" aria-selected="false">Dialogue</button>
+							<button v-if="dialogue" class="nav-link active" id="nav-dialogue-tab" data-bs-toggle="tab" data-bs-target="#nav-dialogue" type="button" role="tab" aria-controls="nav-dialogue" aria-selected="false">Dialogue</button>
 
-							<button class="nav-link" id="nav-vocab-tab" data-bs-toggle="tab" data-bs-target="#nav-vocab" type="button" role="tab" aria-controls="nav-vocab" aria-selected="false">Vocabulary</button>
+							<button v-if="vocab" class="nav-link" id="nav-vocab-tab" data-bs-toggle="tab" data-bs-target="#nav-vocab" type="button" role="tab" aria-controls="nav-vocab" aria-selected="false">Vocabulary</button>
 
-							<button class="nav-link" id="nav-expansion-tab" data-bs-toggle="tab" data-bs-target="#nav-expansion" type="button" role="tab" aria-controls="nav-expansion" aria-selected="false">Expansion</button>
+							<button v-if="expansion" class="nav-link" id="nav-expansion-tab" data-bs-toggle="tab" data-bs-target="#nav-expansion" type="button" role="tab" aria-controls="nav-expansion" aria-selected="false">Expansion</button>
 							
-							<button class="nav-link" id="nav-grammar-tab" data-bs-toggle="tab" data-bs-target="#nav-grammar" type="button" role="tab" aria-controls="nav-grammar" aria-selected="false">Grammar</button>
+							<button v-if="grammar" class="nav-link" id="nav-grammar-tab" data-bs-toggle="tab" data-bs-target="#nav-grammar" type="button" role="tab" aria-controls="nav-grammar" aria-selected="false">Grammar</button>
 
-							<button class="nav-link" id="nav-exercise-tab" data-bs-toggle="tab" data-bs-target="#nav-exercise" type="button" role="tab" aria-controls="nav-exercise" aria-selected="false">Exercise</button>
+							<button v-if="questions" class="nav-link" id="nav-exercise-tab" data-bs-toggle="tab" data-bs-target="#nav-exercise" type="button" role="tab" aria-controls="nav-exercise" aria-selected="false">Exercise</button>
 
 							<button class="nav-link" id="nav-comments-tab" data-bs-toggle="tab" data-bs-target="#nav-comments" type="button" role="tab" aria-controls="nav-comments" aria-selected="true">Comments</button>
 
-							<button class="nav-link" id="nav-downloads-tab" data-bs-toggle="tab" data-bs-target="#nav-downloads" type="button" role="tab" aria-controls="nav-downloads" aria-selected="false">Downloads</button>
+							<button v-if="downloads" class="nav-link" id="nav-downloads-tab" data-bs-toggle="tab" data-bs-target="#nav-downloads" type="button" role="tab" aria-controls="nav-downloads" aria-selected="false">Downloads</button>
 						</div>
 					</nav>
 					<div class="tab-content" id="nav-tabContent">
@@ -205,9 +205,10 @@
 													<span v-for="sentence in dia.sentence" v-if="sentence.s">
 
 														<span class="mandarin-char position-relative">
-															<span class="fs-2" v-if="vuex.userInfo.charSet == 'simplified'">{{ sentence.s }}</span>
-															<span class="fs-2" v-if="vuex.userInfo.charSet == 'traditional'">{{ sentence.t }}</span>
-															<div style="margin-top:-5px;" class="mandarin-char-tooltip position-absolute start-0 rounded p-3 bg-light fs-5">
+															<span class="fs-2 c-hand" v-if="vuex.userInfo.charSet == 'simplified'">{{ sentence.s }}</span>
+															<span class="fs-2 c-hand" v-if="vuex.userInfo.charSet == 'traditional'">{{ sentence.t }}</span>
+															<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 bg-light fs-5">
+																<div class="addVocab c-hand" @click="addVocab(sentence)"><i class="fa fa-plus"></i></div>
 																<div v-if="vuex.userInfo.charSet == 'simplified'" class="fs-2 mb-2">{{ sentence.s }}</div>
 																<div v-if="vuex.userInfo.charSet == 'traditional'" class="fs-2 mb-2">{{ sentence.t }}</div>
 																<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
@@ -362,10 +363,11 @@
 													<div class="mandarin-chars">
 													
 														<span v-for="sentence in examples.sentence" v-if="sentence.s" class="mandarin-char position-relative">
-															<span class="fs-2">{{ sentence.s }}</span>
+															<span class="fs-2 c-hand">{{ sentence.s }}</span>
 															<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
-																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" class="fs-2 mb-2">{{ sentence.s }}</div>
-																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" class="fs-2 mb-2">{{ sentence.t }}</div>
+																<div class="addVocab c-hand" @click="addVocab(sentence)"><i class="fa fa-plus"></i></div>
+																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" class="fs-2 mb-2 c-hand">{{ sentence.s }}</div>
+																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" class="fs-2 mb-2 c-hand">{{ sentence.t }}</div>
 																<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
 																<div class="border-top pt-1">{{ sentence.en }}</div>
 															</div>
@@ -456,8 +458,9 @@
 													<div class="mandarin-chars">
 													
 														<span v-for="sentence in examples.sentence" v-if="sentence.s" class="mandarin-char position-relative">
-															<span v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" class="fs-2">{{ sentence.s }}</span>
-															<span v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" class="fs-2">{{ sentence.t }}</span>
+															<div class="addVocab c-hand" @click="addVocab(sentence)"><i class="fa fa-plus"></i></div>
+															<span v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" class="fs-2 c-hand">{{ sentence.s }}</span>
+															<span v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" class="fs-2 c-hand">{{ sentence.t }}</span>
 															<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
 																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" class="fs-2 mb-2">{{ sentence.s }}</div>
 																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" class="fs-2 mb-2">{{ sentence.t }}</div>
@@ -687,6 +690,7 @@
 						<div class="tab-pane fade show" id="nav-downloads" role="tabpanel" aria-labelledby="nav-profile-tab">
 							
 							<ul class="dl-List" v-if="downloads">
+								<li v-if="downloads.downloads.video"><a @click.prevent="downloadURI(downloads.downloads.video,'video')" href="#" class="btn btn-info">Video Lesson</a></li>
 								<li v-if="downloads.downloads.lesson"><a @click.prevent="downloadURI(downloads.downloads.lesson,'lesson')" href="#" class="btn btn-info">Lesson</a></li>
 								<li v-if="downloads.downloads.dialogue"><a @click.prevent="downloadURI(downloads.downloads.dialogue,'dialogue')" href="#" class="btn btn-info">Dialogue</a></li>
 								<li v-if="downloads.downloads.review"><a @click.prevent="downloadURI(downloads.downloads.review,'review')" href="#" class="btn btn-info">Review</a></li>
