@@ -618,9 +618,10 @@
 									
 									<div class="right">
 										<div class="form-floating cmnt-textarea">
-											<b v-if="replyUsername">Reply to {{ replyUsername }}</b>
+											
 											<textarea class="form-control cmnt-comment" v-model="commentMessage" placeholder="Leave a comment here" id="commentTextArea"></textarea>
 											<label for="floatingTextarea">Write your comment</label>
+											<b style="font-style: italic;font-size: 12px;" v-if="replyUsername">Reply to {{ replyUsername }}</b>
 										</div>
 									</div>
 								</div>
