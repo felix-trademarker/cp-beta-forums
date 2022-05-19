@@ -84,11 +84,13 @@
 
                 let results = await fetch(api,options)
                     .then(resp => {
-                        console.log("check if return is json or string",resp, resp.json());
+                        console.log("check if return is json or string");
                         if (resp.statusText == "OK") {
+                            console.log("Found OK");
                             resp.json({status:"OK"})
 
                         } else {
+                            console.log("NOt");
                             resp.json()
 
                         }
