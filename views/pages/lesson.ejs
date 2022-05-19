@@ -613,48 +613,22 @@
 
 						<div class="tab-pane fade" id="nav-comments" role="tabpanel" aria-labelledby="nav-home-tab">
 							<div class="comments-form mt-4">
-								<form class="postcomment-form">
-									<div class="comment-bar">
-										<div class="left">
-											
-											<div class="avatar-modal">
-												<div class="user-name-input">
-													<h3>Name</h3>
-													<input class="comment-user-name" type="text" placeholder="John Doe">
-												</div>
-												<div class="avatar-modal-contaier">
-													<div class="left">
-														<div class="select-avatar">
-															<h3>Select</h3>
-															<div class="avatar-options">
-		
-															</div>
-														</div>
-														<div class="customize-avatar">
-															<h3>Customize section</h3>
-														</div>
-													</div>
-													<div class="right">
-														<h3>OR<br>Customize<br>your Avatar</h3>
-														<div class="avatar-big">
-															<i class="bi bi-person-fill"></i>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="right">
-											<div class="form-floating cmnt-textarea">
-												<textarea class="form-control cmnt-comment" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-												<label for="floatingTextarea">Write your comment</label>
-											</div>
+								<div id="commentMessage"></div>
+								<div class="comment-bar">
+									
+									<div class="right">
+										<div class="form-floating cmnt-textarea">
+											<textarea class="form-control cmnt-comment" v-model="commentMessage" placeholder="Leave a comment here" id="commentTextArea"></textarea>
+											<label for="floatingTextarea">Write your comment</label>
 										</div>
 									</div>
-									<div class="comment-submitbtn">
-										<input class="btn text-white px-5 py-2 primary-btn" type="submit" value="Comment" disabled="">
-									</div>
-								</form>
+								</div>
+								<div class="comment-submitbtn">
+									<input class="btn btn-primary" type="submit" value="Comment" @click="addComment()" >
+								</div>
+							
 							</div>
+
 							<div v-if="comments && comments.comments" v-for="comment in comments.comments" class="comments-wrapper">
 								<div class="comment-main">
 									<div class="left">
@@ -670,16 +644,32 @@
 
 										<div class="comment-reacts">
 											<div class="thumbs-up comment-react">
-												<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
-													<i class="bi bi-hand-thumbs-up"></i>
-												</a>
-												<span class="react-count">2</span>
+												<button class="btn btn-primary" @click="replyComment(comment.username,comment.id,0)">
+													<i class="fa fa-reply"></i> Reply
+												</btn>
 											</div>
-											<div class="thumbs-down comment-react">
-												<a href="https://sitetesting123.web.app/New%20Lesson%20page%20-%20ChinesePod/#">
-													<i class="bi bi-hand-thumbs-down"></i>
-												</a>
-												<span class="react-count">0</span>
+										</div>
+									</div>
+								</div>
+								<div style="padding-left:85px" class="replyContainer" v-if="comment.nestedComments" v-for="reply in comment.nestedComments">
+									<div class="comment-main">
+										<div class="left">
+											<div class="comment-avatar">
+												<img v-if="comment.avatar_url" class="avatar-img" :src="reply.avatar_url">
+												<img v-if="!reply.avatar_url" class="avatar-img" src="https://www.chinesepod.com/home/img/symbol-black-center.d7c26c3a.svg">
+											</div>
+										</div>
+										<div class="right">
+											<div class="name">{{ reply.username }} <span class="date-time">{{ reply.created_at }}</span></div>
+	
+											<div class="comment-txt" v-html="reply.content"></div>
+	
+											<div class="comment-reacts">
+												<div class="thumbs-up comment-react">
+													<button class="btn btn-primary" @click="replyComment(reply.username,reply.id,0)">
+														<i class="fa fa-reply"></i> Reply
+													</btn>
+												</div>
 											</div>
 										</div>
 									</div>

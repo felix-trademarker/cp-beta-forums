@@ -40,7 +40,12 @@
             searchType: [],
             filePercent: 0,
             fileLoader: false,
-            fileDownloadName: ''
+            fileDownloadName: '',
+            commentMessage: '',
+            replyUsername: '',
+            replyId: 0,
+            replyId2: 0,
+
         },
         methods: {
 
@@ -150,13 +155,76 @@
             addVocab: async function(vocab) {
 
                 vocab.lessonId = this.lesson.id
-                // let params = {type: "charSet", value: charSet}
-
-
-                // this.vuex.userInfo.charSet = charSet
-                // localStorage.setItem('vuex',  JSON.stringify(this.vuex));
 
                 let toogleSave = await this.putAPIFetch("https://www.chinesepod.com/api/v1/vocabulary/words/create", vocab)
+            },
+
+            // add comment
+            // https://www.chinesepod.com/api/v1/lessons/comments
+            // {lessonId: "1027", content: "<p>This is a good start for me to learn Chinese! </p>", isAdmin: false}
+            // reply params 
+            // content: "<p>THIS IS A GREAT SITE!!</p>"
+            // isAdmin: false
+            // lessonId: "1027"
+            // replyTo: "felix30"
+            // replyToId: 294759
+            // replyToId2: 0
+            replyComment: async function(username, replyId, replyId2=0) {
+                
+                this.replyUsername = username;
+                this.replyId = replyId;
+                this.replyId2 = replyId2;
+                
+                document.getElementById('commentMessage').scrollIntoView({
+                    behavior: 'smooth'
+                });
+                document.getElementById("commentMessage").focus()
+            },
+
+            addComment: async function() {
+                
+
+                if (this.commentMessage) {
+
+                    let params = {
+                        lessonId: this.lesson.id, 
+                        content: this.commentMessage, 
+                        isAdmin: false
+                    }
+
+                    if (this.replyUsername) {
+                        params.replyTo = this.username
+                        params.replyId = this.replyId
+                        params.replyId2 = this.replyId2
+                    }
+
+                    let response = await this.postAPIFetch("https://www.chinesepod.com/api/v1/lessons/comments", params)
+
+                    if(response) {
+                        this.commentMessage = "";
+                        this.username = ""
+                        this.replyId = ""
+                        this.replyId2 = ""
+                        document.getElementById("commentMessage").innerHTML = `<div class="alert alert-success" role="alert">
+                                            Your Comment has been posted
+                                        </div>`
+
+                        this.comments = await this.getAPIFetch('/api/v1/lessons/get-comments?lessonId='+this.lesson.id);
+                    
+                    } else {
+                        document.getElementById("commentMessage").innerHTML = `<div class="alert alert-error" role="alert">
+                                            Something went wrong, please try again later
+                                        </div>`
+                    }
+                } else {
+                    document.getElementById("commentMessage").innerHTML = `<div class="alert alert-warning" role="alert">
+                                            Please add comment
+                                        </div>`
+                }
+
+                setTimeout(function(){
+                    document.getElementById("commentMessage").innerHTML = ""
+                },3000);
             },
 
             pinyinConvert: function(pinyin) {
