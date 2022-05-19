@@ -213,7 +213,7 @@
                     }
 
                     let response = await this.postAPIFetch("https://www.chinesepod.com/api/v1/lessons/comments", params)
-
+                    console.log(response)
                     if(response) {
                         this.commentMessage = "";
                         this.username = ""
