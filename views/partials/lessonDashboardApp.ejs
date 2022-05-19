@@ -94,14 +94,16 @@
 
                     })
                     .then(res => {
-                        console.log("this res", res);
+ 
                         return res;
                 })
-                console.log("returned ", results);
+
                 
                 if (okOption) {
+                    console.log("ok option");
                     return {status:"ok"}
                 } else {
+                    console.log("ok false");
                     return results;
                 }
 
