@@ -85,10 +85,10 @@
                 let results = await fetch(api,options)
                     .then(resp => resp.json())
                     .then(res => {
-                        // console.log("this res", res);
+                        console.log("this res", res);
                         return res;
                 })
-
+                console.log("returned ", results);
                 return results;
 
             },
