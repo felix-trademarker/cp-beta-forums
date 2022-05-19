@@ -82,18 +82,15 @@
                     body: JSON.stringify(params)
                 }
 
+                let okOption = false
+
                 let results = await fetch(api,options)
                     .then(resp => {
-                        console.log("check if return is json or string");
+                        // console.log("check if return is json or string");
                         if (resp.statusText == "OK") {
-                            console.log("Found OK");
-                            resp.json({status:"OK"})
-
-                        } else {
-                            console.log("NOt");
-                            resp.json()
-
+                            okOption = true;
                         }
+                        resp.json()
 
                     })
                     .then(res => {
@@ -101,7 +98,12 @@
                         return res;
                 })
                 console.log("returned ", results);
-                return results;
+                
+                if (okOption) {
+                    return {status:"ok"}
+                } else {
+                    return results;
+                }
 
             },
 
