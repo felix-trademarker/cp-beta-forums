@@ -45,6 +45,7 @@
             replyUsername: '',
             replyId: 0,
             replyId2: 0,
+            commentId: 0
 
         },
         methods: {
@@ -129,6 +130,47 @@
 
             },
 
+            deleteAPI: async function(api, params) {
+
+                let options = {
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                    },
+                    method: "DELETE",
+                    body: JSON.stringify(params)
+                }
+
+                let results = await fetch(api,options)
+                    .then(resp => resp.json())
+                    .then(res => {
+                        // console.log("this res", res);
+                        return res;
+                })
+
+                return results;
+
+            },
+
+            setCommentId: function(commentId) {
+                this.commentId = commentId
+            },
+
+            deleteCommentId: async function() {
+
+                let params = {
+                    lessonId: this.lesson.id,
+                    commentId: this.commentId,
+                    isAdmin: false
+                }
+
+                let resp = await this.deleteAPI("https://www.chinesepod.com/api/v1/lessons/comments", params)
+
+                this.commentId = 0
+            },
+
             studyCompleted: async function() {
 
                 let params = {
@@ -171,16 +213,6 @@
                 let toogleSave = await this.putAPIFetch("https://www.chinesepod.com/api/v1/vocabulary/words/create", vocab)
             },
 
-            // add comment
-            // https://www.chinesepod.com/api/v1/lessons/comments
-            // {lessonId: "1027", content: "<p>This is a good start for me to learn Chinese! </p>", isAdmin: false}
-            // reply params 
-            // content: "<p>THIS IS A GREAT SITE!!</p>"
-            // isAdmin: false
-            // lessonId: "1027"
-            // replyTo: "felix30"
-            // replyToId: 294759
-            // replyToId2: 0
             replyComment: async function(username, replyId, replyId2=0) {
                 
                 this.replyUsername = username;

@@ -648,7 +648,12 @@
 											<div class="thumbs-up comment-react">
 												<button class="btn btn-primary" @click="replyComment(comment.username,comment.id,0)">
 													<i class="fa fa-reply"></i> Reply
-												</btn>
+												</button>
+
+												<button v-if="comment.user_id == vuex.userInfo.userId" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirm-delete" @click="setCommentId(comment.id)">
+													<i class="fa fa-trash"></i>
+												</button>
+
 											</div>
 										</div>
 									</div>
@@ -671,6 +676,10 @@
 													<button class="btn btn-primary" @click="replyComment(reply.username,reply.id,0)">
 														<i class="fa fa-reply"></i> Reply
 													</btn>
+
+													<button v-if="reply.user_id == vuex.userInfo.userId" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirm-delete" @click="setCommentId(comment.id)">
+														<i class="fa fa-trash"></i>
+													</button>
 												</div>
 											</div>
 										</div>
@@ -706,3 +715,19 @@
 		</div>
 	</div>
 </section>
+
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <h4>Are you sure?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteCommentId()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
