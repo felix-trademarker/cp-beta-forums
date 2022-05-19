@@ -293,6 +293,7 @@
                     let response;
                     
                     if (this.commentId){
+                        params.commentId = this.commentId
                         response = await this.patchAPIFetch("https://www.chinesepod.com/api/v1/lessons/comments", params)
                     } else {
                         response = await this.postAPIFetch("https://www.chinesepod.com/api/v1/lessons/comments", params)
