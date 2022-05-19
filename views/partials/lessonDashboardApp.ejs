@@ -222,9 +222,10 @@
                         document.getElementById("commentMessage").innerHTML = `<div class="alert alert-success" role="alert">
                                             Your Comment has been posted
                                         </div>`
+                                        console.log("this line s");
 
                         this.comments = await this.getAPIFetch('/api/v1/lessons/get-comments?lessonId='+this.lesson.id);
-                    
+                                        console.log("this line e");
                     } else {
                         document.getElementById("commentMessage").innerHTML = `<div class="alert alert-error" role="alert">
                                             Something went wrong, please try again later
