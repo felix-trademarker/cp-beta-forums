@@ -169,6 +169,9 @@
                 let resp = await this.deleteAPI("https://www.chinesepod.com/api/v1/lessons/comments", params)
 
                 this.commentId = 0
+
+                this.comments = await this.getAPIFetch('/api/v1/lessons/get-comments?lessonId='+this.lesson.id);
+
             },
 
             studyCompleted: async function() {
