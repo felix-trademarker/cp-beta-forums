@@ -650,6 +650,10 @@
 													<i class="fa fa-reply"></i> Reply
 												</button>
 
+												<button v-if="comment.user_id == vuex.userInfo.userId" class="btn btn-danger" @click="setCommentId(comment.id,comment.content)">
+													<i class="fa fa-pencil"></i>
+												</button>
+
 												<button v-if="comment.user_id == vuex.userInfo.userId" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirm-delete" @click="setCommentId(comment.id)">
 													<i class="fa fa-trash"></i>
 												</button>
@@ -676,6 +680,10 @@
 													<button class="btn btn-primary" @click="replyComment(reply.username,reply.id,0)">
 														<i class="fa fa-reply"></i> Reply
 													</btn>
+
+													<button v-if="reply.user_id == vuex.userInfo.userId" class="btn btn-danger" @click="setCommentId(reply.id,reply.content)">
+														<i class="fa fa-pencil"></i>
+													</button>
 
 													<button v-if="reply.user_id == vuex.userInfo.userId" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirm-delete" @click="setCommentId(comment.id)">
 														<i class="fa fa-trash"></i>
