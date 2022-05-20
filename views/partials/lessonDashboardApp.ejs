@@ -144,25 +144,37 @@
 
             putAPIFetch: async function(api, params) {
 
-            let options = {
-                credentials: 'same-origin',
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
-                },
-                method: "PUT",
-                body: JSON.stringify(params)
-            }
+                let options = {
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                    },
+                    method: "PUT",
+                    body: JSON.stringify(params)
+                }
 
-            let results = await fetch(api,options)
-                .then(resp => resp.json())
-                .then(res => {
-                    // console.log("this res", res);
-                    return res;
-            })
+                let okOption = false
 
-            return results;
+                let results = await fetch(api,options)
+                    .then(resp => {
+                        // console.log("check if return is json or string");
+                        if (resp.statusText == "OK") {
+                            okOption = true;
+                        }
+                        resp.json()
+                    })
+                    .then(res => {
+                        return res;
+                    })
+
+                
+                if (okOption) {
+                    return {status:"ok"}
+                } else {
+                    return results;
+                }
 
             },
 
