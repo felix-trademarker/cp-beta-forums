@@ -86,13 +86,7 @@
                 let okOption = false
 
                 let results = await fetch(api,options)
-                    .then(resp => {
-                        // console.log("check if return is json or string");
-                        if (resp.statusText == "OK") {
-                            okOption = true;
-                        }
-                        resp.json()
-                    })
+
                     .then(res => {
                         return res;
                     })
@@ -122,13 +116,7 @@
                 let okOption = false
 
                 let results = await fetch(api,options)
-                    .then(resp => {
-                        // console.log("check if return is json or string");
-                        if (resp.statusText == "OK") {
-                            okOption = true;
-                        }
-                        resp.json()
-                    })
+
                     .then(res => {
                         return res;
                     })
@@ -160,7 +148,7 @@
                 let results = await fetch(api,options)
                     
                     .then(res => {
-                        console.log("this res", res, res.body);
+                        console.log("this res", res.json());
                         return res;
                     })
 
@@ -187,7 +175,7 @@
                 }
 
                 let results = await fetch(api,options)
-                    .then(resp => resp.json())
+                    // .then(resp => resp.json())
                     .then(res => {
                         // console.log("this res", res);
                         return res;
