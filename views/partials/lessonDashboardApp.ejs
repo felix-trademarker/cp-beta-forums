@@ -88,7 +88,7 @@
                 let results = await fetch(api,options)
 
                     .then(res => {
-                        return res;
+                        return res.statusText;
                     })
 
                 
@@ -118,7 +118,7 @@
                 let results = await fetch(api,options)
 
                     .then(res => {
-                        return res;
+                        return res.statusText;
                     })
 
 
@@ -148,8 +148,7 @@
                 let results = await fetch(api,options)
                     
                     .then(res => {
-                        console.log("this res", res.statusText);
-                        return res;
+                        return res.statusText;
                     })
 
                 
@@ -177,8 +176,7 @@
                 let results = await fetch(api,options)
                     // .then(resp => resp.json())
                     .then(res => {
-                        // console.log("this res", res);
-                        return res;
+                        return res.statusText;
                 })
 
                 return results;
