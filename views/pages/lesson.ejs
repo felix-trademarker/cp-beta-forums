@@ -1,4 +1,5 @@
 <section style="padding-top:30px">
+	
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-9">
@@ -17,6 +18,7 @@
 				</div>
 			</div>
 			<div class="col-lg-3">
+
 				<div class="my-btn-group d-flex align-items-center mt-2 gap-3 mb-4 mb-lg-0">
 					<button @click="saveLesson" type="button" v-bind:class="{ isactive: lesson.saved }" class="btn w-100 bg-white">
 						<strong>Saved</strong>
@@ -739,3 +741,5 @@
         </div>
     </div>
 </div>
+
+<div style="position: fixed;z-index: 100; top:10px; left: 0;" id="messageContainer"></div>

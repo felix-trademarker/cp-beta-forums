@@ -217,6 +217,8 @@
 
                 this.comments = await this.getAPIFetch('/api/v1/lessons/get-comments?lessonId='+this.lesson.id);
 
+                this.showMessage('Comment Deleted!', 'success')
+
             },
 
             studyCompleted: async function() {
@@ -229,6 +231,8 @@
                 this.lesson.studied = this.lesson.studied > 0 ? 0 : 1;
 
                 let toogleSave = await this.postAPIFetch("https://www.chinesepod.com/api/v1/dashboard/toggle-studied", params)
+
+                this.showMessage('Settings Saved!', 'success')
             },
 
             saveLesson: async function() {
@@ -241,6 +245,8 @@
                 this.lesson.saved = !this.lesson.saved
 
                 let toogleSave = await this.postAPIFetch("https://www.chinesepod.com/api/v1/dashboard/toggle-saved", params)
+
+                this.showMessage('Lesson Saved!', 'success')
             },
 
             setCharset: async function(charSet) {
@@ -252,6 +258,8 @@
                 localStorage.setItem('vuex',  JSON.stringify(this.vuex));
 
                 let toogleSave = await this.putAPIFetch("https://www.chinesepod.com/api/v1/account/settings/update", params)
+
+                this.showMessage('Settings Saved!', 'success')
             },
 
             addVocab: async function(vocab) {
@@ -259,6 +267,8 @@
                 vocab.lessonId = this.lesson.id
 
                 let toogleSave = await this.putAPIFetch("https://www.chinesepod.com/api/v1/vocabulary/words/create", vocab)
+
+                this.showMessage('Added Vocabulary!', 'success')
             },
 
             replyComment: async function(username, replyId, replyId2=0) {
@@ -305,27 +315,20 @@
                         this.replyId = ""
                         this.replyId2 = ""
                         this.commentId = 0
-                        document.getElementById("commentMessage").innerHTML = `<div class="alert alert-success" role="alert">
-                                            Your Comment has been posted
-                                        </div>`
-                                        // console.log("this line s");
 
                         this.comments = await this.getAPIFetch('/api/v1/lessons/get-comments?lessonId='+this.lesson.id);
-                                        // console.log("this line e");
+                        this.showMessage('Your Comment has been posted', 'success')
+
                     } else {
-                        document.getElementById("commentMessage").innerHTML = `<div class="alert alert-error" role="alert">
-                                            Something went wrong, please try again later
-                                        </div>`
+                        this.showMessage('Something went wrong, please try again later', 'error')
+
                     }
                 } else {
-                    document.getElementById("commentMessage").innerHTML = `<div class="alert alert-warning" role="alert">
-                                            Please add comment
-                                        </div>`
+                    this.showMessage('Please add comment', 'warning')
+
                 }
 
-                setTimeout(function(){
-                    document.getElementById("commentMessage").innerHTML = ""
-                },3000);
+
             },
 
             pinyinConvert: function(pinyin) {
@@ -632,6 +635,18 @@
                 console.log("lookup",hanziLookup);
 
                 return hanziLookup
+            },
+
+            showMessage: function(message, action) {
+
+                document.getElementById("messageContainer").innerHTML = `<div class="alert alert-${action}" role="alert">
+                                            ${message}
+                                        </div>`
+                
+
+                setTimeout(function(){
+                    document.getElementById("messageContainer").innerHTML = ""
+                },3000);
             }
 
             
