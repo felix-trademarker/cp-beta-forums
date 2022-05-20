@@ -638,8 +638,8 @@
             },
 
             showMessage: function(message, action) {
-
-                document.getElementById("messageContainer").innerHTML = `<div class="alert alert-${action}" role="alert">
+                console.log("show message", message, action);
+                document.getElementById("messageContainer").innerHTML = `<div class="text-center alert alert-${action}" role="alert">
                                             ${message}
                                         </div>`
                 
