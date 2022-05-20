@@ -148,7 +148,7 @@
                 let results = await fetch(api,options)
                     
                     .then(res => {
-                        console.log("this res", res.json());
+                        console.log("this res", res.statusText);
                         return res;
                     })
 
