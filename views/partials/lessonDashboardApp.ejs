@@ -158,14 +158,9 @@
                 let okOption = false
 
                 let results = await fetch(api,options)
-                    .then(resp => {
-                        console.log("check if return is json or string", resp);
-                        if (resp.statusText == "OK") {
-                            okOption = true;
-                        }
-                        resp.json()
-                    })
+                    
                     .then(res => {
+                        console.log("this res", res);
                         return res;
                     })
 
