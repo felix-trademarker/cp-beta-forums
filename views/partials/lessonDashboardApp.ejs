@@ -663,10 +663,10 @@
                     tag : this.newDeckCategory
                 }
                 let response = await this.putAPIFetch("https://www.chinesepod.com/api/v1/vocabulary/decks", data)
-                console.log("res from new deck category",response.json());
+                console.log("res from new deck category",response);
 
                 if (response) {
-                    console.log("res from new deck category",response.json());
+                    console.log("res from new deck category",response);
                 }
 
             },
