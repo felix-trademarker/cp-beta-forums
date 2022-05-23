@@ -473,3 +473,54 @@ span.answer {
 .c-hand{
     cursor: pointer;
 }
+
+.btn-default:hover{
+    background-color: transparent;
+}
+
+.save-all-container{
+    position: relative;
+    
+}
+
+.save-all-container .deck-list{
+    display: none;
+    position: absolute;
+    background: #fff;
+    z-index: 100;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+
+}
+
+.save-all-container .deck-list .btn-default{
+    font-size: 12px;
+    border: 1px solid transparent;
+}
+
+.save-all-container .deck-list .btn-default:hover{
+    background: #e11e1d;
+    color: #fff
+}
+
+.save-all-container .deck-list ul{
+    margin: 0 0 10px 0;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.save-all-container .deck-list ul li{
+    list-style: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.save-all-container .deck-list ul li:hover{
+    background: #e11e1d;
+    color: #fff;
+}
+
+.save-all-container:hover .deck-list{
+    display: block;
+}

@@ -301,7 +301,15 @@
 												<th style="width:35%">{{ vuex.userInfo.charSet == 'traditional' ? 'Traditional' : 'Simplified' }}</th>
 												<th style="width:25%">Pinyin</th>
 												<th style="width:25%">English</th>
-												<th></th>
+												<th><div class="save-all-container" v-if="decks">
+													<span class="btn btn-primary mb-2"><i class="fa fa-plus"></i> Save all</span>
+													<div class="deck-list">
+														<ul>
+															<li v-for="deck in decks" @click="setSelectedDeckId(deck.id)">{{ deck.tag }}</li>
+														</ul>
+														<span class="btn btn-default" data-bs-toggle="modal" data-bs-target="#createNewDeck"><i class="fa fa-plus"></i> Create Deck</span>
+													</div>
+												</div></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -314,13 +322,22 @@
 												<td>{{ voc.p }}</td>
 												<td>{{ voc.en }}</td>
 												<td>
-													<div class="play-audio icon fs-5">
-														<i class="bi bi-volume-up-fill"></i>
+													<div style="display:inline-block" class="play-audio icon fs-5">
+														<i class="bi bi-volume-up-fill c-hand"></i>
 														<audio>
 															<source :src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+voc.audio" type="audio/mp3">
 															Your browser does not support the audio element.
 														</audio>
 													</div>
+
+													<div style="display:inline-block" @click="copyClipboard( (vuex.userInfo.charSet == 'traditional' ? voc.t : voc.s ) + ' - ' + voc.p + ' - ' + voc.en )" class="icon c-hand">
+														<i class="fa fa-copy"></i>
+													</div>
+
+													<div style="display:inline-block" @click="addVocab(voc)" class="icon c-hand">
+														<i class="fa fa-plus"></i>
+													</div>
+
 												</td>
 											</tr>
 										</tbody>
@@ -737,6 +754,24 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteCommentId()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createNewDeck" tabindex="-1" role="dialog" aria-labelledby="createNewDeckLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+				<h4>Are you sure?</h4>
+				<div class="form-group">
+					<input type="text" class="form-control" v-model="newDeckCategory" :value="lesson.title">
+				</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="addDeckCategory()">Add</button>
             </div>
         </div>
     </div>
