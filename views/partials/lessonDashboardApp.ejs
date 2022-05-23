@@ -692,10 +692,15 @@
                     tag : this.newDeckCategory
                 }
                 let response = await this.putAPI("https://www.chinesepod.com/api/v1/vocabulary/decks", data)
-                console.log("res from new deck category",response);
+                // console.log("res from new deck category",response);
 
                 if (response) {
-                    console.log("res from new deck category",response);
+                    // console.log("res from new deck category",response);
+                    this.selectedDeckId = response.id
+
+                    await this.addToDecksMany()
+                    this.showMessage("Vocabulary Saved!", "success")
+
                 }
 
             },
