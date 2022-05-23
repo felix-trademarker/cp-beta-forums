@@ -139,7 +139,7 @@
                     credentials: 'same-origin',
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': 'text/plain',
+                        'Content-Type': 'application/json,text/plain',
                         'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
                     },
                     method: "PUT",
@@ -155,6 +155,38 @@
                     })
 
                 
+                if (okOption) {
+                    return {status:"ok"}
+                } else {
+                    return results;
+                }
+
+            },
+
+            putAPI: async function(api, params) {
+
+                let options = {
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                    },
+                    method: "PUT",
+                    body: JSON.stringify(params)
+                }
+
+                let okOption = false
+
+                let results = await fetch(api,options)
+                    .then(res => {
+                        res.json()
+                    })
+                    .then(resp => {
+                        return resp;
+                    })
+
+
                 if (okOption) {
                     return {status:"ok"}
                 } else {
@@ -662,7 +694,7 @@
                 let data = {
                     tag : this.newDeckCategory
                 }
-                let response = await this.putAPIFetch("https://www.chinesepod.com/api/v1/vocabulary/decks", data)
+                let response = await this.putAPI("https://www.chinesepod.com/api/v1/vocabulary/decks", data)
                 console.log("res from new deck category",response);
 
                 if (response) {
