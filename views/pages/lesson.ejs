@@ -268,14 +268,14 @@
 
 									<!-- printable content -->
 									<div id="printable-dialogue" class="d-none">
-										<h3>Dialogue</h3>
+										<img src="https://www.chinesepod.com/home/img/logo.a070ebf6.png" style="width:200px" alt="ChinesePod" class="navbar-brand-img">
+										<h2 style="text-align:center" >{{ lesson.title }} - Dialogue</h2>
 
 										<ol v-if="dialogue">
 											<li v-for="dia in dialogue.dialogue">
-												<p>Traditional: {{ pinyinConvert(dia.t) }}</p>
-												<p>Simplified: {{ pinyinConvert(dia.s) }}</p>
-												<p>Pinyin: {{ pinyinConvert(dia.p) }}</p>
-												<p>English: {{ pinyinConvert(dia.en) }}</p>
+												<p>{{ vuex.userInfo.charSet == 'simplified' ? dia.s : dia.t }}<br>
+												{{ pinyinConvert(dia.p) }}<br>
+												{{ dia.en }}</p>
 											</li>
 										</ol>
 									</div>
@@ -344,14 +344,14 @@
 									</table>
 
 									<div id="printable-vocabulary" class="d-none">
-										<h3>Vocabulary</h3>
+										<img src="https://www.chinesepod.com/home/img/logo.a070ebf6.png" style="width:200px" alt="ChinesePod" class="navbar-brand-img">
+										<h2 style="text-align:center" >{{ lesson.title }} - Vocabulary</h2>
 
 										<ol v-if="vocab">
 											<li v-for="voc in vocab">
-												<p>Traditional: {{ pinyinConvert(voc.t) }}</p>
-												<p>Simplified: {{ pinyinConvert(voc.s) }}</p>
-												<p>Pinyin: {{ pinyinConvert(voc.p) }}</p>
-												<p>English: {{ pinyinConvert(voc.en) }}</p>
+												<p>{{ vuex.userInfo.charSet == 'simplified' ? voc.s : voc.t }}<br>
+													{{ pinyinConvert(voc.p) }}<br>
+													{{ voc.en }}</p>
 											</li>
 										</ol>
 									</div>
@@ -430,16 +430,16 @@
 									</ul>
 
 									<div id="printable-expansion" class="d-none">
-										<h3>Expansion</h3>
+										<img src="https://www.chinesepod.com/home/img/logo.a070ebf6.png" style="width:200px" alt="ChinesePod" class="navbar-brand-img">
+										<h2 style="text-align:center" >{{ lesson.title }} - Expansion</h2>
 										<div v-if="expansion">
 											<div v-for="exp in expansion">
 												<h4 >{{ exp.phrase }}</h4>
 												<ol >
 													<li v-for="examples in exp.examples" >
-														<p>Traditional: {{ pinyinConvert(examples.t) }}</p>
-														<p>Simplified: {{ pinyinConvert(examples.s) }}</p>
-														<p>Pinyin: {{ pinyinConvert(examples.p) }}</p>
-														<p>English: {{ pinyinConvert(examples.en) }}</p>
+														<p>{{ vuex.userInfo.charSet == 'simplified' ? examples.s : examples.t }}<br>
+															{{ pinyinConvert(examples.p) }}<br>
+															{{ examples.en }}</p>
 													</li>
 												</ol>
 											</div>
@@ -527,17 +527,17 @@
 									</ul>
 
 									<div id="printable-grammar" class="d-none">
-										<h3>Grammar</h3>
+										<img src="https://www.chinesepod.com/home/img/logo.a070ebf6.png" style="width:200px" alt="ChinesePod" class="navbar-brand-img">
+										<h2 style="text-align:center" >{{ lesson.title }} - Grammar</h2>
 										<div v-if="grammar">
 											<div v-for="exp in grammar">
 												<h4>{{ exp.grammar.name }}</h4>
 												<h5>{{ exp.grammar.introduction }}</h5>
 												<ol >
 													<li v-for="examples in exp.examples" >
-														<p>Traditional: {{ pinyinConvert(examples.t) }}</p>
-														<p>Simplified: {{ pinyinConvert(examples.s) }}</p>
-														<p>Pinyin: {{ pinyinConvert(examples.p) }}</p>
-														<p>English: {{ pinyinConvert(examples.en) }}</p>
+														<p>{{ vuex.userInfo.charSet == 'simplified' ? examples.s : examples.t }}<br>
+															{{ pinyinConvert(examples.p) }}<br>
+															{{ examples.en }}</p>
 													</li>
 												</ol>
 											</div>
