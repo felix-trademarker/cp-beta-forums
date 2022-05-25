@@ -113,17 +113,27 @@ exports.addSubTopicsClient = async function(req, res, next) {
     data.userData = userData
 
     // check if it has image attached
-    
+    let attachments = []
+    console.log(req.files);
     if (req.files && req.files.topicImage) {
-      var file = req.files.topicImage
-      var extName = path.extname(file.name)
-      var filename = toInteger(req.app.locals.moment().format('YYMMDDHHMMSS')) + '.' + extName;
-      filename = filename.toLowerCase()
-      uploadPath = __dirname + '/../public/beta/uploads/comments/'+filename;
-      file.mv(uploadPath, function(err) {
-        console.log(err);
-      });
+      for(let cnt=0; cnt < req.files.topicImage.length; cnt++) {
+        var file = req.files.topicImage[cnt]
+        var extName = path.extname(file.name)
+        var filename = toInteger(req.app.locals.moment().format('YYMMDDHHMMSS')) + '-' + cnt + extName;
+        filename = filename.toLowerCase()
+        uploadPath = __dirname + '/../public/beta/uploads/comments/'+filename;
+        file.mv(uploadPath, function(err) {
+          console.log(err);
+        });
+        attachments.push({
+          file: filename,
+          ext: extName
+        })
+      }
+      
     }
+
+    data.attachments = attachments;
     // add date created
     data.created_at = req.app.locals.moment().format()
     console.log("add flash message");
@@ -250,7 +260,7 @@ exports.forumPage = async function(req, res, next) {
 
   activityService.logger(req, "Visited Topic "+selectedTopicName);
 
-  console.log("selected", selectedTopic);
+  console.log("selected asd", selectedTopic, selectedTopic);
     
   res.render('dashboard/forum-page', { 
     title: '',

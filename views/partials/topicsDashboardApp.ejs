@@ -1,6 +1,27 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
-
+<script src="https://cdn.bootcss.com/vue/2.2.6/vue.js"></script>
+<script src="/beta/javascripts/vue-html5-editor.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script> -->
 <script>
+    Vue.use(VueHtml5Editor, {
+        hiddenModules: [
+            "image"
+        ],
+        visibleModules: [
+            "info",
+            "text",
+            "color",
+            "font",
+            "align",
+            "tabulation",
+            "hr",
+            "list",
+            "link",
+            "unlink",
+            "full-screen",
+            "image"//will not show in editor
+        ]
+    })
+
     var topicsDashboardApp = new Vue({
     el: "#topicsDashboardApp",
     data: {
@@ -9,7 +30,7 @@
         comments: null,
         searchState: '',
         searchLoader: false,
-        message: '',
+        message: "",
         files: [],
         testerName: '',
         testerAvatar: '',
@@ -18,10 +39,17 @@
         vuex: {},
         userData: {},
         topics: {},
-        editComment: {}
+        editComment: {},
+        content: "",
+        showModuleName: false,
     },
     methods: {
-
+        updateData: function (data) {
+            this.content = data
+        },
+        updateDataEdit: function (data) {
+            this.editComment.message = data
+        },
         setTopic: function(id) {
             this.topicId = id+''
             console.log("set topic ",this.topicId);
@@ -81,7 +109,7 @@
             // ]
             // var formData = new FormData();
             formData.append("file", this.files);
-            formData.append("message", this.message);
+            formData.append("message", this.content);
             formData.append("testerName", this.testerName);
             formData.append("testerAvatar", this.testerAvatar);
             formData.append("replyTo", this.replyTo);
@@ -218,7 +246,7 @@
             postData('/beta/api/v1/update-comment/', updateData)
                 .then(data => {
                     console.log(data)
-                    this_.this.updateComments()
+                    // this_.this.updateComments()
                     this_.closeCommentEdit()
             });
         },
@@ -348,11 +376,11 @@
         }
 
         // script to fetch comments interval 5sec
-        var interval = setInterval(function(){
-            if (topicsDashboardApp.topicId) {
-                topicsDashboardApp.updateComments();
-            }
-        }, 5000);
+        // var interval = setInterval(function(){
+        //     if (topicsDashboardApp.topicId) {
+        //         topicsDashboardApp.updateComments();
+        //     }
+        // }, 5000);
 
         // test drag and drop functions
         // ************************ Drag and drop ***************** //
@@ -471,7 +499,7 @@
     }).then(function (data) {
 
         topicsDashboardApp.topics = data
-        // console.log("topics",data);
+        console.log("topics",data);
     }).catch(function (err) {
         // There was an error
         console.warn('Something went wrong.', err);
@@ -483,17 +511,17 @@
     });
 
     // CHECK EVERY 10 SEC FOR USERS DATA
-    var interval = setInterval(function(){
-        // FETCH NEW VUEX
-        vuex = JSON.parse(window.localStorage.getItem('vuex'))
-        topicsDashboardApp.vuex = vuex
-        // CALL AJAX TO CHECK USERSDATA
-        postData('/beta/api/v1/check-auth/', { userId: vuex.userStats.userId, email: vuex.userInfo.email, token: vuex.token })
-        .then(data => {
-            topicsDashboardApp.userData = data
-        });
+    // var interval = setInterval(function(){
+    //     // FETCH NEW VUEX
+    //     vuex = JSON.parse(window.localStorage.getItem('vuex'))
+    //     topicsDashboardApp.vuex = vuex
+    //     // CALL AJAX TO CHECK USERSDATA
+    //     postData('/beta/api/v1/check-auth/', { userId: vuex.userStats.userId, email: vuex.userInfo.email, token: vuex.token })
+    //     .then(data => {
+    //         topicsDashboardApp.userData = data
+    //     });
 
-    }, 10000);
+    // }, 10000);
 
     async function postData(url = '', data = {}) {
 

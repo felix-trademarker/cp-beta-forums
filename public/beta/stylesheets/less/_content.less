@@ -44,18 +44,7 @@
               color: inherit;
             }
 
-            .message-attachments{
-              width: 100%;
-
-              & > div{
-                width: 100px;
-                padding : 5px;
-
-                img{
-                  width: 100%;
-                }
-              }
-            }
+            
 
           }
 
@@ -236,7 +225,7 @@ p {
 .custom-modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 9999; /* Sit on top */
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
@@ -450,6 +439,7 @@ p {
 
   .fa{
     margin-right: 5px;
+    cursor: pointer;
   }
 }
 
@@ -521,5 +511,19 @@ p {
 .nav.my-btn-group{
   button.active{
     background: var(--accent-color) !important;
+  }
+}
+
+.message-attachments{
+  width: 100%;
+
+  & > div{
+    width: 100px;
+    padding : 5px;
+
+    img{
+      width: 100%;
+      cursor: pointer;
+    }
   }
 }

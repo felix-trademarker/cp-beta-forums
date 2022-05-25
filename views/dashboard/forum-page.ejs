@@ -35,7 +35,7 @@
 
 			<div class="col-md-9">
 				<div class="" v-if="topic">
-					<div class="row mb-3 mt-3 topic-block" style="align-items: center;">
+					<div class="row mb-3 mt-3 topic-block">
 							
 						<div class="col-3 text-left">
 							<h4 class="d-none d-lg-block d-md-block">{{ topic.parentName }}</h4>
@@ -44,21 +44,29 @@
 						<div class="col-9 text-left">
 							<h4> This topic is all about <strong>{{ topic.name }}</strong></h4>
 							<p v-html="topic.description.replace('\n','<br>')"></p>
+
+							<div class="message-attachments" v-if="topic && topic.attachments && topic.attachments.length > 0" >
+								<div v-for="(attachment, key) in topic.attachments">
+									<div>
+									<img @click="imageClick(attachment.file)" :src="'/beta/uploads/comments/'+attachment.file">
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					
 					<div class="commentHead">
 						<table class="table">
 							<tr>
-								<td >Last Comment: {{ dateFormat(comments[(comments.length -1)].created_at) }}</td>
-								<td style="width:50px"><i class="fa fa-comments" style="margin-right: 5px;"></i>{{ comments.length }}</td>
+								<td v-if="comments" >Last Comment: {{ (comments && comments.length > 0 ? dateFormat(comments[(comments.length -1)].created_at) : '') }}</td>
+								<td style="width:50px"><i class="fa fa-comments" style="margin-right: 5px;"></i>{{ comments ? comments.length : '0' }}</td>
 								<td style="width:50px"><i class="fa fa-eye" style="margin-right: 5px;"></i>{{ topic.viewCount ? topic.viewCount : 0 }}</td>
 							</tr>
 						</table>
 					</div>
-					<div class="comments-block" v-if="comments.length > 0">
+					<div class="comments-block" v-if="comments && comments.length > 0">
 						<ul class="message-blocks">
-							<li :id="comment._id" v-for="comment in comments" :class="comment.replyToData ? 'hasComment': ''">
+							<li v-for="comment in comments" :class="comment.replyToData ? 'hasComment': ''">
 
 								<a v-if="comment.replyToData" class="replyBox">
 									<p><b>REPLY TO</b></p>
@@ -76,8 +84,8 @@
 										<p v-html="comment.message.replace('\n','<br>')"></p>
 									
 									
-										<div class="message-attachments" v-if="comment.file.length > 0" >
-											<div v-for="(key, file) in comment.file">
+										<div class="message-attachments" v-if="comment.file && comment.file.length > 0" >
+											<div v-for="file in comment.file">
 												
 												<img v-if="file" @click="imageClick(file)" :src="'/beta/uploads/comments/'+file">
 											</div>
@@ -89,10 +97,8 @@
 									</p>
 
 									<p class="userCommentOptions" v-if="userData.token && userData.isBetaTester && vuex.userStats.userId == comment.userData.id">
-										<i @click="commentEdit(comment)" class="fa fa-pen" ></i>
-
+										<i @click="commentEdit(comment)" class="fa fa-pencil" ></i>
 										<i @click="deleteComment(comment)" class="fa fa-trash" ></i>
-										
 									</p>
 								</div>
 
@@ -107,74 +113,61 @@
 						<p>Be the first to send a feedback</p>
 					</div>
 
-					
-
-					
-					 
-
 				</div>
 
 				<div class="" v-if="!topic">
 					<p>please select topic</p>
 
-					<!-- <div id="drop-area" style="display: none;">
-						<label>File</label>
-						<input type="file" v-model="files" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
-						<label class="button" for="fileElem">Select some files</label>
-					
-						<div id="progress-bar" max=100 value=0></div>
-						<div id="gallery"></div>
-					</div> -->
-
 				</div>
 
-				<!-- form add comments -->
-			
+
 					<!-- form add comments -->
-					<form :class="userData.token && userData.isBetaTester ? 'active':'d-none'" id="commentForm" style="border: 1px solid #ccc;padding: 20px;margin-top:50px; font-size: 14px;background: #fff;" @submit.prevent="addComment()" enctype="multipart/form-data">
-						<h6 v-if="!replyTo">Add Feedback</h6>
-						<h6 v-if="replyTo">Reply to </h6>
-						<div v-if="replyToData" @click="removeReply" class="replyBox">
-							<span><i class="fa fa-times"></i></span>
-							<p>Name: {{ replyToData.testerName }}</p>
-							<p> {{ replyToData.message }} </p>
-						</div>
-						<div class="form-group-inline">
-							<input type="hidden" v-model="replyTo" class="form-control">
-							<input type="hidden" v-model="testerName" value="<%= userData.username %>" class="form-control" required>
-							<input type="hidden" v-model="testerAvatar" value="<%= userData.avatar_url %>" class="form-control" required>
-						</div>
-	
-						<div class="form-group">
-							<textarea id="contentArea" class="form-control" v-model="message" name="notes" rows="1"></textarea>
-						</div>
-	
-						<div id="drop-area" >
-							  <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
-							  <label class="button btn btn-info" for="fileElem">Add Attachments</label>
-								<p>Drag & Drop Images HERE</p>
-							<div id="progress-bar" max="100" value="25"></div>
-							<div id="gallery">
-								<div class="" v-if="files" >
-									<div v-for="(key, file) in files">
-										<i @click="removeFile(key)" class="fa fa-times"></i>
-										<img :src="'/beta/uploads/comments/'+file">
-									</div>
+				<form :class="userData.token && userData.isBetaTester ? 'active':'d-none'" id="commentForm" style="border: 1px solid #ccc;padding: 20px;margin-top:50px; font-size: 14px;background: #fff;" @submit.prevent="addComment()" enctype="multipart/form-data">
+					<h6 v-if="!replyTo">Add Feedback</h6>
+					<h6 v-if="replyTo">Reply to </h6>
+					<div v-if="replyToData" @click="removeReply" class="replyBox">
+						<span><i class="fa fa-times"></i></span>
+						<p>Name: {{ replyToData.testerName }}</p>
+						<p> {{ replyToData.message }} </p>
+					</div>
+					<div class="form-group-inline">
+						<input type="hidden" v-model="replyTo" class="form-control">
+						<input type="hidden" v-model="testerName" value="<%= userData.username %>" class="form-control" required>
+						<input type="hidden" v-model="testerAvatar" value="<%= userData.avatar_url %>" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<textarea id="contentArea" class="form-control d-none" v-model="content" name="notes" rows="1"></textarea>
+						<vue-html5-editor :content="content" :height="300" :show-module-name="showModuleName"
+                      	@change="updateData" ref="editor"></vue-html5-editor>
+					</div>
+
+					<div id="drop-area" >
+							<input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+							<label class="button btn btn-info" for="fileElem">Add Attachments</label>
+							<p>Drag & Drop Images HERE</p>
+						<div id="progress-bar" max="100" value="25"></div>
+						<div id="gallery">
+							<div class="" v-if="files" >
+								<div v-for="(file, key) in files">
+									<i @click="removeFile(key)" class="fa fa-times"></i>
+									<img :src="'/beta/uploads/comments/'+file">
 								</div>
 							</div>
 						</div>
+					</div>
+
+				
+					<div v-if="topic" class="form-group text-center">
+						<input class="btn btn-primary" type="submit" value="Submit Feedback as <%= userData.username %>">
+					</div>
+					<div v-if="!topic" class="form-group text-center">
+						<input class="btn btn-primary" type="submit" value="Submit Feedback as <%= userData.username %>" disabled>
+					</div>
 	
-					
-						<div v-if="topic" class="form-group text-center">
-							<input class="btn btn-primary" type="submit" value="Submit Feedback as <%= userData.username %>">
-						</div>
-						<div v-if="!topic" class="form-group text-center">
-							<input class="btn btn-primary" type="submit" value="Submit Feedback as <%= userData.username %>" disabled>
-						</div>
+				</form>
 		
-					</form>
-			
-					<p v-if="!userData.token || !userData.isBetaTester" style="font-style: italic;">Please login and participate with our chinesepod Beta Program<br> <a class="btn btn-primary" target="_blank" href="https://www.chinesepod.com/login">Login</a></p>
+				<p v-if="!userData.token || !userData.isBetaTester" style="font-style: italic;">Please login and participate with our chinesepod Beta Program<br> <a class="btn btn-primary" target="_blank" href="https://www.chinesepod.com/login">Login</a></p>
 		
 
 			</div>
@@ -192,11 +185,13 @@
 			<div class="custom-modal-content bg-white" style="padding:15px;">
 			
 				<div class="form-group">
-					<textarea id="contentArea" class="form-control" v-model="editComment.message" name="message" rows="3"></textarea>
+					<textarea id="contentArea" class="form-control d-none" v-model="editComment.message" name="message" rows="3"></textarea>
+					<vue-html5-editor :content="editComment.message" :height="300" :show-module-name="showModuleName"
+                      	@change="updateDataEdit" ref="editor"></vue-html5-editor>
 				</div>
 
-				<div class="message-attachments" v-if="editComment.file.length > 0" >
-					<div v-for="(key, file) in editComment.file">
+				<div class="message-attachments" v-if="editComment && editComment.file && editComment.file.length > 0" >
+					<div v-for="file in editComment.file">
 						<img v-if="file" :src="'/beta/uploads/comments/'+file">
 					</div>
 				</div>

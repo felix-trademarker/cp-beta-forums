@@ -47,12 +47,16 @@
 
 					<div class="form-group">
 						<label>Description</label>
-						<textarea class="form-control" name="description" rows="3"></textarea>
+						<textarea class="form-control d-none" name="description" rows="3" v-model="content"></textarea>
+						<vue-html5-editor :content="content" :height="300" :show-module-name="showModuleName"
+                      	@change="updateData" ref="editor"></vue-html5-editor>
 					</div>
+
+					
 
 					<div class="form-group">
 						<label>Topic Image/Screenshot</label>
-						<input type="file" name="topicImage" >
+						<input type="file" name="topicImage" multiple >
 					</div>
 
 					<div class="form-group">
@@ -96,7 +100,6 @@
 						</div>
 						<% if( userData && topic.userData && userData.id == topic.userData.id ){ %>
 							<a id="btnDeleteTopic" class="btnDeleteTopic" href="/beta/forums/delete/<%= topic._id %>" ><i class="fa fa-trash"></i></a>
-							<a class="btnEditTopic" href="/beta/forums/edit/<%= topic._id %>" ><i class="fa fa-pen"></i></a>
 						<% } %>
 						<a class="block-link" href="/beta/forums/<%= topic._id %>"></a>
 						

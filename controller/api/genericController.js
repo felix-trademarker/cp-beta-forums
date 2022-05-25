@@ -122,7 +122,7 @@ exports.addComments = async function(req, res, next) {
 
     rpoSubTopics.update(topics._id, topicsData)
 
-    let name = topics.userData.name.trim().replace(","," ")
+    let name = topics.userData ? topics.userData.name.trim().replace(","," ") : ''
     let fname = name.split(" ")
     let firstName = fname.length > 0 ? fname[0] : topics.userData.username;
 
