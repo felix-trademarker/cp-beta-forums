@@ -10,6 +10,7 @@
             searchString: "",
             searchType: [],
             lessons: {},
+            page: 1
 
         },
         methods: {
@@ -34,7 +35,35 @@
 
             },
 
-            
+            postAPIFetch: async function(api, params) {
+
+                let options = {
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                    },
+                    method: "POST",
+                    body: JSON.stringify(params)
+                }
+
+                let okOption = false
+
+                let results = await fetch(api,options)
+
+                    .then(res => {
+                        return res.statusText;
+                    })
+
+
+                if (okOption) {
+                    return {status:"ok"}
+                } else {
+                    return results;
+                }
+
+            },
 
             searchQuery: function(){
 
@@ -52,6 +81,38 @@
                 if(queryString)
                 window.location.href = "/explore?"+queryString
                 
+            },
+
+            studyCompleted: async function(ndx) {
+
+                this.lessons.lessons[ndx].studied = this.lessons.lessons[ndx].studied ? 0 : 1;
+                let params = {
+                    lessonId: this.lessons.lessons[ndx].id,
+                    status: this.lessons.lessons[ndx].studied
+                }
+
+                // this.lesson.studied = this.lesson.studied > 0 ? 0 : 1;
+
+                let toogleSave = await this.postAPIFetch("/api/v1/dashboard/toggle-studied", params)
+
+                this.showMessage('Settings Saved!', 'success')
+            },
+
+            saveLesson: async function(ndx) {
+
+
+
+                this.lessons.lessons[ndx].saved = this.lessons.lessons[ndx].saved ? 0 : 1;
+                let params = {
+                    lessonId: this.lessons.lessons[ndx].id,
+                    status: this.lessons.lessons[ndx].saved
+                }
+
+                // this.lesson.saved = !this.lesson.saved
+
+                let toogleSave = await this.postAPIFetch("/api/v1/dashboard/toggle-saved", params)
+
+                this.showMessage('Lesson Saved!', 'success')
             },
 
 
@@ -73,7 +134,14 @@
         computed: {
             fetchLessons: async function(){
                 this.lessons = await this.getAPIFetch('/api/v1/dashboard/get-all-lessons?limit=16&skip=0');
+                // this.lessons = {
+                //     "count":4568,
+                //     "lessons":[
+                //         {"id":"4627","title":"Binge watching","slug":"binge-watching","hash_code":"382bda1d90b77322a0caad3edb8de2085d23c6ae","image":"images/1c4e3344a844bd7ace207db188dc4f16d013c770.png","type":"lesson","level":"Upper Intermediate","hosts":"","publication_timestamp":"2022-05-14T23:00:00.000Z","video":"dsniu5u881","mp3_dialogue":"mp3/","mp3_public":"mp3/","mp3_private":"mp3/","mp3_thefix":"mp3/chinesepod_D4627rv.mp3","pdf1":"pdf/chinesepod_D4627.pdf","pdf2":"pdf/chinesepod_D4627trad.pdf"},
+                //         {"id":"4626","title":"Mukbang and Binge Eating","slug":"mukbang-and-binge-eating","hash_code":"aa58d8c13d24f40f6a29afa2d2a1a7494409cc46","image":"images/4db36f9a125036a67434c0b41e649f3f8bb536db.png","type":"lesson","level":"Upper Intermediate","hosts":"","publication_timestamp":"2022-04-27T23:00:00.000Z","video":"wzurnj5qoc","mp3_dialogue":"mp3/","mp3_public":"mp3/chinesepod_D4626pb.mp3","mp3_private":"mp3/chinesepod_D4626pr.mp3","mp3_thefix":"mp3/chinesepod_D4626rv.mp3","pdf1":"pdf/chinesepod_D4626.pdf","pdf2":"pdf/chinesepod_D4626trad.pdf"},
 
+                //     ]
+                // };
                 
             }
 

@@ -3,13 +3,33 @@
 	<div class="container">
 		<div v-if="lessons" class="row">
 
-			<div v-for="lesson in lessons.lessons" class="col-lg-3">
-				{{ lesson.title }}
+			<div v-for="(lesson, key) in lessons.lessons" class="col-lg-3">
+				
+
+				
+					<div class="card bg-transparent shadow-none mb-0">
+						<a :href="'/lesson/'+lesson.slug" :title="lesson.title"><img alt="Binge watching" class="card-img upper-intermediate" :src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+lesson.image" lazy="loaded"></a>
+						<div class="card-img-overlay rounded shadow-none bg-transparent">
+							<div class="float-right">
+								<span @click="saveLesson(key)" v-bind:class="{ isactive: lesson.saved }" class="btn btn-circle mt--4 mr-1"><i class="far fa-bookmark"></i></span>
+								<span @click="studyCompleted(key)" v-bind:class="{ isactive: lesson.saved }" class="btn btn-circle mt--4 mr--3"><i class="far fa-check-circle ni-lg"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="card-body p-0 pb-4">
+						<a :href="'/lesson/'+lesson.slug" :title="lesson.title"><h2 class="card-title m-0 mt-2" style="font-size: 20px;">{{ lesson.title }}</h2></a>
+					</div>
+				
 				
 			</div>
 
-
+			
 		</div>
 
 	</div>
 </section>
+
+
+<div style="position: fixed;z-index: 100; top:10px; left: 0;width:100%" id="messageContainer">
+
+</div>
