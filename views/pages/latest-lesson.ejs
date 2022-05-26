@@ -12,7 +12,7 @@
 						<div class="card-img-overlay rounded shadow-none bg-transparent">
 							<div class="float-right">
 								<span @click="saveLesson(key)" v-bind:class="{ isactive: lesson.saved }" class="btn btn-circle mt--4 mr-1"><i class="far fa-bookmark"></i></span>
-								<span @click="studyCompleted(key)" v-bind:class="{ isactive: lesson.saved }" class="btn btn-circle mt--4 mr--3"><i class="far fa-check-circle ni-lg"></i></span>
+								<span @click="studyCompleted(key)" v-bind:class="{ isactive: lesson.studied }" class="btn btn-circle mt--4 mr--3"><i class="far fa-check-circle ni-lg"></i></span>
 							</div>
 						</div>
 					</div>
@@ -23,7 +23,7 @@
 				
 			</div>
 
-			
+
 		</div>
 
 	</div>
