@@ -10,7 +10,8 @@
             searchString: "",
             searchType: [],
             lessons: {},
-            page: 1
+            page: 1,
+            offset: 0
 
         },
         methods: {
@@ -100,8 +101,6 @@
 
             saveLesson: async function(ndx) {
 
-
-
                 this.lessons.lessons[ndx].saved = this.lessons.lessons[ndx].saved ? 0 : 1;
                 let params = {
                     lessonId: this.lessons.lessons[ndx].id,
@@ -113,6 +112,18 @@
                 let toogleSave = await this.postAPIFetch("/api/v1/dashboard/toggle-saved", params)
 
                 this.showMessage('Lesson Saved!', 'success')
+            },
+
+            loadMore: async function() {
+
+                this.offset = this.page * 16
+                this.page++
+
+                let tempLessons = await this.getAPIFetch('/api/v1/dashboard/get-all-lessons?limit=16&skip='+this.offset);
+
+                if (tempLessons && tempLessons.lessons){
+                    this.lessons.lessons.push(tempLessons.lessons)
+                }
             },
 
 
