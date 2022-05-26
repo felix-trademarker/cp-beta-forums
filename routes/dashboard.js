@@ -41,6 +41,12 @@ router.get([
     '/beta/lesson/:slug/:courseId'
 ],dashboardController.lesson);
 
+// NEW LATEST LESSON PAGE
+router.get([
+    '/new/latest/',
+    '/beta/latest',
+],dashboardController.latestLesson);
+
 router.get([
     '/new/:v3Id',
     '/beta/:v3Id'

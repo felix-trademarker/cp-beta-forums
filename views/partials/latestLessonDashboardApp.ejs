@@ -1,0 +1,89 @@
+<script src="https://cdn.bootcss.com/vue/2.2.6/vue.js"></script>
+
+<script>
+
+
+    var lessonDashboardApp = new Vue({
+        el: "#lessonDashboardApp",
+        data: {
+            vuex: JSON.parse(window.localStorage.getItem('vuex')),
+            searchString: "",
+            searchType: [],
+            lessons: {},
+
+        },
+        methods: {
+
+            getAPIFetch: async function(api) {
+
+                let results = await fetch(api,{
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                    },
+                })
+                .then(resp => resp.json())
+                .then(res => {
+                    // console.log("this res", res);
+                    return res;
+                })
+
+                return results;
+
+            },
+
+            
+
+            searchQuery: function(){
+
+                let queryString = ""
+                let queryStringType = ""
+
+                if (this.searchString) 
+                queryString = "search="+this.searchString
+                
+                queryStringType = this.searchType.join("&")
+
+                if (queryStringType) 
+                queryString += "&" + queryStringType
+                
+                if(queryString)
+                window.location.href = "/explore?"+queryString
+                
+            },
+
+
+            showMessage: function(message, action) {
+                console.log("show message", message, action);
+                document.getElementById("messageContainer").innerHTML = `<div class="text-center alert alert-${action}" role="alert">
+                                            ${message}
+                                        </div>`
+                
+
+                setTimeout(function(){
+                    document.getElementById("messageContainer").innerHTML = ""
+                },3000);
+            },
+
+
+            
+        },
+        computed: {
+            fetchLessons: async function(){
+                this.lessons = await this.getAPIFetch('/api/v1/dashboard/get-all-lessons?limit=16&skip=0');
+
+                
+            }
+
+            
+
+        }
+
+    });
+
+    // lessonDashboardApp.fetchLessons
+
+
+</script>

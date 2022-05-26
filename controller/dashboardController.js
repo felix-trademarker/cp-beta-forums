@@ -460,6 +460,19 @@ exports.lesson = async function(req, res, next) {
 
 }
 
+exports.latestLesson = async function(req, res, next) {
+
+
+  res.render('pages/latest-lesson', {
+    layout: 'layouts/latest-lesson-layout', 
+    title: 'ChinesePod Latest Lesson Page',
+    description: '',
+    keywords: 'Latest Lesson',
+
+  });
+
+}
+
 exports.lessonDirect = async function(req, res, next) {
 
   let v3Id = req.params.v3Id ? req.params.v3Id : "";
