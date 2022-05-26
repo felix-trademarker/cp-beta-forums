@@ -211,7 +211,10 @@
 
             this.fetchReplyTo()
 
-            console.log(this.replyToData);
+            document.getElementById('commentForm').scrollIntoView({
+                behavior: 'smooth'
+            });
+
         },
 
         fetchReplyTo: async function() {
