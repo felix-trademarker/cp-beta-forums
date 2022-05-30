@@ -119,10 +119,10 @@
                 this.offset = this.page * 16
                 this.page++
 
-                let tempLessons = await this.getAPIFetch('/api/v1/dashboard/get-all-lessons?limit=16&skip='+this.offset);
+                let tempLessons = await this.getAPIFetch('/api/v1/vocabulary/words?limit=16&skip='+this.offset);
 
-                if (tempLessons && tempLessons.lessons){
-                    this.lessons.lessons.push(...tempLessons.lessons)
+                if (tempLessons && tempLessons.vocabulary){
+                    this.lessons.vocabulary.push(...tempLessons.vocabulary)
                 }
             },
 
