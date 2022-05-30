@@ -159,7 +159,7 @@
         },
         computed: {
             fetchLessons: async function(){
-                this.lessons = await this.getAPIFetch('/api/v1/dashboard/get-all-lessons?limit=16&skip=0');
+                this.lessons = await this.getAPIFetch('/api/v1/vocabulary/words?limit=16&skip=0');
                 // this.lessons = {
                 //                 "total":50,
                 //                 "vocabulary":[
