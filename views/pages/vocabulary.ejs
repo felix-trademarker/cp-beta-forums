@@ -19,7 +19,7 @@
 							<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" v-for="ndx in voc.t.length" :id="'target-t-'+(ndx - 1)+'-'+voc.id" :class="'js-animate-t-'+(ndx - 1)+'-'+voc.id" style="display: inline-block;width:70px;"></div>
 							<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" v-for="ndx in voc.s.length" :id="'target-s-'+(ndx - 1)+'-'+voc.id" :class="'js-animate-s-'+(ndx - 1)+'-'+voc.id" style="display: inline-block;width:70px;"></div>
 						</td>
-						<td>{{ voc.p }}</td>
+						<td>{{ pinyinConvert(voc.p) }}</td>
 						<td>{{ voc.en }}</td>
 						<td>
 							
