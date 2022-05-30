@@ -654,10 +654,8 @@
             },
 
             lookupHanzi: async function(hanzi) {
-                console.log("=================");
+                
                 let hanziLookup = await this.getAPIFetch('/beta/api/v1/lookup-hanzi/'+hanzi)
-
-                console.log("lookup",hanziLookup);
 
                 return hanziLookup
             },

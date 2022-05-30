@@ -1,0 +1,52 @@
+<section style="padding-top:30px">
+	
+	<div class="container">
+		<div v-if="lessons" class="row">
+
+			<table v-if="lessons.vocabulary" class="table">
+				<thead>
+					<tr>
+						<th style="width:35%">{{ vuex.userInfo.charSet == 'traditional' ? 'Traditional' : 'Simplified' }}</th>
+						<th style="width:25%">Pinyin</th>
+						<th style="width:25%">English</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="voc in lessons.vocabulary">
+						
+						<td>
+							<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" v-for="ndx in voc.t.length" :id="'target-t-'+(ndx - 1)+'-'+voc.id" :class="'js-animate-t-'+(ndx - 1)+'-'+voc.id" style="display: inline-block;width:70px;"></div>
+							<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" v-for="ndx in voc.s.length" :id="'target-s-'+(ndx - 1)+'-'+voc.id" :class="'js-animate-s-'+(ndx - 1)+'-'+voc.id" style="display: inline-block;width:70px;"></div>
+						</td>
+						<td>{{ voc.p }}</td>
+						<td>{{ voc.en }}</td>
+						<td>
+							
+
+							<div style="display:inline-block" @click="copyClipboard( (vuex.userInfo.charSet == 'traditional' ? voc.t : voc.s ) + ' - ' + voc.p + ' - ' + voc.en )" class="icon c-hand">
+								<i class="fa fa-copy"></i>
+							</div>
+
+							
+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+		</div>
+
+	</div>
+</section>
+
+<div v-if="lessons && lessons.vocabulary && lessons.total > lessons.vocabulary.length" class="text-center">
+	<button class="btn btn-primary" @click="loadMore()">Load More</button>
+</div>
+
+
+
+<div style="position: fixed;z-index: 100; top:10px; left: 0;width:100%" id="messageContainer">
+
+</div>

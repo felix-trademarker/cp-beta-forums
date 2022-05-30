@@ -473,6 +473,19 @@ exports.latestLesson = async function(req, res, next) {
 
 }
 
+exports.vocabulary = async function(req, res, next) {
+
+
+  res.render('pages/vocabulary', {
+    layout: 'layouts/saved-vocabulary-layout', 
+    title: 'ChinesePod Vocabulary Page',
+    description: '',
+    keywords: 'Vocabulary',
+
+  });
+
+}
+
 exports.lessonDirect = async function(req, res, next) {
 
   let v3Id = req.params.v3Id ? req.params.v3Id : "";

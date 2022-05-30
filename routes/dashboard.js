@@ -47,6 +47,13 @@ router.get([
     '/beta/latest',
 ],dashboardController.latestLesson);
 
+// NEW SAVED VOCABULARY PAGE
+router.get([
+    '/new/vocabulary/',
+    '/beta/vocabulary',
+],dashboardController.vocabulary);
+
+// REDIRECT TO LESSON WITH LESSON ID
 router.get([
     '/new/:v3Id',
     '/beta/:v3Id'

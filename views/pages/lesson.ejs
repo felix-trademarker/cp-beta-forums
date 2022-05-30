@@ -217,17 +217,6 @@
 																<div class="border-top pt-1" v-html="sentence.en"></div>
 															</div>
 														</span>
-
-														<!-- <span v-if="sentence.s.length > 1" v-for="(ndx, s) in sentence.s" class="mandarin-char position-relative">
-															<span class="fs-2" v-if="vuex.userInfo.charSet == 'simplified'">{{ sentence.s[ndx] }}</span>
-															<span class="fs-2" v-if="vuex.userInfo.charSet == 'traditional'">{{ sentence.t[ndx] }}</span>
-															<div style="margin-top:-5px;" class="mandarin-char-tooltip position-absolute start-0 rounded p-3 bg-light fs-5">
-																<div v-if="vuex.userInfo.charSet == 'simplified'" class="fs-2 mb-2">{{ sentence.s[ndx] }}</div>
-																<div v-if="vuex.userInfo.charSet == 'traditional'" class="fs-2 mb-2">{{ sentence.t[ndx] }}</div>
-																<div class="mb-2">{{ pinyinConvert(lookupHanzi(sentence.s[ndx]).pinyin) }}</div>
-																<div class="border-top pt-1" v-html="sentence.en"></div>
-															</div>
-														</span> -->
 													</span>
 												
 												</div>
