@@ -1,4 +1,4 @@
-let _table = "lessonsources";
+let _table = "lessonsources.metadata";
 var Model = require('./_modelAWS')
 var defaultModel = new Model(_table)
 
