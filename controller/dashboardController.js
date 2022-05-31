@@ -19,7 +19,7 @@ let rpoCourseContents = require('../repositories/mysql/_course_contents');
 let rpoCourseDetail = require('../repositories/mysql/_course_detail');
 // let rpoVocabulary = require('../repositories/mysql/_vocabulary');
 
-let rpoLessonFiles = require('../repositories/aws_lessonFiles');
+let rpoLessonsources = require('../repositories/awsLessonSources');
 
 
 exports.landing = async function(req, res, next) {
@@ -42,7 +42,7 @@ exports.landing = async function(req, res, next) {
 
   }
 
-  let lessonsources = await rpoLessonFiles.get()
+  let lessonsources = await rpoLessonsources.get()
   console.log("lessonsources",lessonsources);
   // for (let i=0; i < mContents.length; i++){
   //   rpoMContents.update(mContents[i]._id, {charactersToPractice: ""})
