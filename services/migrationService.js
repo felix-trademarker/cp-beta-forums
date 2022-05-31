@@ -6,6 +6,9 @@ let rpoUserSettings = require('../repositories/mysql/_user_settings');
 let rpoUserVocabulary = require('../repositories/mysql/_user_vocabulary');
 let rpoUserPreferences = require('../repositories/mysql/_user_preferences');
 
+let rpoLessonsources = require('../repositories/awsLessonSources');
+let rpoLessonsourcesMongo = require('../repositories/lessonSources')
+
 let rpoMigrations = require('../repositories/mysql/_migrations');
 let moment = require('moment');
 
@@ -165,4 +168,16 @@ exports.users = async function(req, res, next) {
 
     console.log("==MIGRATING PAGE "+page+ " OF " +"USERS ==")
  
+}
+
+exports.lessonsources = async function() {
+    let lessonsources = await rpoLessonsources.get()
+    console.log("lessonsources",lessonsources.length);
+    for (let i=0; i < lessonsources.length; i++){
+        let lesson = lessonsources[i]
+        lesson.v3_id = lesson._id
+        delete lesson._id
+        rpoLessonsourcesMongo.put(lesson)
+        console.log("add v3Id", lesson.v3_id);
+    }
 }

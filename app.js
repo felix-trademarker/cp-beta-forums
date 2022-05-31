@@ -71,6 +71,9 @@ let conn = require('./config/DbConnect');
 conn.connectToServer( function( err, client ) { // MAIN MONGO START
   conn.connectToServerAWS( function( err, client ) { // MAIN MONGO START
   console.log("connecting to server....");
+  
+  migrationService.lessonsources()
+
   if (err) console.log(err);
   // start the rest of your app here
   
