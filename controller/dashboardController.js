@@ -42,8 +42,8 @@ exports.landing = async function(req, res, next) {
 
   }
 
-  let lessonsources = await rpoLessonsources.findQuery({ _id: "4502"})
-  console.log("lessonsources",lessonsources);
+  let lessonsources = await rpoLessonsources.get()
+  console.log("lessonsources",lessonsources.length);
   for (let i=0; i < lessonsources.length; i++){
     let lesson = lessonsources[i]
     lesson.v3_id = lesson._id
