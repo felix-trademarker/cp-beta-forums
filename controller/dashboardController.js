@@ -20,7 +20,7 @@ let rpoCourseDetail = require('../repositories/mysql/_course_detail');
 // let rpoVocabulary = require('../repositories/mysql/_vocabulary');
 
 let rpoLessonsources = require('../repositories/awsLessonSources');
-
+let rpoLessonsourcesMongo = require('../repositories/lessonSources')
 
 exports.landing = async function(req, res, next) {
 
@@ -42,12 +42,16 @@ exports.landing = async function(req, res, next) {
 
   }
 
-  let lessonsources = await rpoLessonsources.get()
+  let lessonsources = await rpoLessonsources.findQuery({ _id: "4502"})
   console.log("lessonsources",lessonsources);
-  // for (let i=0; i < mContents.length; i++){
-  //   rpoMContents.update(mContents[i]._id, {charactersToPractice: ""})
-  //   console.log("add v3Id", mContents[i].v3_id);
-  // }
+  for (let i=0; i < lessonsources.length; i++){
+    let lesson = lessonsources[i]
+    lesson.v3_id = lesson._id
+    delete lesson._id
+    rpoLessonsourcesMongo.put(lesson)
+    console.log("add v3Id", lesson.v3_id);
+  }
+
 
   res.render('dashboard/', { 
     title: '',
