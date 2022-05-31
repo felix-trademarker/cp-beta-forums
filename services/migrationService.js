@@ -177,7 +177,11 @@ exports.lessonsources = async function() {
         let lesson = lessonsources[i]
         lesson.v3_id = lesson._id
         delete lesson._id
-        rpoLessonsourcesMongo.put(lesson)
-        console.log("add v3Id", lesson.v3_id);
+        let found = await rpoLessonsourcesMongo.findQuery({v3_id: lesson.v3_id})
+        if (!found.length) {
+            rpoLessonsourcesMongo.put(lesson)
+            console.log("add v3Id", lesson.v3_id);
+        }
+        
     }
 }
