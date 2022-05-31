@@ -42,8 +42,8 @@ exports.landing = async function(req, res, next) {
 
   }
 
-  let lessonsources = await rpoLessonFiles.get()
-  console.log("lessonsources",lessonsources);
+  // let lessonsources = await rpoLessonFiles.get()
+  // console.log("lessonsources",lessonsources);
   // for (let i=0; i < mContents.length; i++){
   //   rpoMContents.update(mContents[i]._id, {charactersToPractice: ""})
   //   console.log("add v3Id", mContents[i].v3_id);
