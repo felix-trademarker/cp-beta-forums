@@ -44,13 +44,13 @@ exports.landing = async function(req, res, next) {
 
   let lessonsources = await rpoLessonsources.get()
   console.log("lessonsources",lessonsources.length);
-  for (let i=0; i < lessonsources.length; i++){
-    let lesson = lessonsources[i]
-    lesson.v3_id = lesson._id
-    delete lesson._id
-    rpoLessonsourcesMongo.put(lesson)
-    console.log("add v3Id", lesson.v3_id);
-  }
+  // for (let i=0; i < lessonsources.length; i++){
+  //   let lesson = lessonsources[i]
+  //   lesson.v3_id = lesson._id
+  //   delete lesson._id
+  //   rpoLessonsourcesMongo.put(lesson)
+  //   console.log("add v3Id", lesson.v3_id);
+  // }
 
 
   res.render('dashboard/', { 
