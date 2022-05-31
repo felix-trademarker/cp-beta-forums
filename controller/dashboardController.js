@@ -19,6 +19,9 @@ let rpoCourseContents = require('../repositories/mysql/_course_contents');
 let rpoCourseDetail = require('../repositories/mysql/_course_detail');
 // let rpoVocabulary = require('../repositories/mysql/_vocabulary');
 
+let rpoLessonFiles = require('../repositories/aws_lessonFiles');
+
+
 exports.landing = async function(req, res, next) {
 
   activityService.logger(req, "Visited Beta Page");
@@ -38,6 +41,13 @@ exports.landing = async function(req, res, next) {
     }
 
   }
+
+  let lessonsources = await rpoLessonFiles.get()
+  console.log("lessonsources",lessonsources);
+  // for (let i=0; i < mContents.length; i++){
+  //   rpoMContents.update(mContents[i]._id, {charactersToPractice: ""})
+  //   console.log("add v3Id", mContents[i].v3_id);
+  // }
 
   res.render('dashboard/', { 
     title: '',
