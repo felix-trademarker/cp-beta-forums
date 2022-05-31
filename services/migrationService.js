@@ -178,10 +178,16 @@ exports.lessonsources = async function() {
         lesson.v3_id = lesson._id
         delete lesson._id
         let found = await rpoLessonsourcesMongo.findQuery({v3_id: lesson.v3_id})
+        // insert new source record
         if (!found.length) {
             rpoLessonsourcesMongo.put(lesson)
             console.log("add v3Id", lesson.v3_id);
         }
-        
+
+        let lessonContent = await rpoContents.findQuery({v3_id: lesson.v3_id})
+        if (lessonContent.length) {
+            rpoContents.update(lessonContent[0]._id, { source: lesson })
+            console.log("add v3Id", lesson.v3_id);
+        }
     }
 }
