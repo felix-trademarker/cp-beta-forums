@@ -69,7 +69,7 @@ app.use(expressLayouts);
 // APP  CONTAINER =========== >> 
 let conn = require('./config/DbConnect');
 conn.connectToServer( function( err, client ) { // MAIN MONGO START
-  // conn.connectToServerAWS( function( err, client ) { // MAIN MONGO START
+  conn.connectToServerAWS( function( err, client ) { // MAIN MONGO START
   console.log("connecting to server....");
   if (err) console.log(err);
   // start the rest of your app here
@@ -133,7 +133,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
 
   
 
-  // }); // AWS MONGO CLOSE
+  }); // AWS MONGO CLOSE
 }); // MAIN MONGO CLOSE
 // APP  CONTAINER =========== << 
 
