@@ -53,7 +53,7 @@
 								<i class="fa fa-copy"></i>
 							</div>
 
-							<div style="display:inline-block" class="play-audio icon fs-5">
+							<div v-if="voc.audioUrlCN" style="display:inline-block" class="play-audio icon fs-5">
 								<i class="bi bi-volume-up-fill" @click="playAudio('audio-'+voc.id)"></i>
 								<audio :id="'audio-'+voc.id">
 									<source  :src="voc.audioUrlCN" type="audio/mp3">
