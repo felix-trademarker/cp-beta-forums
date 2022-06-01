@@ -1,5 +1,6 @@
 <script src="https://cdn.bootcss.com/vue/2.2.6/vue.js"></script>
 <script src="/beta/javascripts/pinyin-convert.js" ></script>
+<script src="/beta/javascripts/date.format.js" ></script>
 
 <script>
 
@@ -64,6 +65,36 @@
                     return results;
                 }
 
+            },
+
+            deleteAPI: async function(api) {
+
+                let options = {
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                    },
+                    method: "DELETE",
+                }
+
+                let results = await fetch(api,options)
+                    // .then(resp => resp.json())
+                    .then(res => {
+                        return res.statusText;
+                })
+
+                return results;
+
+            },
+
+            deleteVocabularyTag: async function(id) {
+                let resp = await this.deleteAPI("https://www.chinesepod.com/api/v1/vocabulary/words/"+id,'')
+
+                this.showMessage('Vocabulary Deleted!', 'success')
+
+                this.fetchLessons
             },
 
             searchQuery: function(){
@@ -145,6 +176,7 @@
 
             playAudio : function (id) {
                 let play_audio = document.getElementById(id);
+                // console.log(play_audio);
                 play_audio.play();
             },
 
@@ -154,7 +186,36 @@
                 this.showMessage("Copied to clipboard!", "success")
             },
 
+            formatDate: function(strDate) {
+                return dateFormat(strDate, "mmmm d yyyy")
+            },
 
+            showHanzi: function(id, animateClass, hanzi) {
+
+                console.log(id, animateClass, hanzi);
+                
+             
+                // wait to load container
+                setTimeout(function(){
+                    let hanziContainer = document.getElementById(id);
+                    let loader = hanziContainer.querySelector('.loader')
+                    loader.style.display = "none";
+                    let writert = HanziWriter.create(id, hanzi, {
+                        width: 100,
+                        height: 100,
+                        renderer: 'svg',
+                        radicalColor: '#166E16',
+                        onCorrectStroke: printStrokePoints,
+                        onMistake: printStrokePoints,
+                        showCharacter: false,
+                    });
+
+                    document.querySelector('.'+animateClass).addEventListener('click', function () {
+                        writert.animateCharacter();
+                    });
+                },500);
+                
+            }
             
         },
         computed: {
@@ -166,11 +227,11 @@
                 //                     {
                 //                         "id":15306949,
                 //                         "vocabulary_class":"Key Vocabulary",
-                //                         "s":"高高",
-                //                         "p":"gāo","en":"tall","t":"高高","audio":"mp3/glossary/source/chinesepod_4360_vocabulary_53919_prototype_21127_24910.mp3","display_order":9,"image":"","progress":0,"next_test_date":"2022-05-23T06:05:12.000Z","last_test_date":"2022-05-23T06:05:12.000Z","times_tested":0,"number_correct":0,"char_learned":0,"user_vocabulary_id":19308931,"createdAt":"2022-05-23T08:07:40.000Z","lesson":{"title":"Getting Taller (Not Fatter)","hash_code":"0346f22bfb053ac6a8580bb1b9e78dd96cb18e47","slug":"getting-taller-not-fatter","level":"Pre Intermediate","type":"lesson","id":"1327"},"tags":[],"audioUrlCN":"https://s3contents.chinesepod.com/1327/0346f22bfb053ac6a8580bb1b9e78dd96cb18e47/mp3/glossary/source/chinesepod_4360_vocabulary_53919_prototype_21127_24910.mp3"},
+                //                         "s":"高",
+                //                         "p":"gāo","en":"tall","t":"高","audio":"mp3/glossary/source/chinesepod_4360_vocabulary_53919_prototype_21127_24910.mp3","display_order":9,"image":"","progress":0,"next_test_date":"2022-05-23T06:05:12.000Z","last_test_date":"2022-05-23T06:05:12.000Z","times_tested":0,"number_correct":0,"char_learned":0,"user_vocabulary_id":19308931,"createdAt":"2022-05-23T08:07:40.000Z","lesson":{"title":"Getting Taller (Not Fatter)","hash_code":"0346f22bfb053ac6a8580bb1b9e78dd96cb18e47","slug":"getting-taller-not-fatter","level":"Pre Intermediate","type":"lesson","id":"1327"},"tags":[],"audioUrlCN":"https://s3contents.chinesepod.com/1327/0346f22bfb053ac6a8580bb1b9e78dd96cb18e47/mp3/glossary/source/chinesepod_4360_vocabulary_53919_prototype_21127_24910.mp3"},
                                     
                 // ]}
-                // console.log(this.lessons);
+
             }
 
             
@@ -186,54 +247,6 @@
         console.log(`[${pointStrs.join(', ')}]`);
     }
 
-    window.onload = function () {
-
-        if (lessonDashboardApp.lessons && lessonDashboardApp.lessons.vocabulary) 
-        lessonDashboardApp.lessons.vocabulary.forEach((vocab, i) => {
-            let hanziCount = vocab.t.length
-            
-            for (let x=0; x < hanziCount; x++) {
-                console.log("generate hanzi =======");
-                let elT = document.getElementById('target-t-'+x+'-'+vocab.id)
-                let elS = document.getElementById('target-t-'+x+'-'+vocab.id)
-                
-
-
-                let writert = HanziWriter.create('target-t-'+x+'-'+vocab.id, vocab.t[x], {
-                    width: 100,
-                    height: 100,
-                    renderer: 'svg',
-                    radicalColor: '#166E16',
-                    onCorrectStroke: printStrokePoints,
-                    onMistake: printStrokePoints,
-                    showCharacter: false,
-                });
-
-                let writers = HanziWriter.create('target-s-'+x+'-'+vocab.id, vocab.s[x], {
-                    width: 100,
-                    height: 100,
-                    renderer: 'svg',
-                    radicalColor: '#166E16',
-                    onCorrectStroke: printStrokePoints,
-                    onMistake: printStrokePoints,
-                    showCharacter: false,
-                });
-
-                document.querySelector('.js-animate-t-'+x+'-'+vocab.id).addEventListener('click', function () {
-                    writert.animateCharacter();
-                });
-
-                document.querySelector('.js-animate-s-'+x+'-'+vocab.id).addEventListener('click', function () {
-                    writers.animateCharacter();
-                });
-                
-            }
-
-        })
-
-
-
-    };
 
 
 </script>

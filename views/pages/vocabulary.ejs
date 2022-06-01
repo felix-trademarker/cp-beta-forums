@@ -9,23 +9,60 @@
 						<th style="width:35%">{{ vuex.userInfo.charSet == 'traditional' ? 'Traditional' : 'Simplified' }}</th>
 						<th style="width:25%">Pinyin</th>
 						<th style="width:25%">English</th>
-						<th></th>
+						<th>Decks</th>
+						<th>Date Added</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr v-for="voc in lessons.vocabulary">
 						
 						<td>
-							<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" v-for="ndx in voc.t.length" :id="'target-t-'+(ndx - 1)+'-'+voc.id" :class="'js-animate-t-'+(ndx - 1)+'-'+voc.id" style="display: inline-block;width:70px;"></div>
-							<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" v-for="ndx in voc.s.length" :id="'target-s-'+(ndx - 1)+'-'+voc.id" :class="'js-animate-s-'+(ndx - 1)+'-'+voc.id" style="display: inline-block;width:70px;"></div>
+							<div  
+								v-if="vuex.userInfo.charSet === 'traditional'"
+								v-for="ndx in voc.t.length" 
+								:id="'target-t-'+(ndx - 1)+'-'+voc.id" 
+								:class="'js-animate-t-'+(ndx - 1)+'-'+voc.id" 
+								style="display: inline-block;width:70px;">
+								<span class="loader">loading...</span>
+								{{ showHanzi('target-t-'+(ndx - 1)+'-'+voc.id, 'js-animate-t-'+(ndx - 1)+'-'+voc.id,voc.t[ndx-1] ) }}
+							</div>
+							<div  
+								v-if="vuex.userInfo.charSet === 'simplified'"
+								v-for="ndx in voc.s.length" 
+								:id="'target-s-'+(ndx - 1)+'-'+voc.id" 
+								:class="'js-animate-s-'+(ndx - 1)+'-'+voc.id" 
+								style="display: inline-block;width:70px;">
+								<span class="loader">loading...</span>
+								{{ showHanzi('target-s-'+(ndx - 1)+'-'+voc.id, 'js-animate-s-'+(ndx - 1)+'-'+voc.id,voc.s[ndx-1] ) }}
+							</div>
 						</td>
 						<td v-html="pinyinConvert(voc.p)"></td>
 						<td>{{ voc.en }}</td>
+						<td>
+							<ul v-if="voc.tags && voc.tags.length">
+								<li v-for="tag in voc.tags">{{ tag.tag }}</li>
+							</ul>
+							<span class="btn"><i class="fa fa-plus"></i></span> <span class="btn"><i class="fa fa-minus"></i></span>
+						</td>
+						<td>{{ formatDate(voc.createdAt) }}</td>
 						<td>
 							
 
 							<div style="display:inline-block" @click="copyClipboard( (vuex.userInfo.charSet == 'traditional' ? voc.t : voc.s ) + ' - ' + voc.p + ' - ' + voc.en )" class="icon c-hand">
 								<i class="fa fa-copy"></i>
+							</div>
+
+							<div style="display:inline-block" class="play-audio icon fs-5">
+								<i class="bi bi-volume-up-fill" @click="playAudio('audio-'+voc.id)"></i>
+								<audio :id="'audio-'+voc.id">
+									<source  :src="voc.audioUrlCN" type="audio/mp3">
+									Your browser does not support the audio element.
+								</audio>
+							</div>
+
+							<div style="display:inline-block" @click="deleteVocabularyTag(voc.id)" class="icon c-hand">
+								<i class="fa fa-trash"></i>
 							</div>
 
 							
