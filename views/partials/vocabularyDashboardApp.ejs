@@ -199,20 +199,22 @@
                 setTimeout(function(){
                     let hanziContainer = document.getElementById(id);
                     let loader = hanziContainer.querySelector('.loader')
-                    loader.style.display = "none";
-                    let writert = HanziWriter.create(id, hanzi, {
-                        width: 100,
-                        height: 100,
-                        renderer: 'svg',
-                        radicalColor: '#166E16',
-                        onCorrectStroke: printStrokePoints,
-                        onMistake: printStrokePoints,
-                        showCharacter: false,
-                    });
+                    loader.remove()
+                    if( hanziContainer ) {
+                        let writert = HanziWriter.create(id, hanzi, {
+                            width: 100,
+                            height: 100,
+                            renderer: 'svg',
+                            radicalColor: '#166E16',
+                            onCorrectStroke: printStrokePoints,
+                            onMistake: printStrokePoints,
+                            showCharacter: false,
+                        });
 
-                    document.querySelector('.'+animateClass).addEventListener('click', function () {
-                        writert.animateCharacter();
-                    });
+                        document.querySelector('.'+animateClass).addEventListener('click', function () {
+                            writert.animateCharacter();
+                        });
+                    }
                 },500);
                 
             }
