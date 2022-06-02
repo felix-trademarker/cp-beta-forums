@@ -276,7 +276,7 @@
                     await this.postAPIFetch("/api/v1/vocabulary/decks/remove", params)
                 }
 
-                this.fetchLessons
+                this.fetchLessons()
 
                 this.showMessage('Vocabulary Updated!', 'success')
             }
