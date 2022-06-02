@@ -232,7 +232,10 @@
                 setTimeout(function(){
                     let hanziContainer = document.getElementById(id);
                     let loader = hanziContainer.querySelector('.loader')
+                    
+                    if(loader)
                     loader.remove()
+
                     if( hanziContainer ) {
                         let writert = HanziWriter.create(id, hanzi, {
                             width: 100,
@@ -276,7 +279,7 @@
                     await this.postAPIFetch("/api/v1/vocabulary/decks/remove", params)
                 }
 
-                this.fetchLessons()
+                await this.fetchLessons()
 
                 this.showMessage('Vocabulary Updated!', 'success')
             }
