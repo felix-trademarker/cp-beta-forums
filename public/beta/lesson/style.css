@@ -573,6 +573,7 @@ span.answer {
 .tbl-vocabulary td .hanziContainer{
     display: flex;
     width: 100%;
+    flex-wrap: wrap;
 }
 
 .tbl-vocabulary td .hanziContainer div{
