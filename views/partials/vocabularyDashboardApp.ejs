@@ -59,16 +59,13 @@
 
                 let results = await fetch(api,options)
 
+                    
                     .then(res => {
                         return res.statusText;
                     })
 
 
-                if (okOption) {
-                    return {status:"ok"}
-                } else {
                     return results;
-                }
 
             },
 
@@ -88,14 +85,11 @@
                 let okOption = false
 
                 let results = await fetch(api,options)
-                    .then(res => res.json() )
-                    .then(resp => {
-                    console.log("resp", resp);
 
+                    .then(resp => {
                         return resp;
                     })
 
-                    console.log("results", results);
 
                 return results;
 
@@ -264,6 +258,7 @@
                 this.deckWordId = []
                 this.deckAction = ''
                 this.deckTags = []
+                this.deckSelectedId = ''
             },
 
             deckActionSubmit: async function() {
