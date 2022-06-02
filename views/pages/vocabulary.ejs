@@ -3,15 +3,15 @@
 	<div class="container">
 		<div v-if="lessons" class="row">
 
-			<table v-if="lessons.vocabulary" class="table">
+			<table v-if="lessons.vocabulary" class="table tbl-vocabulary">
 				<thead>
 					<tr>
-						<th style="width:35%">{{ vuex.userInfo.charSet == 'traditional' ? 'Traditional' : 'Simplified' }}</th>
-						<th style="width:25%">Pinyin</th>
-						<th style="width:25%">English</th>
-						<th>Decks</th>
-						<th>Date Added</th>
-						<th>Actions</th>
+						<th>{{ vuex.userInfo.charSet == 'traditional' ? 'Traditional' : 'Simplified' }}</th>
+						<th style="width:15%">Pinyin</th>
+						<th style="width:15%">English</th>
+						<th style="width:15%">Decks</th>
+						<th style="width:10%">Date Added</th>
+						<th style="width:10%">Actions</th>
 					</tr>
 				</thead>
 				<tbody>

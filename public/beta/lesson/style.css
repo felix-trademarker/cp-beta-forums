@@ -539,3 +539,26 @@ span.answer {
 .table td{
     vertical-align: middle;
 }
+
+.tbl-vocabulary td{
+    font-weight: 500;
+
+}
+
+.tbl-vocabulary td .icon{
+    width: 20px;
+    height: 20px;
+}
+
+.tbl-vocabulary td .icon i{
+    font-size: 18px !important;
+}
+
+.tbl-vocabulary td ul{
+    padding: 0;
+    margin: 0;
+}
+
+.tbl-vocabulary td ul li{
+    list-style: none;
+}
