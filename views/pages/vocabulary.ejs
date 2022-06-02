@@ -43,7 +43,10 @@
 							<ul v-if="voc.tags && voc.tags.length">
 								<li v-for="tag in voc.tags">{{ tag.tag }}</li>
 							</ul>
-							<span class="btn"><i class="fa fa-plus"></i></span> <span class="btn"><i class="fa fa-minus"></i></span>
+							<div >
+								<span class="btn" data-bs-toggle="modal" data-bs-target="#addRemoveDeck" @click="setParams(voc.user_vocabulary_id,'add',voc.tags)"><i class="fa fa-plus"></i></span> 
+								<span class="btn" data-bs-toggle="modal" data-bs-target="#addRemoveDeck" v-if="voc.tags && voc.tags.length" @click="setParams(voc.user_vocabulary_id,'remove',voc.tags)"><i class="fa fa-minus"></i></span>
+							</div>
 						</td>
 						<td>{{ formatDate(voc.createdAt) }}</td>
 						<td>
@@ -86,4 +89,30 @@
 
 <div style="position: fixed;z-index: 100; top:10px; left: 0;width:100%" id="messageContainer">
 
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="addRemoveDeck" tabindex="-1" role="dialog" aria-labelledby="addRemoveDeckLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+				<h4>Decks</h4>
+				<div v-if="deckAction == 'add'" class="form-group">
+					<select class="form-control" v-model="deckSelectedId">
+						<option v-for="deck in decks" :value="deck.tag">{{ deck.tag }}</option>
+					</select>
+				</div>
+				<div v-if="deckAction == 'remove'" class="form-group">
+					<select class="form-control" v-model="deckSelectedId">
+						<option v-for="deck in deckTags" :value="deck.tag">{{ deck.tag }}</option>
+					</select>
+				</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="deckActionSubmit()" style="text-transform: capitalize;">{{ deckAction }}</button>
+            </div>
+        </div>
+    </div>
 </div>

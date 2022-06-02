@@ -12,7 +12,12 @@
             searchType: [],
             lessons: {},
             page: 1,
-            offset: 0
+            offset: 0,
+            decks: {},
+            deckTags: [],
+            deckAction: 'add',
+            deckSelectedId: '',
+            deckWordId: []
 
         },
         methods: {
@@ -64,6 +69,35 @@
                 } else {
                     return results;
                 }
+
+            },
+
+            putAPI: async function(api, params) {
+
+                let options = {
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                    },
+                    method: "PUT",
+                    body: JSON.stringify(params)
+                }
+
+                let okOption = false
+
+                let results = await fetch(api,options)
+                    .then(res => res.json() )
+                    .then(resp => {
+                    console.log("resp", resp);
+
+                        return resp;
+                    })
+
+                    console.log("results", results);
+
+                return results;
 
             },
 
@@ -216,12 +250,42 @@
                     }
                 },500);
                 
+            },
+
+            setParams: function(wordId, action, tags) {
+                this.deckWordId.push(wordId)
+                this.deckAction = action
+                this.deckTags = tags
+            },
+
+            unSetParams: function(){
+                this.deckWordId = []
+                this.deckAction = ''
+                this.deckTags = []
+            },
+
+            deckActionSubmit: async function() {
+
+                let params = {
+                    deckId : this.deckSelectedId,
+                    wordId : this.deckWordId
+                }
+                if ( this.deckAction == 'add' ) {
+                    await this.putAPI("/api/v1/vocabulary/decks/add", params)
+                } else {
+                    await this.postAPIFetch("/api/v1/vocabulary/decks/remove", params)
+                }
+
+                this.fetchLessons
+
+                this.showMessage('Vocabulary Updated!', 'success')
             }
             
         },
         computed: {
             fetchLessons: async function(){
                 this.lessons = await this.getAPIFetch('/api/v1/vocabulary/words?limit=16&skip=0');
+                this.decks = await this.getAPIFetch('/api/v1/vocabulary/decks');
                 // this.lessons = {
                 //                 "total":50,
                 //                 "vocabulary":[
@@ -232,6 +296,8 @@
                 //                         "p":"gāo","en":"tall","t":"高","audio":"mp3/glossary/source/chinesepod_4360_vocabulary_53919_prototype_21127_24910.mp3","display_order":9,"image":"","progress":0,"next_test_date":"2022-05-23T06:05:12.000Z","last_test_date":"2022-05-23T06:05:12.000Z","times_tested":0,"number_correct":0,"char_learned":0,"user_vocabulary_id":19308931,"createdAt":"2022-05-23T08:07:40.000Z","lesson":{"title":"Getting Taller (Not Fatter)","hash_code":"0346f22bfb053ac6a8580bb1b9e78dd96cb18e47","slug":"getting-taller-not-fatter","level":"Pre Intermediate","type":"lesson","id":"1327"},"tags":[],"audioUrlCN":"https://s3contents.chinesepod.com/1327/0346f22bfb053ac6a8580bb1b9e78dd96cb18e47/mp3/glossary/source/chinesepod_4360_vocabulary_53919_prototype_21127_24910.mp3"},
                                     
                 // ]}
+
+                // this.decks = [{"id":169159,"tag":"Asking Height and Weight 7","public":0,"user_id":1197231,"count":0,"forReview":0},{"id":169158,"tag":"Asking Height and Weight 5","public":0,"user_id":1197231,"count":0,"forReview":0},{"id":169157,"tag":"Asking Height and Weight 4","public":0,"user_id":1197231,"count":1,"forReview":1},{"id":169156,"tag":"Asking Height and Weight 3","public":0,"user_id":1197231,"count":0,"forReview":0},{"id":169155,"tag":"Asking Height and Weight 3","public":0,"user_id":1197231,"count":0,"forReview":0},{"id":169153,"tag":"Asking Height and Weight 2","public":0,"user_id":1197231,"count":0,"forReview":0},{"id":169152,"tag":"Asking Height and Weight","public":0,"user_id":1197231,"count":0,"forReview":0},{"id":167572,"tag":"Uncategorized","public":0,"user_id":1197231,"count":20,"forReview":20}]
 
             }
 
