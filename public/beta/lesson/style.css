@@ -542,7 +542,7 @@ span.answer {
 
 .tbl-vocabulary td{
     font-weight: 500;
-
+    word-break: break-all;
 }
 
 .tbl-vocabulary td .icon{
