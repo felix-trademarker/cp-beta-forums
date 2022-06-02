@@ -279,7 +279,8 @@
                     await this.postAPIFetch("/api/v1/vocabulary/decks/remove", params)
                 }
 
-                await this.fetchLessons
+                this.lessons = await this.getAPIFetch('/api/v1/vocabulary/words?limit=16&skip=0');
+                this.decks = await this.getAPIFetch('/api/v1/vocabulary/decks');
 
                 this.showMessage('Vocabulary Updated!', 'success')
             }
