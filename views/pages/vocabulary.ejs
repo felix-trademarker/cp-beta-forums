@@ -44,8 +44,8 @@
 								<li v-for="tag in voc.tags">{{ tag.tag }}</li>
 							</ul>
 							<div >
-								<span class="btn" data-bs-toggle="modal" data-bs-target="#addRemoveDeck" @click="setParams(voc.user_vocabulary_id,'add',voc.tags)"><i class="fa fa-plus"></i></span> 
-								<span class="btn" data-bs-toggle="modal" data-bs-target="#addRemoveDeck" v-if="voc.tags && voc.tags.length" @click="setParams(voc.user_vocabulary_id,'remove',voc.tags)"><i class="fa fa-minus"></i></span>
+								<span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRemoveDeck" @click="setParams(voc.user_vocabulary_id,'add',voc.tags)"><i class="fa fa-plus"></i></span> 
+								<span class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addRemoveDeck" v-if="voc.tags && voc.tags.length" @click="setParams(voc.user_vocabulary_id,'remove',voc.tags)"><i class="fa fa-minus"></i></span>
 							</div>
 						</td>
 						<td>{{ formatDate(voc.createdAt) }}</td>
