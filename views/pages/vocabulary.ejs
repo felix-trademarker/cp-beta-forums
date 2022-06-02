@@ -38,7 +38,7 @@
 							</div>
 						</td>
 						<td v-html="pinyinConvert(voc.p)"></td>
-						<td ><p class="en-phrase">{{ voc.en }}</p></td>
+						<td ><p class="en-phrase" v-html="voc.en"></p></td>
 						<td>
 							<ul v-if="voc.tags && voc.tags.length">
 								<li v-for="tag in voc.tags">{{ tag.tag }}</li>
