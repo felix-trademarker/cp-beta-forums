@@ -562,3 +562,13 @@ span.answer {
 .tbl-vocabulary td ul li{
     list-style: none;
 }
+.tbl-vocabulary td .en-phrase{
+    font-size: inherit;
+    color: inherit;
+    font-weight: inherit;
+}
+
+.tbl-vocabulary td .hanziContainer div{
+    display: inline-block;
+    width:60px;
+}

@@ -18,13 +18,12 @@
 					<tr v-for="voc in lessons.vocabulary">
 						
 						<td>
-							<div >
+							<div class="hanziContainer">
 							<div  
 								v-if="vuex.userInfo.charSet === 'traditional'"
 								v-for="ndx in voc.t.length" 
 								:id="'target-t-'+(ndx - 1)+'-'+voc.id" 
-								:class="'js-animate-t-'+(ndx - 1)+'-'+voc.id" 
-								style="display: inline-block;width:70px;">
+								:class="'js-animate-t-'+(ndx - 1)+'-'+voc.id" >
 								<span class="loader">loading...</span>
 								{{ showHanzi('target-t-'+(ndx - 1)+'-'+voc.id, 'js-animate-t-'+(ndx - 1)+'-'+voc.id,voc.t[ndx-1] ) }}
 							</div>
@@ -32,15 +31,14 @@
 								v-if="vuex.userInfo.charSet === 'simplified'"
 								v-for="ndx in voc.s.length" 
 								:id="'target-s-'+(ndx - 1)+'-'+voc.id" 
-								:class="'js-animate-s-'+(ndx - 1)+'-'+voc.id" 
-								style="display: inline-block;width:70px;">
+								:class="'js-animate-s-'+(ndx - 1)+'-'+voc.id" >
 								<span class="loader">loading...</span>
 								{{ showHanzi('target-s-'+(ndx - 1)+'-'+voc.id, 'js-animate-s-'+(ndx - 1)+'-'+voc.id,voc.s[ndx-1] ) }}
 							</div>
 							</div>
 						</td>
 						<td v-html="pinyinConvert(voc.p)"></td>
-						<td ><p>{{ voc.en }}</p></td>
+						<td ><p class="en-phrase">{{ voc.en }}</p></td>
 						<td>
 							<ul v-if="voc.tags && voc.tags.length">
 								<li v-for="tag in voc.tags">{{ tag.tag }}</li>
