@@ -566,6 +566,13 @@ span.answer {
     font-size: inherit;
     color: inherit;
     font-weight: inherit;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.tbl-vocabulary td .hanziContainer{
+    display: flex;
+    width: 100%;
 }
 
 .tbl-vocabulary td .hanziContainer div{
