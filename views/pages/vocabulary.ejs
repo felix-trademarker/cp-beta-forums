@@ -100,12 +100,12 @@
 				<h4>Decks</h4>
 				<div v-if="deckAction == 'add'" class="form-group">
 					<select class="form-control" v-model="deckSelectedId">
-						<option v-for="deck in decks" :value="deck.tag">{{ deck.tag }}</option>
+						<option v-for="deck in decks" :value="deck.id">{{ deck.tag }}</option>
 					</select>
 				</div>
 				<div v-if="deckAction == 'remove'" class="form-group">
 					<select class="form-control" v-model="deckSelectedId">
-						<option v-for="deck in deckTags" :value="deck.tag">{{ deck.tag }}</option>
+						<option v-for="deck in deckTags" :value="deck.id">{{ deck.tag }}</option>
 					</select>
 				</div>
             </div>
