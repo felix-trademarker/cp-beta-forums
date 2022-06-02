@@ -18,6 +18,7 @@
 					<tr v-for="voc in lessons.vocabulary">
 						
 						<td>
+							<div >
 							<div  
 								v-if="vuex.userInfo.charSet === 'traditional'"
 								v-for="ndx in voc.t.length" 
@@ -36,9 +37,10 @@
 								<span class="loader">loading...</span>
 								{{ showHanzi('target-s-'+(ndx - 1)+'-'+voc.id, 'js-animate-s-'+(ndx - 1)+'-'+voc.id,voc.s[ndx-1] ) }}
 							</div>
+							</div>
 						</td>
 						<td v-html="pinyinConvert(voc.p)"></td>
-						<td v-html="voc.en"></td>
+						<td ><p>{{ voc.en }}</p></td>
 						<td>
 							<ul v-if="voc.tags && voc.tags.length">
 								<li v-for="tag in voc.tags">{{ tag.tag }}</li>
