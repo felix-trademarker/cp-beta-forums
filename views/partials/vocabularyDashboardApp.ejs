@@ -233,10 +233,9 @@
                     let hanziContainer = document.getElementById(id);
                     let loader = hanziContainer.querySelector('.loader')
 
-                    if(loader)
                     loader.remove()
 
-                    if( !hanziContainer ) {
+                    if( hanziContainer ) {
                         let writert = HanziWriter.create(id, hanzi, {
                             width: 100,
                             height: 100,
