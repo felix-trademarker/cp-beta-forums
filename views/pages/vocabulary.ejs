@@ -57,7 +57,7 @@
 							</div>
 
 							<div style="display:inline-block" class="icon c-hand">
-								<a href="#"><i class="fa fa-search"></i></a>
+								<a :href="'/explore?search='+voc.s[ndx-1]"><i class="fa fa-search"></i></a>
 							</div>
 
 							<div v-if="voc.audioUrlCN" style="display:inline-block; color:#dc3545" class="play-audio icon fs-5">
