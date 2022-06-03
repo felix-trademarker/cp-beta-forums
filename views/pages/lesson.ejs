@@ -220,8 +220,8 @@
 													</span>
 												
 												</div>
-												<div class="play-audio icon fs-5">
-													<i class="bi bi-volume-up-fill"></i>
+												<div style="color:#dc3545" class="play-audio icon fs-5">
+													<i class="fa fa-play"></i>
 													<audio>
 														<source :src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+dia.audio" type="audio/mp3">
 														Your browser does not support the audio element.
@@ -234,7 +234,7 @@
 														<span>...</span>
 														<span>{{ pinyinConvert(dia.p) }}</span>
 													</div>
-													<div class="icon toggle-show-hide fs-5">
+													<div style="color:#198754" class="icon toggle-show-hide fs-5">
 														<i class="bi bi-eye-slash-fill"></i>
 													</div>
 												</div>
@@ -305,25 +305,41 @@
 											<tr v-for="voc in vocab">
 												
 												<td>
-													<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" v-for="ndx in voc.t.length" :id="'target-t-'+ndx+'-'+voc.id" :class="'js-animate-t-'+ndx+'-'+voc.id" style="display: inline-block;width:70px;"></div>
-													<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" v-for="ndx in voc.s.length" :id="'target-s-'+ndx+'-'+voc.id" :class="'js-animate-s-'+ndx+'-'+voc.id" style="display: inline-block;width:70px;"></div>
+													<div class="hanziContainer">
+													<div  
+														v-if="vuex.userInfo.charSet === 'traditional'"
+														v-for="ndx in voc.t.length" 
+														:id="'target-t-'+ndx+'-'+voc.id" 
+														:class="'js-animate-t-'+ndx+'-'+voc.id" >
+														<span class="loader">loading...</span>
+														{{ showHanzi('target-t-'+ndx+'-'+voc.id, 'js-animate-t-'+ndx+'-'+voc.id,voc.t[ndx] ) }}
+													</div>
+													<div  
+														v-if="vuex.userInfo.charSet === 'simplified'"
+														v-for="ndx in voc.s.length" 
+														:id="'target-s-'+ndx+'-'+voc.id" 
+														:class="'js-animate-s-'+ndx+'-'+voc.id" >
+														<span class="loader">loading...</span>
+														{{ showHanzi('target-s-'+ndx+'-'+voc.id, 'js-animate-s-'+ndx+'-'+voc.id,voc.s[ndx] ) }}
+													</div>
+												</div>
 												</td>
 												<td>{{ voc.p }}</td>
 												<td>{{ voc.en }}</td>
 												<td>
-													<div style="display:inline-block" class="play-audio icon fs-5">
-														<i class="bi bi-volume-up-fill c-hand"></i>
+													<div v-if="voc.audio" style="display:inline-block;color:#dc3545" class="play-audio icon fs-5">
+														<i class="fa fa-play c-hand"></i>
 														<audio>
 															<source :src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+voc.audio" type="audio/mp3">
 															Your browser does not support the audio element.
 														</audio>
 													</div>
 
-													<div style="display:inline-block" @click="copyClipboard( (vuex.userInfo.charSet == 'traditional' ? voc.t : voc.s ) + ' - ' + voc.p + ' - ' + voc.en )" class="icon c-hand">
+													<div style="display:inline-block;color:#f7b500" @click="copyClipboard( (vuex.userInfo.charSet == 'traditional' ? voc.t : voc.s ) + ' - ' + voc.p + ' - ' + voc.en )" class="icon c-hand">
 														<i class="fa fa-copy"></i>
 													</div>
 
-													<div style="display:inline-block" @click="addVocab(voc)" class="icon c-hand">
+													<div style="display:inline-block;color:#198754" @click="addVocab(voc)" class="icon c-hand">
 														<i class="fa fa-plus"></i>
 													</div>
 
@@ -383,8 +399,8 @@
 													
 													
 													</div>
-													<div class="play-audio icon fs-5">
-														<i class="bi bi-volume-up-fill"></i>
+													<div style="color:#dc3545" class="play-audio icon fs-5">
+														<i class="fa fa-play"></i>
 														<audio>
 															<source :src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+examples.audio" type="audio/mp3">
 															Your browser does not support the audio element.
@@ -479,8 +495,8 @@
 													
 													
 													</div>
-													<div class="play-audio icon fs-5">
-														<i class="bi bi-volume-up-fill"></i>
+													<div style="color:#dc3545" class="play-audio icon fs-5">
+														<i class="fa fa-play"></i>
 														<audio>
 															<source v-if="!examples.audio.includes('http')" :src="'https://s3contents.chinesepod.com/grammar/grammar_'+exp.grammar.id+'/'+exp.grammar.id+'/expansion/translation/mp3/'+examples.audio" type="audio/mp3">
 															<source v-if="examples.audio.includes('http')" :src="examples.audio" type="audio/mp3">

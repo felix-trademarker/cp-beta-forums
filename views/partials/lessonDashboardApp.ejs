@@ -725,7 +725,34 @@
                     this.decks = await this.getAPIFetch('https://www.chinesepod.com/api/v1/vocabulary/decks');
                     this.showMessage("Vocabulary Saved!", "success")
                 }
-            }
+            },
+
+            showHanzi: function(id, animateClass, hanzi) {
+                // wait to load container
+                setTimeout(function(){
+                    let hanziContainer = document.getElementById(id);
+                    let loader = hanziContainer.querySelector('.loader')
+
+                    loader.remove()
+
+                    if( hanziContainer ) {
+                        let writert = HanziWriter.create(id, hanzi, {
+                            width: 80,
+                            height: 80,
+                            renderer: 'svg',
+                            radicalColor: '#166E16',
+                            onCorrectStroke: printStrokePoints,
+                            onMistake: printStrokePoints,
+                            showCharacter: false,
+                        });
+
+                        document.querySelector('.'+animateClass).addEventListener('click', function () {
+                            writert.animateCharacter();
+                        });
+                    }
+                },500);
+
+            },
 
             
         },
@@ -937,48 +964,48 @@
 
     window.onload = function () {
 
-        if (lessonDashboardApp.vocab.length) 
-        lessonDashboardApp.vocab.forEach((vocab, i) => {
-            let hanziCount = vocab.t.length
+        // if (lessonDashboardApp.vocab.length) 
+        // lessonDashboardApp.vocab.forEach((vocab, i) => {
+        //     let hanziCount = vocab.t.length
             
-            for (let x=0; x < hanziCount; x++) {
+        //     for (let x=0; x < hanziCount; x++) {
 
-                let elT = document.getElementById('target-t-'+x+'-'+vocab.id)
-                let elS = document.getElementById('target-t-'+x+'-'+vocab.id)
+        //         let elT = document.getElementById('target-t-'+x+'-'+vocab.id)
+        //         let elS = document.getElementById('target-t-'+x+'-'+vocab.id)
                 
 
 
-                let writert = HanziWriter.create('target-t-'+x+'-'+vocab.id, vocab.t[x], {
-                    width: 100,
-                    height: 100,
-                    renderer: 'svg',
-                    radicalColor: '#166E16',
-                    onCorrectStroke: printStrokePoints,
-                    onMistake: printStrokePoints,
-                    showCharacter: false,
-                });
+        //         let writert = HanziWriter.create('target-t-'+x+'-'+vocab.id, vocab.t[x], {
+        //             width: 100,
+        //             height: 100,
+        //             renderer: 'svg',
+        //             radicalColor: '#166E16',
+        //             onCorrectStroke: printStrokePoints,
+        //             onMistake: printStrokePoints,
+        //             showCharacter: false,
+        //         });
 
-                let writers = HanziWriter.create('target-s-'+x+'-'+vocab.id, vocab.s[x], {
-                    width: 100,
-                    height: 100,
-                    renderer: 'svg',
-                    radicalColor: '#166E16',
-                    onCorrectStroke: printStrokePoints,
-                    onMistake: printStrokePoints,
-                    showCharacter: false,
-                });
+        //         let writers = HanziWriter.create('target-s-'+x+'-'+vocab.id, vocab.s[x], {
+        //             width: 100,
+        //             height: 100,
+        //             renderer: 'svg',
+        //             radicalColor: '#166E16',
+        //             onCorrectStroke: printStrokePoints,
+        //             onMistake: printStrokePoints,
+        //             showCharacter: false,
+        //         });
 
-                document.querySelector('.js-animate-t-'+x+'-'+vocab.id).addEventListener('click', function () {
-                    writert.animateCharacter();
-                });
+        //         document.querySelector('.js-animate-t-'+x+'-'+vocab.id).addEventListener('click', function () {
+        //             writert.animateCharacter();
+        //         });
 
-                document.querySelector('.js-animate-s-'+x+'-'+vocab.id).addEventListener('click', function () {
-                    writers.animateCharacter();
-                });
+        //         document.querySelector('.js-animate-s-'+x+'-'+vocab.id).addEventListener('click', function () {
+        //             writers.animateCharacter();
+        //         });
                 
-            }
+        //     }
 
-        })
+        // })
 
 
 

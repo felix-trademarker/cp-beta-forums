@@ -570,13 +570,13 @@ span.answer {
     word-break: break-word;
 }
 
-.tbl-vocabulary td .hanziContainer{
+.hanziContainer{
     display: flex;
     width: 100%;
     flex-wrap: wrap;
 }
 
-.tbl-vocabulary td .hanziContainer div{
+.hanziContainer div{
     display: inline-block;
     width:60px;
 }
