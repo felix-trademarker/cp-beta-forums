@@ -1,4 +1,5 @@
 let rpoContents = require('../repositories/mysql/_contents');
+let rpoContentsMerged = require('../repositories/mysql/contentMerged');
 let rpoUsers = require('../repositories/mysql/_users');
 let rpoUserOptions = require('../repositories/mysql/_user_options');
 let rpoUserAddresses = require('../repositories/mysql/_user_addresses');
@@ -7,10 +8,13 @@ let rpoUserVocabulary = require('../repositories/mysql/_user_vocabulary');
 let rpoUserPreferences = require('../repositories/mysql/_user_preferences');
 
 let rpoLessonsources = require('../repositories/awsLessonSources');
+let rpoLessonsourcesLocal = require('../repositories/lessonSourcesLocal');
 let rpoLessonsourcesMongo = require('../repositories/lessonSources')
+let rpoDailyMotion = require('../repositories/videosDailyMotion')
 
 let rpoMigrations = require('../repositories/mysql/_migrations');
 let moment = require('moment');
+// const { delete } = require('../app');
 
 exports.contents = async function(req, res, next) {
 
@@ -46,6 +50,249 @@ exports.contents = async function(req, res, next) {
 
     console.log("==MIGRATING PAGE "+page+ " OF " +"CONTENTS ==")
  
+}
+
+exports.content2 = async function(req, res, next) {
+
+    // let loc = []
+    // loc['test'] = {
+    //     value: 'asdasd'
+    // }
+
+    // let items = {
+    //     locations : loc
+    // }
+
+    // await rpoContentsMerged.put(items)
+
+    // return;
+
+    let lastMigrated = await rpoMigrations.getLastMigrate('contentSource8')
+    let page = 1, limit = 1000, offset = 0;
+
+    if (lastMigrated.length > 0) {
+        page = lastMigrated[0].page + 1
+        limit = lastMigrated[0].limit
+    }
+
+    let migrationData = {
+        obj : 'contentSource8',
+        page: page,
+        limit: limit,
+        created_at : moment().format()
+    }
+
+    
+
+    let contents = await rpoContentsMerged.getSQLQueryContents(page,limit)
+    
+    // console.log(contents);
+    // push to mongoDB
+    if (contents && contents.length > 0) {
+        for (let cnt=0; cnt < contents.length; cnt++ ) { let items = contents[cnt]
+    // await contents.forEach(async items => {
+
+            if (items.v3_id) {
+
+                let dupl = await rpoContentsMerged.findQuery({content_id:items.content_id})
+                console.log("== validating "+items.title+" ==");
+                if(dupl.length <= 0) {
+                    
+                    // TRANSFORM MP3 LINK
+                    if (items.mp3_public.includes("https")) {
+                        items.mp3_public = items.mp3_public
+                    } else {
+                        if (items.mp3_public)
+                        items.mp3_public = "https://s3contents.chinesepod.com/"+ items.v3_id + "/" + items.hash_code +"/"+ items.mp3_public
+                    }
+
+                    // TRANSFORM IMAGE LINK
+                    if (items.image.includes("https")) {
+                        items.image = items.image
+                    } else {
+                        items.image = "https://s3contents.chinesepod.com/"+ items.v3_id + "/" + items.hash_code +"/"+ items.image
+                    }
+
+                    let location = {};
+                    let source = await rpoLessonsourcesLocal.findQuery({v3_id:items.v3_id})
+
+                    
+                    if (source && source.length > 0) {
+                        // items.videos = {}
+                        // console.log(" ============== FOUND SOURCE ===============");
+                        // if (source[0].youtube) items.videos.youtube = source[0].youtube
+                        // if (source[0].wistia) items.videos.wistia = source[0].wistia
+                        // if (source[0].vimeo) items.videos.vimeo = source[0].vimeo
+                        // if (source[0].podcast) items.videos.podcast = source[0].podcast
+                        // if (source[0].dialogue) items.videos.dialogue = source[0].dialogue
+                        // if (source[0].review) items.videos.review = source[0].review
+                        // if (source[0].recap) items.videos.recap = source[0].recap
+
+                        
+            
+                            
+                        console.log("*****************************has videos");
+                        if (source[0].youtube && source[0].youtube.simplified) 
+                            location.youtube = source[0].youtube.simplified
+                        if (source[0].youtube && source[0].youtube.traditional) 
+                            location.youtubeTrad = source[0].youtube.traditional
+        
+                        if (source[0].wistia && source[0].wistia.simplified) 
+                            location.wistia = source[0].wistia.simplified
+                        if (source[0].wistia && source[0].wistia.traditional) 
+                            location.wistiaTrad = source[0].wistia.traditional
+        
+                        if (source[0].vimeo && source[0].vimeo.simplified) 
+                            location.vimeo = source[0].vimeo.simplified
+                        if (source[0].vimeo && source[0].vimeo.traditional) 
+                            location.vimeoTrad = source[0].vimeo.traditional
+        
+                        if (source[0].podcast && source[0].podcast.simplified) 
+                            location.podcast = source[0].podcast.simplified
+                        if (source[0].podcast && source[0].podcast.traditional) 
+                            location.podcastTrad = source[0].podcast.traditional
+        
+                        if (source[0].dialogue && source[0].dialogue.simplified) 
+                            location.dialogue = source[0].dialogue.simplified
+                        if (source[0].dialogue && source[0].dialogue.traditional) 
+                            location.dialogueTrad = source[0].dialogue.traditional
+        
+                        if (source[0].review && source[0].review.simplified) 
+                            location.review = source[0].review.simplified
+                        if (source[0].review && source[0].review.traditional) 
+                            location.reviewTrad = source[0].review.traditional
+        
+                        if (source[0].recap && source[0].recap.simplified) 
+                            location.recap = source[0].recap.simplified
+                        if (source[0].recap && source[0].recap.traditional) 
+                            location.recapTrad = source[0].recap.traditional
+    
+                    }
+
+                    let dailyMotions = await rpoDailyMotion.findQuery({v3_id:items.v3_id})
+                    if (dailyMotions && dailyMotions.length > 0) {
+                        let motionUrlArr = dailyMotions[0].url.split('/')
+                        let motionId = motionUrlArr[motionUrlArr.length - 1]
+                        console.log("=== found daily motion");
+                        if (motionId)
+                        location.dailyMotion = motionId
+                    }
+
+                    // if (location && location.length > 0) {
+                        
+                    // }
+                    items.locations = location
+                    console.log(location);
+                    await rpoContentsMerged.put(items)
+                }
+            }
+        }
+    } else {
+        console.log("*** STOP NOW ***");
+    }
+
+    await rpoMigrations.put(migrationData)
+
+    console.log("==MIGRATING PAGE "+page+ " OF " +"CONTENTS ==")
+ 
+}
+
+exports.updateLessonContents = async function() {
+    let lastMigrated = await rpoMigrations.getLastMigrate('lessonContentUpdates3')
+    let page = 1, limit = 2000, offset = 0;
+
+    if (lastMigrated.length > 0) {
+        page = lastMigrated[0].page + 1
+        limit = lastMigrated[0].limit
+    }
+
+    let migrationData = {
+        obj : 'lessonContentUpdates3',
+        page: page,
+        limit: limit,
+        created_at : moment().format()
+    }
+
+    let contents = await rpoContentsMerged.getContentsPager(page,limit)
+
+    if (contents && contents.length > 0) {
+        let counter = 0;
+        contents.forEach(async function(items){
+            console.log("reading %s %d", items.v3_id,counter++);
+            let item = items
+            let location = [];
+
+            
+
+            if (items.videos) {
+                // modify or leave
+
+                
+                console.log("*****************************has videos");
+                if (items.videos && items.videos.youtube && items.videos.youtube.simplified) 
+                    location['youtube'] = items.videos.youtube.simplified
+                if (items.videos && items.videos.youtube && items.videos.youtube.traditional) 
+                    location['youtubeTrad'] = items.videos.youtube.traditional
+
+                if (items.videos && items.videos.wistia && items.videos.wistia.simplified) 
+                    location['wistia'] = items.videos.wistia.simplified
+                if (items.videos && items.videos.wistia && items.videos.wistia.traditional) 
+                    location['wistiaTrad'] = items.videos.wistia.traditional
+
+                if (items.videos && items.videos.vimeo && items.videos.vimeo.simplified) 
+                    location['vimeo'] = items.videos.vimeo.simplified
+                if (items.videos && items.videos.vimeo && items.videos.vimeo.traditional) 
+                    location['vimeoTrad'] = items.videos.vimeo.traditional
+
+                if (items.videos && items.videos.podcast && items.videos.podcast.simplified) 
+                    location['podcast'] = items.videos.podcast.simplified
+                if (items.videos && items.videos.podcast && items.videos.podcast.traditional) 
+                    location['podcastTrad'] = items.videos.podcast.traditional
+
+                if (items.videos && items.videos.dialogue && items.videos.dialogue.simplified) 
+                    location['dialogue'] = items.videos.dialogue.simplified
+                if (items.videos && items.videos.dialogue && items.videos.dialogue.traditional) 
+                    location['dialogueTrad'] = items.videos.dialogue.traditional
+
+                if (items.videos && items.videos.review && items.videos.review.simplified) 
+                    location['review'] = items.videos.review.simplified
+                if (items.videos && items.videos.review && items.videos.review.traditional) 
+                    location['reviewTrad'] = items.videos.review.traditional
+
+                if (items.videos && items.videos.recap && items.videos.recap.simplified) 
+                    location['recap'] = items.videos.recap.simplified
+                if (items.videos && items.videos.recap && items.videos.recap.traditional) 
+                    location['recapTrad'] = items.videos.recap.traditional
+            }
+
+            // find daily motion video if found add in list
+            let dailyMotions = await rpoDailyMotion.findQuery({v3_id:item.v3_id})
+            if (dailyMotions && dailyMotions.length > 0) {
+                let motionUrlArr = dailyMotions[0].url.split('/')
+                let motionId = motionUrlArr[motionUrlArr.length - 1]
+                console.log("=== found daily motion");
+                if (motionId)
+                location['dailyMotion'] = motionId
+            }
+
+            // update record
+            if (location && location.length > 0) {
+                item.locations = location
+                console.log("=== update ===", item.v3_id);
+                delete item._id
+                delete item.videos
+                await rpoContentsMerged.update(items._id, item)
+
+                return;
+            }
+
+        })
+
+        // save migration data
+        // await rpoMigrations.put(migrationData)
+    }
+    // console.log("migration page: ", page);
+    // await rpoMigrations.put(migrationData)
 }
 
 exports.default = async function(table) {
@@ -180,6 +427,9 @@ exports.lessonsources = async function() {
         let found = await rpoLessonsourcesMongo.findQuery({v3_id: lesson.v3_id})
         // insert new source record
         if (!found.length) {
+
+            let sources = await 
+
             rpoLessonsourcesMongo.put(lesson)
             console.log("add v3Id", lesson.v3_id);
         }

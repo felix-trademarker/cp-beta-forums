@@ -53,11 +53,18 @@ router.get([
     '/beta/vocabulary',
 ],dashboardController.vocabulary);
 
+// NEW CHECKOUT PAGE FOR 10 LESSONS
+router.get([
+    '/new/checkout-promo/'
+],dashboardController.vocabulary);
+
 // REDIRECT TO LESSON WITH LESSON ID
 router.get([
     '/new/:v3Id',
     '/beta/:v3Id'
 ],dashboardController.lessonDirect);
+
+
 
 
 module.exports = router;

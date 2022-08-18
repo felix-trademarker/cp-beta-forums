@@ -25,4 +25,6 @@ router.post('/check-auth/', genericController.getAuth);
 // LESSON API GET INFO ON HANZI
 router.get('/lookup-hanzi/:hanzi', genericController.lookupHanzi);
 
+router.get('/lesson/:v3Id', genericController.getLesson);
+
 module.exports = router;

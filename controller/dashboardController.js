@@ -504,4 +504,17 @@ exports.lessonDirect = async function(req, res, next) {
   }
 }
 
+exports.vocabulary = async function(req, res, next) {
+
+
+  res.render('pages/checkout-10classes', {
+    layout: 'layouts/checkout-promo-layout', 
+    title: 'Checkout Promo Page | ChinesePod',
+    description: '',
+    keywords: 'Promo 10 Classes',
+
+  });
+
+}
+
 

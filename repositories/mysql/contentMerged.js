@@ -1,5 +1,5 @@
-let tableName = "contents";
-let _table = "chinesepod_production_" + tableName;
+let tableName = "contentLessons";
+let _table = "cp." + tableName;
 var Model = require('../_model')
 var defaultModel = new Model(_table)
 
@@ -42,6 +42,27 @@ module.exports = {
 
     // ADD CUSTOM FUNCTION BELOW ========================
     // ==================================================
+
+    getContentsPager : async function(page, limit) {
+		return new Promise(function(resolve, reject) {
+			
+            conn.getDb().collection(_table)
+                .find()
+                .sort()
+                // .limit(limit)
+                // .skip((page -1) * limit)
+                .toArray(function(err, result) {
+					
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result);
+				}
+
+			});
+
+		});
+	},
 
 	getSQL : async function(page,limit){
         return new Promise(function(resolve, reject) {
@@ -93,8 +114,28 @@ module.exports = {
     getSQLQueryContents : async function(page,limit){
         return new Promise(function(resolve, reject) {
             var sql = `SELECT 
-                            
-                        from contents`
+                        course_id,
+                        cc.v3_id,
+                        course_content_id,
+                        displaysort,
+                        content_id,
+                        popularity,
+                        rank,
+                        slug,
+                        type,
+                        theme,
+                        title,
+                        introduction,
+                        level,
+                        hash_code,
+                        time_offset,
+                        image,
+                        transcription1,
+                        transcription2,
+                        mp3_public,
+                        video 
+                        from course_contents as cc
+                        INNER JOIN contents as c ON cc.v3_id = c.v3_id`
             sql += " LIMIT " + limit
 			sql += " OFFSET " + (page -1) * limit
             con.query(sql, function (err, result) {
@@ -119,7 +160,7 @@ module.exports = {
 
     getContentV3 : async function(v3Id){
         return new Promise(function(resolve, reject) {
-            var sql = "SELECT * FROM " + tableName
+            var sql = "SELECT * FROM contents"
             sql += " WHERE v3_id='" + v3Id + "'"
             con.query(sql, function (err, result) {
                 if (err) reject(err);

@@ -71,8 +71,14 @@ let conn = require('./config/DbConnect');
 conn.connectToServer( function( err, client ) { // MAIN MONGO START
   conn.connectToServerAWS( function( err, client ) { // MAIN MONGO START
   console.log("connecting to server....");
+
+    // migrationService.updateLessonContents()
+    // migrationService.content2()
   
-  migrationService.lessonsources()
+  cron.schedule('*/20 * * * * mon-fri', () => {
+    // migrationService.updateLessonContents()
+    // migrationService.content2()
+  });
 
   if (err) console.log(err);
   // start the rest of your app here
@@ -102,7 +108,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
   // app.use('/', publicRouter);
   // app.use('/', authRouter);
   app.use('/', dashboardRouter);
-  app.use(['/api/v1','/beta/api/v1'], apiRouter);
+  app.use(['/api/v1','/beta/api/v1','/new/api/v1'], apiRouter);
   app.use(['/admin-dashboard','/beta/admin-dashboard'], middleware.isAdmin,adminRouter);
 
   // ROUTE HANDLER ============ <<

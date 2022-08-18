@@ -10,8 +10,8 @@ let rpoUsersMySQL = require('../../repositories/mysql/_users');
 let rpoUsers = require('../../repositories/users');
 
 let mailService = require('../../services/mailService')
-
 let activityService = require('../../services/activityLogService')
+let lessonService = require('../../services/lessonService')
 
 let hanzi = require("hanzi");
 
@@ -325,3 +325,9 @@ exports.lookupHanzi = async function(req, res, next) {
 }
 
 
+exports.getLesson = async function(req, res, next) {
+
+  let contents = await lessonService.getLesson(req.params.v3Id)
+
+  res.json(contents);
+}
