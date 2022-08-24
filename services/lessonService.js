@@ -3,7 +3,7 @@ let rpoLessonsourcesLocal = require('../repositories/lessonSourcesLocal');
 let rpoDailyMotion = require('../repositories/videosDailyMotion')
 
 let rpoLessonProgressAws = require('../repositories/awsLessonProgress')
-let rpoLessonProgress = require('../repositories/LessonProgress')
+let rpoLessonProgress = require('../repositories/lessonProgress')
 
 let moment = require('moment');
 const { getCharacterInFrequencyListByPosition } = require('hanzi');
