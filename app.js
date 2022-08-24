@@ -78,7 +78,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
     // migrationService.updateLessonContents()
     // migrationService.content2()
 
-    lessonService.testGetUserProgress()
+    // lessonService.testGetUserProgress()
   
   cron.schedule('*/20 * * * * mon-fri', () => {
     // migrationService.updateLessonContents()
