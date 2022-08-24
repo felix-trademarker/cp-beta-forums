@@ -67,7 +67,7 @@ app.use(flash());
 app.use(expressLayouts);
 // app.use(cors())
 
-console.log(lessonService.testGetUserProgress())
+
 
 // APP  CONTAINER =========== >> 
 let conn = require('./config/DbConnect');
@@ -77,6 +77,8 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
 
     // migrationService.updateLessonContents()
     // migrationService.content2()
+
+    lessonService.testGetUserProgress()
   
   cron.schedule('*/20 * * * * mon-fri', () => {
     // migrationService.updateLessonContents()
