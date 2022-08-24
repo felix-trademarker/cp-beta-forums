@@ -168,6 +168,45 @@ module.exports = {
                 resolve(result)
             });
         });
-    }
+    },
+
+    getRawDialogues : async function(v3Id){
+        return new Promise(function(resolve, reject) {
+            var sql = "SELECT * FROM content_dialogues"
+            sql += " WHERE v3_id='" + v3Id + "'"
+            sql += " Order By display_order ASC "
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
     
+    getRawVocab : async function(v3Id){
+        return new Promise(function(resolve, reject) {
+            var sql = "SELECT * FROM vocabulary"
+            sql += " WHERE v3_id='" + v3Id + "'"
+            sql += " AND vocabulary_class IN ('Key Vocabulary','Supplementary')"
+            sql += " Order By vocabulary_class ASC, display_order ASC "
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getRawExpansion : async function(v3Id){
+        return new Promise(function(resolve, reject) {
+            var sql = "SELECT vocabulary, row_1, row_2, audio FROM content_expansions"
+            sql += " WHERE v3_id='" + v3Id + "'"
+            sql += " Order By display_order ASC "
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
 }

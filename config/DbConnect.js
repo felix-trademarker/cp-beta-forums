@@ -2,7 +2,7 @@ const MongoClient = require( 'mongodb' ).MongoClient;
 const mongoose = require('mongoose');
 const _variables = require( './variables' );
 
-var _db, _connect, _dbEU, _dbAWS;
+var _db, _dbEU, _dbAWS;
 console.log(_variables.mongoURL);
 module.exports = {
 

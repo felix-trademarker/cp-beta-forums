@@ -1,18 +1,9 @@
-let rpoContents = require('../repositories/mysql/_contents');
 let rpoContentsMerged = require('../repositories/mysql/contentMerged');
-let rpoUsers = require('../repositories/mysql/_users');
-let rpoUserOptions = require('../repositories/mysql/_user_options');
-let rpoUserAddresses = require('../repositories/mysql/_user_addresses');
-let rpoUserSettings = require('../repositories/mysql/_user_settings');
-let rpoUserVocabulary = require('../repositories/mysql/_user_vocabulary');
-let rpoUserPreferences = require('../repositories/mysql/_user_preferences');
-
-let rpoLessonsources = require('../repositories/awsLessonSources');
 let rpoLessonsourcesLocal = require('../repositories/lessonSourcesLocal');
-let rpoLessonsourcesMongo = require('../repositories/lessonSources')
 let rpoDailyMotion = require('../repositories/videosDailyMotion')
 
-let rpoMigrations = require('../repositories/mysql/_migrations');
+let rpoLessonProgress = require('../repositories/awsLessonProgress')
+
 let moment = require('moment');
 
 exports.getLesson = async function(v3Id) {
@@ -61,6 +52,10 @@ exports.getLesson = async function(v3Id) {
         },
         videos: videos
     }
+
+    item.dialogues = await this.getLessonDialogue(content.v3_id)
+    item.vocabularies = await this.getLessonVocabulary(content,content.v3_id)
+    item.expansions = await this.getLessonExpansion(content.v3_id)
     
     return item
 }
@@ -255,4 +250,217 @@ exports.getVideoObj = function() {
         length: 'full',
         languageType: ''
     }
+}
+
+exports.getLessonDialogue = async function(v3Id){
+    
+    let rawDialogues = await rpoContentsMerged.getRawDialogues(v3Id)
+
+    let dialogueData = []
+
+    rawDialogues.forEach((dialogue) => {
+
+        dialogue.vocabulary = []
+        dialogue.sentence = []
+        dialogue.english = dialogue.row_2
+        dialogue.pinyin = ''
+        dialogue.simplified = ''
+        dialogue.traditional = ''
+        dialogue['row_1'].replace(
+        /\(event,\'(.*?)\',\'(.*?)\',\'(.*?)\',\'(.*?)\'.*?\>(.*?)\<\/span\>([^\<]+)?/g,
+        function (A, B, C, D, E, F, G, H) {
+            let d = ''
+            let e = ''
+            let c = ''
+            let b = ''
+            let g = ''
+
+            try {
+            d = decodeURI(D)
+            } catch (err) {
+            d = D
+            }
+            try {
+            e = decodeURI(E)
+            } catch (err) {
+            e = E
+            }
+            try {
+            c = decodeURI(C)
+            } catch (err) {
+            c = C
+            }
+            try {
+            b = decodeURI(B)
+            } catch (err) {
+            b = B
+            }
+
+            dialogue.sentence.push({
+            simplified: d,
+            traditional: e,
+            pinyin: c,
+            english: b,
+            })
+
+            dialogue.pinyin += c + ' '
+            dialogue.simplified += d
+            dialogue.traditional += e
+
+            if (G) {
+            try {
+                g = decodeURI(G)
+            } catch (err) {
+                g = G
+            }
+            dialogue.sentence.push(g)
+            dialogue.pinyin += g
+            dialogue.simplified += g
+            dialogue.traditional += g
+            }
+
+            dialogue.vocabulary.push({
+            simplified: d ? d : '',
+            traditional: e ? e : '',
+            pinyin: c ? c : '',
+            english: b ? b : '',
+            })
+        }
+        )
+        dialogueData.push(
+        {
+            displayOrder: dialogue.display_order,
+            speaker: dialogue.speaker,
+            audio: dialogue.audio,
+            english: dialogue.english,
+            simplified: dialogue.simplified,
+            traditional: dialogue.traditional,
+            pinyin: dialogue.pinyin,
+            sentence: dialogue.sentence,
+            vocabulary: dialogue.vocabulary,
+        }
+        )
+    })
+
+    return dialogueData
+
+}
+
+exports.getLessonVocabulary = async function(content,v3Id){
+    let vocab = await rpoContentsMerged.getRawVocab(v3Id)
+
+
+    let returnData = []
+
+    for (let i=0; i < vocab.length; i++) {
+        returnData.push({
+            simplified: vocab[i].column_1,
+            pinyin: vocab[i].column_2,
+            english: vocab[i].column_3,
+            traditional: vocab[i].column_4,
+            audio: this.getFileLink(content, vocab[i].audio),
+            class: vocab[i].vocabulary_class,
+        })
+    }
+
+
+
+    return returnData
+}
+
+exports.getLessonExpansion = async function(v3Id){
+
+    const groupBy = (key) => (array) =>
+      array.reduce((objectsByKeyValue, obj) => {
+        const value = obj[key]
+        objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj)
+        return objectsByKeyValue
+      }, {})
+    const groupByVocab = groupBy('vocabulary')
+
+
+    let rawExpansions = await rpoContentsMerged.getRawExpansion(v3Id)
+
+
+    rawExpansions.forEach((expansion) => {
+        expansion.sentence = []
+        expansion['target'] = expansion['row_2']
+        expansion['en'] = expansion['row_2']
+        expansion.p = ''
+        expansion.s = ''
+        expansion.t = ''
+        expansion['row_1'].replace(
+          /\(event,\'(.*?)\',\'(.*?)\',\'(.*?)\',\'(.*?)\'.*?\>(.*?)\<\/span\>([^\<]+)?/g,
+          function (A, B, C, D, E, F, G, H) {
+            let d = ''
+            let e = ''
+            let c = ''
+            let b = ''
+            let g = ''
+  
+            try {
+              d = decodeURI(D)
+            } catch (err) {
+              d = D
+            }
+            try {
+              e = decodeURI(E)
+            } catch (err) {
+              e = E
+            }
+            try {
+              c = decodeURI(C)
+            } catch (err) {
+              c = C
+            }
+            try {
+              b = decodeURI(B)
+            } catch (err) {
+              b = B
+            }
+  
+            expansion.sentence.push({
+              s: d,
+              t: e,
+              p: c,
+              en: b,
+            })
+  
+            expansion.p += c + ' '
+            expansion.s += d
+            expansion.t += e
+  
+            if (G) {
+              try {
+                g = decodeURI(G)
+              } catch (err) {
+                g = G
+              }
+              expansion.sentence.push(g)
+              expansion.p += g
+              expansion.s += g
+              expansion.t += g
+            }
+          }
+        )
+  
+        delete expansion['row_1']
+        delete expansion['row_2']
+      })
+      let groupedData = groupByVocab(rawExpansions)
+      let returnData = []
+      Object.keys(groupedData).forEach((expansion) => {
+        returnData.push({
+          phrase: expansion,
+          examples: groupedData[expansion],
+        })
+      })
+      return returnData
+}
+
+exports.testGetUserProgress = async function() {
+    
+    let userProgress = await rpoLessonProgress.get()
+
+    console.log(userProgress);
 }
