@@ -2,9 +2,11 @@ let rpoContentsMerged = require('../repositories/mysql/contentMerged');
 let rpoLessonsourcesLocal = require('../repositories/lessonSourcesLocal');
 let rpoDailyMotion = require('../repositories/videosDailyMotion')
 
-let rpoLessonProgress = require('../repositories/awsLessonProgress')
+let rpoLessonProgressAws = require('../repositories/awsLessonProgress')
+let rpoLessonProgress = require('../repositories/LessonProgress')
 
 let moment = require('moment');
+const { getCharacterInFrequencyListByPosition } = require('hanzi');
 
 exports.getLesson = async function(v3Id) {
 
@@ -460,7 +462,14 @@ exports.getLessonExpansion = async function(v3Id){
 
 exports.testGetUserProgress = async function() {
     
-    let userProgress = await rpoLessonProgress.get()
+    let userProgress = await rpoLessonProgressAws.get()
+    console.log('** Found >> ',userProgress.length);
+    for (let i=0; i < userProgress.length; i++){
+        let userProg = userProgress[i]
+        delete userProg._id
 
-    console.log(userProgress);
+        rpoLessonProgress.put(userProg)
+        console.log('** insert >> ',i);
+    }
+    console.log("==== FOR LOOP END ====");
 }
