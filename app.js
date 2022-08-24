@@ -16,6 +16,7 @@ var cron = require('node-cron');
 var flash = require('express-flash-2');
 
 let migrationService = require('./services/migrationService')
+let lessonService = require('./services/lessonService')
 
 
 var app = express();
@@ -65,6 +66,8 @@ app.use(flash());
 
 app.use(expressLayouts);
 // app.use(cors())
+
+console.log(lessonService.testGetUserProgress())
 
 // APP  CONTAINER =========== >> 
 let conn = require('./config/DbConnect');
