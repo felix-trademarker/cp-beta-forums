@@ -68,6 +68,18 @@ module.exports = {
         });
     },
 
+    getUserByIdSQL : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql = "SELECT * FROM " + tableName
+            sql += " WHERE id=" + id+""
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
     getUserBySession : async function(sesIs){
         return new Promise(function(resolve, reject) {
             var sql = "SELECT u.* FROM sessions AS s"

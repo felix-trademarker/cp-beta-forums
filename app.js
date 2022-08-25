@@ -15,7 +15,7 @@ const expressLayouts = require('express-ejs-layouts');
 var cron = require('node-cron');
 var flash = require('express-flash-2');
 
-let migrationService = require('./services/migrationService')
+// let migrationService = require('./services/migrationService')
 // let lessonService = require('./services/lessonService')
 
 

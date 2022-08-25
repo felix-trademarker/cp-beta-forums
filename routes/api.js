@@ -27,6 +27,7 @@ router.get('/lookup-hanzi/:hanzi', genericController.lookupHanzi);
 
 router.get('/lesson/:v3Id', genericController.getLesson);
 
-// router.get('/user-progress/:userId', genericController.getUserProgress);
+router.get('/user-progress/', genericController.getUserProgress);
+router.get('/user-progress/:h-:d', genericController.getUserProgress);
 
 module.exports = router;

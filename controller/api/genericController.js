@@ -331,3 +331,11 @@ exports.getLesson = async function(req, res, next) {
 
   res.json(contents);
 }
+
+exports.getUserProgress = async function(req, res, next) {
+
+  console.log(req.params);
+  let contents = await lessonService.getUserProgress(req)
+
+  res.json(contents);
+}

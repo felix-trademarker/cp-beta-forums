@@ -5,6 +5,8 @@ let rpoDailyMotion = require('../repositories/videosDailyMotion')
 let rpoLessonProgressAws = require('../repositories/awsLessonProgress')
 let rpoLessonProgress = require('../repositories/lessonProgress')
 
+let rpoUsersSQL = require('../repositories/mysql/_users')
+
 let moment = require('moment');
 const { getCharacterInFrequencyListByPosition } = require('hanzi');
 
@@ -460,16 +462,52 @@ exports.getLessonExpansion = async function(v3Id){
       return returnData
 }
 
-exports.testGetUserProgress = async function() {
+// exports.testGetUserProgress = async function() {
     
-    let userProgress = await rpoLessonProgressAws.get()
-    console.log('** Found >> ',userProgress.length);
-    for (let i=0; i < userProgress.length; i++){
-        let userProg = userProgress[i]
-        delete userProg._id
+//     let userProgress = await rpoLessonProgressAws.get()
+//     console.log('** Found >> ',userProgress.length);
+//     for (let i=0; i < userProgress.length; i++){
+//         let userProg = userProgress[i]
+//         delete userProg._id
 
-        rpoLessonProgress.put(userProg)
-        console.log('** insert >> ',i);
+//         rpoLessonProgress.put(userProg)
+//         console.log('** insert >> ',i);
+//     }
+//     console.log("==== FOR LOOP END ====");
+// }
+
+exports.getUserProgress = async function(req) {
+    
+    let hours = '2'
+    let days = 'hours'
+
+    if (req.params.h) {
+        hours = req.params.h
     }
-    console.log("==== FOR LOOP END ====");
+
+    if (req.params.d) {
+        days = req.params.d
+    }
+
+    let userProgress = await rpoLessonProgressAws.findQuery({updated_at: {$gte : new Date(moment().subtract(hours,days).format())}})
+    // console.log(moment().subtract('2','days').format());
+    let returnedData = []
+    
+    if (userProgress && userProgress.length > 0) {
+        for (let i=0; i < userProgress.length; i++) {
+            let progress = userProgress[i]
+            let user = await rpoUsersSQL.getUserByIdSQL(progress.userId)
+            user = user && user.length > 0 ? user[0] : null
+
+            progress.user = {
+                email: user.email,
+                name: user.name,
+                username: user.username,
+            }
+
+            returnedData.push(progress)
+        }
+    }
+
+    return returnedData
 }
