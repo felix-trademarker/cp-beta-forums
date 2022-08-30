@@ -5,6 +5,7 @@ module.exports = {
     mongoURL        : process.env.MongoURILOCAL,
     mongoURLEU      : process.env.MongoURIEU,
     mongoURLAWS      : process.env.MongoURIAWS,
+    mongoURL158      : process.env.MongoURI158,
     mongoOptions    : { 
                         useNewUrlParser: true, 
                         useUnifiedTopology: true 

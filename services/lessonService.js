@@ -1,6 +1,7 @@
 let rpoContentsMerged = require('../repositories/mysql/contentMerged');
 let rpoLessonsourcesLocal = require('../repositories/lessonSourcesLocal');
 let rpoDailyMotion = require('../repositories/videosDailyMotion')
+let rpoContent158 = require('../repositories/_contents158')
 
 let rpoLessonProgressAws = require('../repositories/awsLessonProgress')
 let rpoLessonProgress = require('../repositories/lessonProgress')
@@ -12,6 +13,11 @@ const { getCharacterInFrequencyListByPosition } = require('hanzi');
 
 exports.getLesson = async function(v3Id) {
 
+  let lesson158 = await rpoContent158.findQuery({v3Id: v3Id})
+  
+  if (lesson158 && lesson158.length > 0) {
+      return lesson158[0]
+  } else {
     let contents = await rpoContentsMerged.getContentV3(v3Id)
     let content = contents && contents.length > 0 ? contents[0] : [];
 
@@ -60,8 +66,13 @@ exports.getLesson = async function(v3Id) {
     item.dialogues = await this.getLessonDialogue(content.v3_id)
     item.vocabularies = await this.getLessonVocabulary(content,content.v3_id)
     item.expansions = await this.getLessonExpansion(content.v3_id)
-    
+    item.comments = await this.getComments(content.v3_id)
+    item.grammar = await this.getGrammar(content.v3_id)
+
+    rpoContent158.put(item)
+
     return item
+  }
 }
 
 exports.getFileLink = function(item, file) {
@@ -389,10 +400,10 @@ exports.getLessonExpansion = async function(v3Id){
     rawExpansions.forEach((expansion) => {
         expansion.sentence = []
         expansion['target'] = expansion['row_2']
-        expansion['en'] = expansion['row_2']
-        expansion.p = ''
-        expansion.s = ''
-        expansion.t = ''
+        expansion['english'] = expansion['row_2']
+        expansion.pinyin = ''
+        expansion.simplified = ''
+        expansion.traditional = ''
         expansion['row_1'].replace(
           /\(event,\'(.*?)\',\'(.*?)\',\'(.*?)\',\'(.*?)\'.*?\>(.*?)\<\/span\>([^\<]+)?/g,
           function (A, B, C, D, E, F, G, H) {
@@ -424,15 +435,15 @@ exports.getLessonExpansion = async function(v3Id){
             }
   
             expansion.sentence.push({
-              s: d,
-              t: e,
-              p: c,
-              en: b,
+              simplified: d,
+              traditional: e,
+              pinyin: c,
+              english: b,
             })
   
-            expansion.p += c + ' '
-            expansion.s += d
-            expansion.t += e
+            expansion.pinyin += c + ' '
+            expansion.simplified += d
+            expansion.traditional += e
   
             if (G) {
               try {
@@ -441,9 +452,9 @@ exports.getLessonExpansion = async function(v3Id){
                 g = G
               }
               expansion.sentence.push(g)
-              expansion.p += g
-              expansion.s += g
-              expansion.t += g
+              expansion.pinyin += g
+              expansion.simplified += g
+              expansion.traditional += g
             }
           }
         )
@@ -462,6 +473,33 @@ exports.getLessonExpansion = async function(v3Id){
       return returnData
 }
 
+exports.getComments = async function (v3Id) {
+
+    let lessonComments = await rpoContentsMerged.getLessonComments(v3Id)
+    let returnData = []
+
+    for (let i=0; i < lessonComments.length; i++) {
+        let comment = lessonComments[i]
+        
+        if (comment.replyId && comment.replyId > 0) {
+            let parent = lessonComments.find((x) => x.id === comment.replyId)
+            if (parent) {
+              if (!parent.nestedComments) {
+                parent.nestedComments = []
+              }
+              parent.nestedComments.push(comment)
+            }
+        }
+    }
+
+    return {
+      count: lessonComments.length,
+      comments: lessonComments
+        .filter((comment) => comment.replyUserId === 0)
+        .sort((a, b) => b.createdAt - a.createdAt),
+    }
+  }
+
 // exports.testGetUserProgress = async function() {
     
 //     let userProgress = await rpoLessonProgressAws.get()
@@ -475,7 +513,103 @@ exports.getLessonExpansion = async function(v3Id){
 //     }
 //     console.log("==== FOR LOOP END ====");
 // }
+exports.getGrammar = async function(v3Id) {
 
+    const grammarIds = await rpoContentsMerged.getGrammar(v3Id)
+
+    let returnData = []
+
+ 
+
+    for (let i=0; i < grammarIds.length; i++) {
+        let item = grammarIds[i]
+        // await asyncForEach(grammarIds, async (item) => {
+        let grammarBlocks = await rpoContentsMerged.getGrammarBlock(item.grammar_id)
+        // .populate('grammar')
+        // .populate('examples')
+        
+
+        // console.log(grammarBlocks);
+    //   grammarBlocks.forEach((block) => {
+        for (let b=0; b < grammarBlocks.length; b++) {
+            let block = grammarBlocks[b]
+        let examples = await rpoContentsMerged.getGrammarExamples(block.id)
+
+        block['examples'] = examples
+
+        block['examples'].forEach((example) => {
+          example.sentence = []
+
+          // example['english'] = example['target']
+
+          example.pinyin = ''
+          example.simplified = ''
+          example.traditional = ''
+
+          example['sourceAnnotateSimplified'].replace(
+            /\(event,\'(.*?)\',\'(.*?)\',\'(.*?)\',\'(.*?)\'.*?\>(.*?)\<\/span\>([^\<]+)?/g,
+            function (A, B, C, D, E, F, G, H) {
+              let d = ''
+              let e = ''
+              let c = ''
+              let b = ''
+              let g = ''
+
+              try {
+                d = decodeURI(D)
+              } catch (err) {
+                d = D
+              }
+              try {
+                e = decodeURI(E)
+              } catch (err) {
+                e = E
+              }
+              try {
+                c = decodeURI(C)
+              } catch (err) {
+                c = C
+              }
+              try {
+                b = decodeURI(B)
+              } catch (err) {
+                b = B
+              }
+
+              example.sentence.push({
+                simplified: d,
+                traditional: e,
+                pinyin: c,
+                english: b,
+              })
+
+              example.pinyin += c + ' '
+              example.simplified += d
+              example.traditional += e
+
+              if (G) {
+                try {
+                  g = decodeURI(G)
+                } catch (err) {
+                  g = G
+                }
+                example.sentence.push(g)
+                example.pinyin += g
+                example.simplified += g
+                example.traditional += g
+              }
+            }
+          )
+        })
+        returnData.push(block)
+      }
+    // })
+    }
+    return returnData
+}
+
+
+// USED IN FETCHING USER LESSON PROGRESS
 exports.getUserProgress = async function(req) {
     
     let hours = '2'

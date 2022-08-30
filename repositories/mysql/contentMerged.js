@@ -209,4 +209,74 @@ module.exports = {
             });
         });
     },
+
+    getLessonComments : async function(v3Id){
+        return new Promise(function(resolve, reject) {
+            var sql = `select c.id, c.content, c.reply_to_id as replyId, c.reply_to_id_2 as replyId2, c.reply_to_user_id as replyUserId, c.comment_from as commentFrom, c.created_at as createdAt,
+            c.user_id as userId, u.username, p.avatar_url as avatarUrl
+            from comments c
+            left join users u on c.user_id=u.id
+            left join user_preferences p on p.user_id=c.user_id
+            where c.parent_id = ${v3Id} and c.type = 'lesson'`
+
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getGrammar : async function(v3Id){
+        return new Promise(function(resolve, reject) {
+            var sql = `select * from content_grammar_tag where v3_id = ${v3Id}`
+
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getGrammarBlock : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql = `select 
+                        grammar_block_id as id,
+                        description,
+                        summary,
+                        display_sort as displaySort,
+                        grammar_id as grammarId,
+                        create_time as createdTime,
+                        update_time as updateTime
+                        from grammar_block where grammar_id = ${id}`
+
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getGrammarExamples : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql = `select 
+                        grammar_sentence_id as id,
+                        grammar_block_id as blockId,
+                        target as english,
+                        source,
+                        source_trad as sourceTraditional,
+                        source_annotate as sourceAnnotateSimplified,
+                        source_trad_annotate as sourceAnnotateTraditional,
+                        source_audio as sourceAudio
+                        from grammar_sentence where grammar_block_id = ${id}`
+
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
 }
