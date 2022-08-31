@@ -20,8 +20,10 @@ module.exports = {
         return await defaultModel.update(id,data)
     },
 	put : async function(data) {
-        console.log('inserting items');
         return await defaultModel.put(data)
+    },
+    upsert : async function(q,data) {
+        return await defaultModel.upsert(q,data)
     },
     remove : async function(id) {
         return await defaultModel.remove(id)

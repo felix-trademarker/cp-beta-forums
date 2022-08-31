@@ -13,11 +13,7 @@ const { getCharacterInFrequencyListByPosition } = require('hanzi');
 
 exports.getLesson = async function(v3Id) {
 
-  let lesson158 = await rpoContent158.findQuery({v3Id: v3Id})
-  
-  if (lesson158 && lesson158.length > 0) {
-      return lesson158[0]
-  } else {
+
     let contents = await rpoContentsMerged.getContentV3(v3Id)
     let content = contents && contents.length > 0 ? contents[0] : [];
 
@@ -69,10 +65,10 @@ exports.getLesson = async function(v3Id) {
     item.comments = await this.getComments(content.v3_id)
     item.grammar = await this.getGrammar(content.v3_id)
 
-    rpoContent158.put(item)
+    rpoContent158.upsert({v3Id:item.v3Id},item)
 
     return item
-  }
+  
 }
 
 exports.getFileLink = function(item, file) {
