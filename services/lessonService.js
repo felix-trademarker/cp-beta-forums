@@ -1,4 +1,5 @@
 let rpoContentsMerged = require('../repositories/mysql/contentMerged');
+let rpoCourseContents = require('../repositories/mysql/_course_contents');
 let rpoLessonsourcesLocal = require('../repositories/lessonSourcesLocal');
 let rpoDailyMotion = require('../repositories/videosDailyMotion')
 let rpoContent158 = require('../repositories/_contents158')
@@ -64,6 +65,28 @@ exports.getLesson = async function(v3Id) {
     item.expansions = await this.getLessonExpansion(content.v3_id)
     item.comments = await this.getComments(content.v3_id)
     item.grammar = await this.getGrammar(content.v3_id)
+
+    
+
+    // GET COURSE CONTENTS
+    let courseLesson = await rpoCourseContents.getCourse(item.v3Id)
+
+    courseLesson = courseLesson && courseLesson.length > 0 ? courseLesson[0] : null
+
+    if (courseLesson) {
+      let courseContents = await rpoCourseContents.getCourseContents(courseLesson)
+
+      
+      if (courseContents && courseContents.length ) {
+        // add course contents 
+        // let courseContentsArray = []
+        for (let c=0; c < courseContents.length; c++) {
+          courseContents[c].image = this.getFileLink(courseContents[c], courseContents[c].image)
+        }
+
+        item.courseContents = courseContents
+      }
+    }
 
     rpoContent158.upsert({v3Id:item.v3Id},item)
 
