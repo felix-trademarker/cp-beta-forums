@@ -6,11 +6,14 @@ let rpoContent158 = require('../repositories/_contents158')
 
 let rpoLessonProgressAws = require('../repositories/awsLessonProgress')
 let rpoLessonProgress = require('../repositories/lessonProgress')
+let rpoAssessments = require('../repositories/awsAssessments')
 
 let rpoUsersSQL = require('../repositories/mysql/_users')
 
 let moment = require('moment');
 const { getCharacterInFrequencyListByPosition } = require('hanzi');
+
+const convert = require('xml-js')
 
 exports.getLesson = async function(v3Id) {
 
@@ -35,7 +38,7 @@ exports.getLesson = async function(v3Id) {
 
     let videos = []
     videos = await this.getVideos(content) 
-    console.log(videos);
+    // console.log(videos);
 
     let item = {
         v3Id: content.v3_id,
@@ -65,6 +68,7 @@ exports.getLesson = async function(v3Id) {
     item.expansions = await this.getLessonExpansion(content.v3_id)
     item.comments = await this.getComments(content.v3_id)
     item.grammar = await this.getGrammar(content.v3_id)
+    // item.questions = await this.getQuestions(content.v3_id)
 
     
 
@@ -89,6 +93,13 @@ exports.getLesson = async function(v3Id) {
     }
 
     rpoContent158.upsert({v3Id:item.v3Id},item)
+
+    let assessments = await rpoAssessments.get()
+
+    console.log(assessments);
+    // for (let a=0; a < assessments.length; a++) {
+
+    // }
 
     return item
   
@@ -625,6 +636,148 @@ exports.getGrammar = async function(v3Id) {
     // })
     }
     return returnData
+}
+
+exports.getQuestions = async function(v3Id) {
+
+  const convert = require('xml-js')
+
+  // All done.
+  let lessonQuestions = await rpoContentsMerged.getQuestions(v3Id)
+
+  lessonQuestions.forEach((question) => {
+    try {
+      question.options = convert.xml2js(question.options, {
+        compact: true,
+        ignoreAttributes: true,
+      })
+      question.options_2 = convert.xml2js(question.options_2, {
+        compact: true,
+        ignoreAttributes: true,
+      })
+      question.options_3 = convert.xml2js(question.options_3, {
+        compact: true,
+        ignoreAttributes: true,
+      })
+
+      // sails.log.info(question)
+
+      switch (question.type_id) {
+        case 4:
+          question.question = {
+            audio: question.options.type_d.data.prototype_mp3_url['_text'],
+          }
+          question.answer = {
+            s: question.options.type_d.data.prototype['_text'],
+            t: question.options_2.type_d.data.prototype['_text'],
+            p: question.options_3.type_d.data.prototype['_text'],
+            e: question.options.type_d.data.english['_text'],
+          }
+          break
+        case 2:
+          question.question = { segments: [] }
+          question.options.type_b.data.section.forEach((segment, index) => {
+            question.question.segments.push({
+              s: segment.prototype['_text'],
+              t:
+                question.options_2.type_b.data.section[index].prototype[
+                  '_text'
+                ],
+              p:
+                question.options_3.type_b.data.section[index].prototype[
+                  '_text'
+                ],
+              e: segment.english['_text'],
+              id: parseInt(segment.tag['_text']),
+            })
+          })
+          break
+        case 1:
+          question.question = { segments: [] }
+          question.options.type_a_options.data.section.forEach(
+            (phrase, index) => {
+              question.question.segments.push({
+                id: parseInt(phrase.tag['_text']),
+                s: phrase.prototype['_text'],
+                t:
+                  question.options_2.type_a_options.data.section[index]
+                    .prototype['_text'],
+                p:
+                  question.options_3.type_a_options.data.section[index]
+                    .prototype['_text'],
+                e: phrase.english['_text'],
+              })
+            }
+          )
+          break
+        case 5:
+          question.question = {
+            s: question.title,
+            t: question.title_2,
+            p: question.title_3,
+            choices: [],
+          }
+          question.answer = {
+            id: parseInt(question.options.type_e.data.answer['_text']),
+            s: question.options.type_e.data.sentence_translation['_text'],
+            t: question.options_2.type_e.data.sentence_translation['_text'],
+            p: question.options_3.type_e.data.sentence_translation['_text'],
+            e: question.options.type_e.data.sentence_english['_text'],
+          }
+
+          // sails.log.info(question.options.type_e.data)
+
+          question.options.type_e.data.options.forEach((choice, index) => {
+            question.question.choices.push({
+              id: parseInt(choice.tag['_text']),
+              s: choice.prototype['_text'],
+              t:
+                question.options_2.type_e.data.options[index].prototype[
+                  '_text'
+                ],
+              p:
+                question.options_3.type_e.data.options[index].prototype[
+                  '_text'
+                ],
+              e: choice.english['_text'],
+            })
+          })
+          break
+      }
+    } catch (e) {
+      sails.log.error(e)
+      sails.hooks.bugsnag.notify(e)
+    }
+  })
+  // lessonQuestions = lessonQuestions.map((question) => {
+  //   return _.pick(question, [
+  //     'id',
+  //     'scope',
+  //     'score',
+  //     'type_id',
+  //     'status',
+  //     'question',
+  //     'answer',
+  //     'createdAt',
+  //   ])
+  // })
+
+  console.log(lessonQuestions);
+
+  return {
+    matching: lessonQuestions.filter((question) => {
+      return question.type_id === 1
+    }),
+    audio: lessonQuestions.filter((question) => {
+      return question.type_id === 4
+    }),
+    choice: lessonQuestions.filter((question) => {
+      return question.type_id === 5
+    }),
+    rearrange: lessonQuestions.filter((question) => {
+      return question.type_id === 2
+    }),
+  }
 }
 
 

@@ -100,7 +100,7 @@ class Model{
 
         return new Promise(function(resolve, reject) { 
 
-            this_.db.getDb158().collection(this_.table).update(query,{$set: data },{upsert:true}, 
+            this_.db.getDb158().collection(this_.table).updateOne(query,{$set: data },{upsert:true}, 
                 function(err, result) {
                 
                 if (err) reject(err);

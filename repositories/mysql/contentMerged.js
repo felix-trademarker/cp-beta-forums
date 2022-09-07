@@ -279,4 +279,21 @@ module.exports = {
             });
         });
     },
+
+    getQuestions : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql = `select 
+                        *
+                      from assessment 
+                      where scope = ${id}
+                      and product_id = 1
+                      and status = 1`
+
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
 }
