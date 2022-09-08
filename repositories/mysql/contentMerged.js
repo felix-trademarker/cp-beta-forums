@@ -15,6 +15,13 @@ var con = mysql.createConnection({
   database: process.env.DBNAME,
 });
 
+var conAssessment = mysql.createConnection({
+    host: process.env.DBHOST,
+    user: process.env.DBUSER,
+    password: process.env.DBPASS,
+    database: "assessment",
+});
+
 
 
 
@@ -284,12 +291,12 @@ module.exports = {
         return new Promise(function(resolve, reject) {
             var sql = `select 
                         *
-                      from assessment 
+                      from questions 
                       where scope = ${id}
                       and product_id = 1
                       and status = 1`
 
-            con.query(sql, function (err, result) {
+            conAssessment.query(sql, function (err, result) {
                 if (err) reject(err);
 
                 resolve(result)
