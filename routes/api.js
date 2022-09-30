@@ -25,7 +25,10 @@ router.post('/check-auth/', genericController.getAuth);
 // LESSON API GET INFO ON HANZI
 router.get('/lookup-hanzi/:hanzi', genericController.lookupHanzi);
 
+// CONVERSION API
 router.get('/lesson/:v3Id', genericController.getLesson);
+
+router.get('/user/:id', genericController.getUser);
 
 router.get('/user-progress/', genericController.getUserProgress);
 router.get('/user-progress/:h-:d', genericController.getUserProgress);

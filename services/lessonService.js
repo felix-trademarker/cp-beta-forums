@@ -4,6 +4,10 @@ let rpoLessonsourcesLocal = require('../repositories/lessonSourcesLocal');
 let rpoDailyMotion = require('../repositories/videosDailyMotion')
 let rpoContent158 = require('../repositories/_contents158')
 let rpoLessons158 = require('../repositories/_lessons158')
+let rpoRecaps158 = require('../repositories/_recaps158')
+let rpoUsers158 = require('../repositories/_users158')
+
+let rpoUsers = require('../repositories/mysql/_users')
 
 let rpoLessonProgressAws = require('../repositories/awsLessonProgress')
 let rpoLessonProgress = require('../repositories/lessonProgress')
@@ -70,6 +74,8 @@ exports.getLesson = async function(v3Id) {
     item.comments = await this.getComments(content.v3_id)
     item.grammar = await this.getGrammar(content.v3_id)
     item.questions = await this.getQuestions(content.v3_id)
+
+    item.recap = await rpoRecaps158.findQuery({lessonNumber:content.v3_id})
 
     
 
@@ -817,4 +823,15 @@ exports.getUserProgress = async function(req) {
     }
 
     return returnedData
+}
+
+exports.getUserData = async function(id) {
+    
+  let returnedData = await rpoUsers.getUserByIdSQL(id)
+
+  returnedData = (returnedData && returnedData.length > 0 ? returnedData[0] : null)
+
+  rpoUsers158.upsert({id:returnedData.id},returnedData)
+
+  return returnedData
 }

@@ -12,6 +12,7 @@ let rpoUsers = require('../../repositories/users');
 let mailService = require('../../services/mailService')
 let activityService = require('../../services/activityLogService')
 let lessonService = require('../../services/lessonService')
+let userService = require('../../services/userService')
 
 let hanzi = require("hanzi");
 
@@ -335,7 +336,17 @@ exports.getLesson = async function(req, res, next) {
 exports.getUserProgress = async function(req, res, next) {
 
   console.log(req.params);
-  let contents = await lessonService.getUserProgress(req)
+  let contents = await userService.getUserProgress(req)
+
+  res.json(contents);
+}
+
+exports.getUser = async function(req, res, next) {
+
+  // console.log(req.params);
+  let contents = await userService.getUserData(req.params.id)
+
+  // console.log(contents);
 
   res.json(contents);
 }
