@@ -24,7 +24,6 @@ var conAssessment = mysql.createConnection({
 
 
 
-
 module.exports = {
 
     // BASE FUNCTIONS LOCATED IN defaultModel
@@ -297,6 +296,21 @@ module.exports = {
                       and status = 1`
 
             conAssessment.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getLessonListIds : async function(limit,offset){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            v3_id
+                        FROM contents
+                        LIMIT ${limit}
+                        OFFSET ${offset}`;
+            con.query(sql, function (err, result) {
                 if (err) reject(err);
 
                 resolve(result)

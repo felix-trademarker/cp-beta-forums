@@ -53,6 +53,9 @@ exports.getUserData = async function(id) {
 
   returnedData = (returnedData && returnedData.length > 0 ? returnedData[0] : null)
 
+  returnedData.role = await rpoUsersSQL.getUserRole(returnedData.role_id)
+  returnedData.school = await rpoUsersSQL.getUserSchool(returnedData.school_id)
+  returnedData.ageRange = await rpoUsersSQL.getUserAge(returnedData.age_id)
   returnedData.userAddresses = await rpoUsersSQL.getUserAddress(id)
   returnedData.userOptions = await rpoUsersSQL.getUserOptions(id)
   returnedData.userSettings = await rpoUsersSQL.getUserSettings(id)
@@ -94,8 +97,18 @@ exports.getUserData = async function(id) {
     } 
 
     returnedData.feeds = feedsFormatted
+    returnedData.emailLogs = await rpoUsersSQL.getUserEmailLogs(id)
+    returnedData.lessonTracks = await rpoUsersSQL.getUserLessonTracks(id)
+    returnedData.dailyStats = await rpoUsersSQL.getUserDailyStats(id)
+    returnedData.userLastVisit = await rpoUsersSQL.userLastVisit(id)
+    returnedData.searchDictionaries = await rpoUsersSQL.getUsersDictionaries(id)
+    returnedData.userActions = await rpoUsersSQL.getUserActions(id)
+    returnedData.userCampaign = await rpoUsersSQL.getUserCampaign(id)
+    returnedData.userOrders = await rpoUsersSQL.getUserOrder(id)
 
 //   console.log(unserialize(returnedData.feeds[0].setting))
+
+    rpoUsers158.upsert({id:returnedData.id},returnedData)
 
   return returnedData
 }

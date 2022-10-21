@@ -13,6 +13,7 @@ let mailService = require('../../services/mailService')
 let activityService = require('../../services/activityLogService')
 let lessonService = require('../../services/lessonService')
 let userService = require('../../services/userService')
+let orderService = require('../../services/orderService')
 
 let hanzi = require("hanzi");
 
@@ -345,6 +346,59 @@ exports.getUser = async function(req, res, next) {
 
   // console.log(req.params);
   let contents = await userService.getUserData(req.params.id)
+
+  // console.log(contents);
+
+  res.json(contents);
+}
+
+exports.getUserslist = async function(req, res, next) {
+
+  let page = req.params.page ? req.params.page : 1
+  let limit = req.params.limit ? req.params.limit : 10
+  let users = await rpoUsersMySQL.getUsersList(limit,(page-1) * limit)
+
+  if (!users || users.length < 1) {
+    res.json([]);
+  }
+
+  let contents = []
+  for (let u=0; u < users.length; u++) {
+    let content = await userService.getUserData(users[u].id)
+
+    if (content) 
+    contents.push(content)
+  }
+
+  res.json(contents);
+}
+
+exports.getLessonslist = async function(req, res, next) {
+
+  let page = req.params.page ? req.params.page : 1
+  let limit = req.params.limit ? req.params.limit : 10
+  let lessonIds = await lessonService.getLessonIds(limit,(page-1) * limit)
+
+  if (!lessonIds || lessonIds.length < 1) {
+    res.json([]);
+  }
+
+  let contents = []
+  for (let u=0; u < lessonIds.length; u++) {
+    let content = await lessonService.getLesson(lessonIds[u].v3_id)
+
+    if (content) 
+    contents.push(content)
+  }
+
+  res.json(contents);
+
+}
+
+exports.getOrder = async function(req, res, next) {
+
+  // console.log(req.params);
+  let contents = await orderService.getOrder(req.params.id)
 
   // console.log(contents);
 

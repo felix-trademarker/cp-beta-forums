@@ -15,6 +15,13 @@ var con = mysql.createConnection({
   database: process.env.DBNAME,
 });
 
+var conCpodLogging = mysql.createConnection({
+    host: process.env.DBHOST,
+    user: process.env.DBUSER,
+    password: process.env.DBPASS,
+    database: "chinesepod_logging",
+});
+
 
 
 
@@ -382,6 +389,232 @@ module.exports = {
         });
     },
 
+    getUserEmailLogs : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql = `SELECT 
+                        email_id as emailId,  
+                        email_send_id as emailSendId,  
+                        opens,  
+                        clicks,  
+                        createdAt  
+                        FROM email_logs
+                        WHERE user_id='${id}'
+                        ORDER BY createdAt DESC`
+            conCpodLogging.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getUserLessonTracks : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql = `SELECT 
+                        v3_id as v3Id,  
+                        track_type as trackType,  
+                        progress,  
+                        source,  
+                        timestamp as createdAt,  
+                        updated_at as updateddAt  
+                        FROM lesson_tracks
+                        WHERE user_id='${id}'
+                        ORDER BY updated_at DESC`
+            conCpodLogging.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
     
+    getUserDailyStats : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            lessons_studied as lessonStudied,
+                            tests_taken as testTaken,
+                            average_score as averageScore,
+                            average_last_score as averageLastScore,
+                            time_spent as timeSpent,
+                            date as date,
+                            createdAt as createdAt
+                        FROM user_daily_stats
+                        WHERE user_id='${id}'
+                        
+                        ORDER BY createdAt DESC
+                        LIMIT 10`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    userLastVisit : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            url,
+                            time
+                        FROM user_log
+                        WHERE user_id='${id}'
+                        ORDER BY time DESC
+                        LIMIT 10`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getUsersList : async function(limit,offset){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            id
+                        FROM ${tableName}
+                        LIMIT ${limit}
+                        OFFSET ${offset}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getUsersDictionaries : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            DISTINCT(word),
+                            ip,
+                            search_time as searchTime
+                        FROM dictionary_search
+                        WHERE user_id='${id}'
+                        ORDER BY search_time DESC`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+    
+    getUserRole : async function(roleId){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            *
+                        FROM roles
+                        WHERE id='${roleId}'`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getUserSchool : async function(schoolId){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            *
+                        FROM school
+                        WHERE school_id='${schoolId}'`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getUserAge : async function(ageId){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            *
+                        FROM ages
+                        WHERE id='${ageId}'`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getUserActions : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            ua.display_status as displayStatus,
+                            ua.action_display as actionDisplay,
+                            uat.id as actionTypeId,
+                            uat.parent_id as actionTypeParentId,
+                            uat.type_name as actionTypeName,
+                            uat.type_image as actionTypeImage,
+                            uat.type_format_description as actiondescription,
+                            ua.action_time as actionTime
+                        FROM user_action ua
+                        LEFT JOIN user_action_type uat
+                        ON ua.action_type_id=uat.id
+                        WHERE ua.user_id='${id}'`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getUserCampaign : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            code,
+                            campaign_params as params,
+                            created
+                        FROM user_campaigns
+                        WHERE user_id='${id}'`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getUserOrder : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            o.product_id as productId,
+                            o.product_type as productType,
+                            o.promo_code as promoCode,
+                            o.payment,
+                            o.billed_amount as billedAmount,
+                            o.pay_status as payStatus,
+                            o.pay_method as payMethod,
+                            o.action_type as actionType,
+                            o.finished,
+                            o.start_date as startDate,
+                            o.end_date as endDate,
+                            o.created_at as createdAt,
+                            o.updated_at as updatedAt,
+                            o.notes,
+                            ot.order_type as orderType,
+                            p.name as promoName,
+                            p.code as promoCode
+                        FROM orders o
+                        LEFT JOIN order_type ot
+                        ON ot.order_id=o.id
+                        LEFT JOIN orders_to_promotions otp
+                        ON otp.order_id=o.id
+                        LEFT JOIN promotions p
+                        ON p.id=otp.promotion_id
+                        WHERE o.user_id='${id}'`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
     
 }

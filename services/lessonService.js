@@ -20,6 +20,12 @@ const { getCharacterInFrequencyListByPosition } = require('hanzi');
 
 const convert = require('xml-js')
 
+exports.getLessonIds = async function(limit,offset) {
+  let lessonsIds = await rpoContentsMerged.getLessonListIds(limit, offset)
+
+  return lessonsIds
+}
+
 exports.getLesson = async function(v3Id) {
 
 

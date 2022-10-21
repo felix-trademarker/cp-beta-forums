@@ -28,9 +28,19 @@ router.get('/lookup-hanzi/:hanzi', genericController.lookupHanzi);
 // CONVERSION API
 router.get('/lesson/:v3Id', genericController.getLesson);
 
-router.get('/user/:id', genericController.getUser);
 
 router.get('/user-progress/', genericController.getUserProgress);
 router.get('/user-progress/:h-:d', genericController.getUserProgress);
+
+router.get('/user/:id', genericController.getUser);
+router.get('/list/users', genericController.getUserslist);
+router.get('/list/users/:page/:limit', genericController.getUserslist);
+
+
+router.get('/list/lessons', genericController.getLessonslist);
+router.get('/list/lessons/:page/:limit', genericController.getLessonslist);
+
+router.get('/order/:id', genericController.getOrder);
+
 
 module.exports = router;
