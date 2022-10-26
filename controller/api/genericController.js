@@ -14,6 +14,7 @@ let activityService = require('../../services/activityLogService')
 let lessonService = require('../../services/lessonService')
 let userService = require('../../services/userService')
 let orderService = require('../../services/orderService')
+let groupService = require('../../services/groupService')
 
 let hanzi = require("hanzi");
 
@@ -399,6 +400,16 @@ exports.getOrder = async function(req, res, next) {
 
   // console.log(req.params);
   let contents = await orderService.getOrder(req.params.id)
+
+  // console.log(contents);
+
+  res.json(contents);
+}
+
+exports.getGroup = async function(req, res, next) {
+
+  // console.log(req.params);
+  let contents = await groupService.getGroup(req.params.id)
 
   // console.log(contents);
 

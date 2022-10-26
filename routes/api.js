@@ -42,5 +42,7 @@ router.get('/list/lessons/:page/:limit', genericController.getLessonslist);
 
 router.get('/order/:id', genericController.getOrder);
 
+router.get('/group/:id', genericController.getGroup);
+
 
 module.exports = router;

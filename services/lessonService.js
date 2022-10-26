@@ -9,6 +9,9 @@ let rpoUsers158 = require('../repositories/_users158')
 
 let rpoUsers = require('../repositories/mysql/_users')
 
+let rpoLessonFiles = require('../repositories/awsLessonFiles')
+let rpoLessonSources = require('../repositories/lessonSources')
+
 let rpoLessonProgressAws = require('../repositories/awsLessonProgress')
 let rpoLessonProgress = require('../repositories/lessonProgress')
 // let rpoAssessments = require('../repositories/awsAssessments')
@@ -28,6 +31,9 @@ exports.getLessonIds = async function(limit,offset) {
 
 exports.getLesson = async function(v3Id) {
 
+  // test
+  let lessonFiles = await rpoLessonFiles.get();
+  console.log(lessonFiles)
 
     let contents = await rpoContentsMerged.getContentV3(v3Id)
     let content = contents && contents.length > 0 ? contents[0] : [];
