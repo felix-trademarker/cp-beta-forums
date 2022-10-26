@@ -146,6 +146,7 @@ exports.getVideos = async function(item) {
     let videos = [], temp={};
     
     let source = await rpoLessonsourcesLocal.findQuery({v3_id:item.v3_id})
+    let hasWistia = false;
 
     if (source && source.length > 0) {
         for (let i=0; i < source.length; i++) {
@@ -177,6 +178,7 @@ exports.getVideos = async function(item) {
                 temp.languageType = 's'
 
                 videos.push(temp)
+                hasWistia = true
             }
 
             if (source[i].wistia && source[i].wistia.traditional) {
@@ -187,6 +189,7 @@ exports.getVideos = async function(item) {
                 temp.languageType = 't'
 
                 videos.push(temp)
+                hasWistia = true
             }
 
             if (source[i].vimeo && source[i].vimeo.simplified) {
@@ -290,6 +293,15 @@ exports.getVideos = async function(item) {
             }
 
         } // for
+    }
+
+    if (!hasWistia) {
+      temp = this.getVideoObj()  
+      temp.platform = 'wistia'
+      temp.id = item.video
+      temp.languageType = 's'
+
+      videos.push(temp)
     }
 
     let dailyMotions = await rpoDailyMotion.findQuery({v3_id:item.v3_id})
