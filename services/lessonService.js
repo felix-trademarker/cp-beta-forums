@@ -59,6 +59,7 @@ exports.getLesson = async function(v3Id) {
 
     let item = {
         v3Id: content.v3_id,
+        hashCode: content.hash_code,
         title: content.title,
         slug: content.slug,
         type: content.type,
