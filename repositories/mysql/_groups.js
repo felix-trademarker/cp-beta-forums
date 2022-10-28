@@ -126,5 +126,71 @@ module.exports = {
         });
     },
 
+    getGroupCategories : async function(){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                        group_cate_id as groupCateId,
+                        group_cate_slug as groupCateSlug,
+                        group_cate_name as groupCateName,
+                        group_cate_icon as groupCateIcon,
+                        group_cate_desc as groupCateDesc,
+                        group_cate_groups as groupCateGroups,
+                        group_cate_sort as groupCateSort
+                        FROM group_categories`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getGroupRecords : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            title,
+                            path,
+                            created_at as createdAt
+                        FROM group_records
+                        WHERE group_id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getGroupTags : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            group_tag_name as name
+                        FROM groups_to_group_tags gg
+                        LEFT JOIN group_tags gt
+                        ON gt.group_tag_id=gg.group_tag_id
+                        WHERE gg.group_id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getGroupStudentTeacher : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            student_id as studentId,
+                            teacher_id as teacherId
+                        FROM group_student_teacher
+                        WHERE group_id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
     
 }

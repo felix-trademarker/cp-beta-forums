@@ -17,6 +17,23 @@ exports.getGroup = async function(id) {
 
     returnedData.invites = await rpoGroups.getGroupInvites(id)
     returnedData.contents = await rpoGroups.getGroupContents(id)
+    returnedData.records = await rpoGroups.getGroupRecords(id)
+    returnedData.tags = await rpoGroups.getGroupTags(id)
+    returnedData.studentTeacher = await rpoGroups.getGroupStudentTeacher(id)
+
+    // FIND GROUP CATEGORIES
+    let groupCategories = await rpoGroups.getGroupCategories()
+    if (groupCategories && groupCategories.length > 0) {
+        for(let g=0; g < groupCategories.length; g++) {
+            let groupsCate = groupCategories[g].groupCateGroups.split(",")
+            let found = groupsCate.find(element => element == id);
+
+            if (found) {
+                returnedData.category = groupCategories[g]
+                returnedData.category.groupCateGroups = groupsCate
+            }
+        }
+    }
 
     return returnedData
 }
