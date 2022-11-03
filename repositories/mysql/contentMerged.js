@@ -317,4 +317,62 @@ module.exports = {
             });
         });
     },
+
+    getDictionaries : async function(limit,offset){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            id,
+                            word,
+                            times,
+                            last_search_time as lastSearchTime,
+                            last_comment_id as lastCommentId,
+                            last_comment_time as lastCommentTime
+                        FROM dictionary
+                        LIMIT ${limit}
+                        OFFSET ${offset}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getDictionary : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            id,
+                            word,
+                            times,
+                            last_search_time as lastSearchTime,
+                            last_comment_id as lastCommentId,
+                            last_comment_time as lastCommentTime
+                        FROM dictionary
+                        WHERE id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    searchDictionaries : async function(word){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            id,
+                            word,
+                            times,
+                            last_search_time as lastSearchTime,
+                            last_comment_id as lastCommentId,
+                            last_comment_time as lastCommentTime
+                        FROM dictionary
+                        WHERE word LIKE '${word}_%'`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
 }

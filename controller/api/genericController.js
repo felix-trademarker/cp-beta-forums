@@ -396,6 +396,34 @@ exports.getLessonslist = async function(req, res, next) {
 
 }
 
+exports.getDictionaries = async function(req, res, next) {
+
+  let page = req.params.page ? req.params.page : 1
+  let limit = req.params.limit ? req.params.limit : 10
+  let dictionaries = await lessonService.getDictionaries(limit,(page-1) * limit)
+
+  res.json(dictionaries);
+
+}
+
+exports.getDictionary = async function(req, res, next) {
+
+  let id = req.params.id
+  let dictionaries = await lessonService.getDictionary(id)
+
+  res.json(dictionaries);
+
+}
+
+exports.searchDictionaries = async function(req, res, next) {
+
+  let word = req.params.word
+  let dictionaries = await lessonService.searchDictionaries(word)
+
+  res.json(dictionaries);
+
+}
+
 exports.getOrder = async function(req, res, next) {
 
   // console.log(req.params);

@@ -6,6 +6,7 @@ let rpoContent158 = require('../repositories/_contents158')
 let rpoLessons158 = require('../repositories/_lessons158')
 let rpoRecaps158 = require('../repositories/_recaps158')
 let rpoUsers158 = require('../repositories/_users158')
+let rpoDictionaries158 = require('../repositories/_dictionaries158')
 
 let rpoUsers = require('../repositories/mysql/_users')
 
@@ -560,21 +561,8 @@ exports.getComments = async function (v3Id) {
         .filter((comment) => comment.replyUserId === 0)
         .sort((a, b) => b.createdAt - a.createdAt),
     }
-  }
+}
 
-// exports.testGetUserProgress = async function() {
-    
-//     let userProgress = await rpoLessonProgressAws.get()
-//     console.log('** Found >> ',userProgress.length);
-//     for (let i=0; i < userProgress.length; i++){
-//         let userProg = userProgress[i]
-//         delete userProg._id
-
-//         rpoLessonProgress.put(userProg)
-//         console.log('** insert >> ',i);
-//     }
-//     console.log("==== FOR LOOP END ====");
-// }
 exports.getGrammar = async function(v3Id) {
 
     const grammarIds = await rpoContentsMerged.getGrammar(v3Id)
@@ -857,6 +845,27 @@ exports.getUserData = async function(id) {
   returnedData = (returnedData && returnedData.length > 0 ? returnedData[0] : null)
 
   rpoUsers158.upsert({id:returnedData.id},returnedData)
+
+  return returnedData
+}
+
+exports.getDictionaries = async function(limit, offset) {
+    
+  let returnedData = await rpoContentsMerged.getDictionaries(limit,offset)
+
+  return returnedData
+}
+
+exports.getDictionary = async function(id) {
+    
+  let returnedData = await rpoContentsMerged.getDictionary(id)
+
+  return returnedData
+}
+
+exports.searchDictionaries = async function(word) {
+    
+  let returnedData = await rpoContentsMerged.searchDictionaries(word)
 
   return returnedData
 }
