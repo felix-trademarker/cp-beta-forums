@@ -1,4 +1,4 @@
-let _table = "dictionaries";
+let _table = "bookedClasses";
 var Model = require('./_model158')
 var defaultModel = new Model(_table)
 

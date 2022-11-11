@@ -7,6 +7,8 @@ let rpoLessons158 = require('../repositories/_lessons158')
 let rpoRecaps158 = require('../repositories/_recaps158')
 let rpoUsers158 = require('../repositories/_users158')
 let rpoDictionaries158 = require('../repositories/_dictionaries158')
+let rpoClasses158 = require('../repositories/_bookedClasses158')
+let rpoClassrooms158 = require('../repositories/_classrooms158')
 
 let rpoUsers = require('../repositories/mysql/_users')
 
@@ -853,6 +855,9 @@ exports.getDictionaries = async function(limit, offset) {
     
   let returnedData = await rpoContentsMerged.getDictionaries(limit,offset)
 
+  for (let c=0; c < returnedData.length; c++)
+    rpoDictionaries158.upsert({id:returnedData[c].id},returnedData[c])
+
   return returnedData
 }
 
@@ -860,12 +865,53 @@ exports.getDictionary = async function(id) {
     
   let returnedData = await rpoContentsMerged.getDictionary(id)
 
+  returnedData = returnedData && returnedData.length > 0 ? returnedData[0] : []
+
+  if (!returnedData || returnedData.length < 1) return []
+
+  rpoDictionaries158.upsert({id:returnedData.id},returnedData)
+
   return returnedData
 }
 
 exports.searchDictionaries = async function(word) {
     
   let returnedData = await rpoContentsMerged.searchDictionaries(word)
+
+  for (let c=0; c < returnedData.length; c++)
+    rpoDictionaries158.upsert({id:returnedData[c].id},returnedData[c])
+
+  return returnedData
+}
+
+exports.getClassrooms = async function(id) {
+    
+  let returnedData = await rpoContentsMerged.getClassrooms(id)
+
+  returnedData = returnedData && returnedData.length > 0 ? returnedData[0] : []
+
+  if (!returnedData || returnedData.length < 1) return []
+
+  rpoClassrooms158.upsert({id:returnedData.id},returnedData)
+
+  return returnedData
+}
+
+exports.getClasses = async function(id) {
+    
+  let returnedData = await rpoContentsMerged.getClassBookings(id)
+
+  returnedData = returnedData && returnedData.length > 0 ? returnedData[0] : []
+
+  if (!returnedData || returnedData.length < 1) return []
+
+  returnedData.logs = await rpoContentsMerged.getClassBookingLogs(id)
+  returnedData.comments = await rpoContentsMerged.getClassBookingComments(id)
+  returnedData.emails = await rpoContentsMerged.getClassEmails(id)
+  returnedData.credits = await rpoContentsMerged.getClassBookingCredits(id)
+  returnedData.planCredits = await rpoContentsMerged.getClassPlanCredits(id)
+
+  rpoClasses158.upsert({bookingId:returnedData.bookingId},returnedData)
 
   return returnedData
 }

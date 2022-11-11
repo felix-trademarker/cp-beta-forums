@@ -45,6 +45,10 @@ router.get('/list/dictionaries/:page/:limit', genericController.getDictionaries)
 router.get('/search/dictionaries/:word', genericController.searchDictionaries);
 router.get('/dictionaries/:id', genericController.getDictionary);
 
+router.get('/classrooms/:id', genericController.getClassrooms);
+
+router.get('/classes/:id', genericController.getClasses);
+
 router.get('/order/:id', genericController.getOrder);
 
 router.get('/group/:id', genericController.getGroup);

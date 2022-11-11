@@ -375,4 +375,166 @@ module.exports = {
             });
         });
     },
+
+    getClassrooms : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            id,
+                            org_id as orgId,
+                            teacher_id as teacherId,
+                            name,
+                            color,
+                            created,
+                            modified
+                        FROM classrooms
+                        WHERE id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getClassBookings : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            booking_id as bookId,
+                            booking_token as bookToken,
+                            teacher_id as teacherId,
+                            user_id as userId,
+                            time_booking as timeBooking,
+                            tz_booking as tzBooking,
+                            tz_time as tzTime,
+                            url_ac as urlAc,
+                            ac_id as acId,
+                            status,
+                            status_update as statusUpdate,
+                            status_user_id as statusUserId,
+                            confirmed,
+                            confirmed_time as confirmedTime,
+                            ready_time as readyTime,
+                            noshow,
+                            review_status as reviewStatus,
+                            review_time as reviewTime,
+                            review_rating as reviewRating,
+                            review_comment as reviewComment,
+                            review_name as reviewName,
+                            review_feedback as reviewFeedback,
+                            booking_source as bookingSource,
+                            entry_date as entryDate
+                        FROM classes_booking
+                        WHERE booking_id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getClassBookingLogs : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            id,
+                            teacher_id as teacherId,
+                            user_id as userId,
+                            time,
+                            action
+                        FROM classes_booking_log
+                        WHERE booking_id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getClassBookingComments : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            id,
+                            booking_id as bookingId,
+                            user_id as userId,
+                            type,
+                            comment,
+                            date
+                        FROM classes_comments
+                        WHERE booking_id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getClassBookingCredits : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            id,
+                            user_id as userId,
+                            from_user_id as fromUserId,
+                            time,
+                            expiration_date as expirationDate,
+                            credits,
+                            source,
+                            free,
+                            comment,
+                            credit_action as creditAction
+                        FROM classes_credits
+                        WHERE booking_id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getClassEmails : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            c.id,
+                            c.date,
+                            c.date_send as dateSend,
+                            c.from as fromUser,
+                            c.to as toUser,
+                            c.subject,
+                            c.body,
+                            c.ics,
+                            c.sent
+                        FROM classes_emails c
+                        WHERE booking_id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+    getClassPlanCredits : async function(id){
+        return new Promise(function(resolve, reject) {
+            var sql =   `SELECT
+                            id,
+                            user_id as userId,
+                            from_user_id as fromUserId,
+                            time,
+                            expiration_date as expirationDate,
+                            credits,
+                            source,
+                            free,
+                            comment,
+                            credit_action as creditAction,
+                            credit_reference as creditReference
+                        FROM classes_plan_credits
+                        WHERE booking_id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
 }

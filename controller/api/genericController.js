@@ -443,3 +443,21 @@ exports.getGroup = async function(req, res, next) {
 
   res.json(contents);
 }
+
+exports.getClassrooms = async function(req, res, next) {
+
+  let id = req.params.id
+  let classrooms = await lessonService.getClassrooms(id)
+
+  res.json(classrooms);
+
+}
+
+exports.getClasses = async function(req, res, next) {
+
+  let id = req.params.id
+  let classes = await lessonService.getClasses(id)
+
+  res.json(classes);
+
+}
