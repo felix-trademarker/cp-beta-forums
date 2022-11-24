@@ -33,6 +33,7 @@ router.get('/user-progress/', genericController.getUserProgress);
 router.get('/user-progress/:h-:d', genericController.getUserProgress);
 
 router.get('/user/:id', genericController.getUser);
+router.get('/user/log/:id', genericController.getUserLog);
 router.get('/list/users', genericController.getUserslist);
 router.get('/list/users/:page/:limit', genericController.getUserslist);
 

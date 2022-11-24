@@ -113,6 +113,23 @@ exports.getUserData = async function(id) {
   return returnedData
 }
 
+exports.getUserDataLog = async function(id) {
+    
+    let returnedData = await rpoUsersSQL.searchUser(id)
+  
+    if (!returnedData || returnedData.length < 1) {
+      return [];
+    }
+  
+    returnedData = (returnedData && returnedData.length > 0 ? returnedData[0] : null)
+    returnedData.emailLogs = await rpoUsersSQL.getUserEmailLogs(returnedData.id)
+    returnedData.userLastVisit = await rpoUsersSQL.userLastVisit(returnedData.id)
+    returnedData.lessonTracks = await rpoUsersSQL.getUserLessonTracks(returnedData.id)
+
+  
+    return returnedData
+  }
+
 exports.getUserCourses = async function(id) {
     
   let returnedData = await rpoUsersSQL.getUserCourse(id)

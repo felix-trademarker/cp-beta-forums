@@ -30,6 +30,10 @@ router.get(['/forums/edit/:id', '/beta/forums/edit/:id'],dashboardController.edi
 router.post(['/forums/edit/:id', '/beta/forums/edit/:id'],dashboardController.editTopicClient);
 router.get(['/forums/delete/:id', '/beta/forums/delete/:id'],dashboardController.deleteTopicClient);
 
+// ======================== users email logs ==========================
+router.get('/new/user-elogs',dashboardController.userELogs);
+
+
 // NEW LESSON PAGE
 router.get([
     '/new/lesson/',

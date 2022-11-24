@@ -1,0 +1,102 @@
+<div id="userSearchLogs">
+	<h3>User Logs</h3>
+
+	<div class="form-group">
+		
+	</div>
+
+	<div class="form-row">
+		<div class="col-4 mb-3">
+			<input type="text" class="form-control" v-model.lazy="userId" @keyup.enter="searchUser" aria-describedby="emailHelp" placeholder="Enter ID | USERNAME | EMAIL">
+			<small id="emailHelp" class="form-text text-muted">You can enter user's ID or username or email address</small>
+		</div>
+
+		<div class="col-auto mb-3">
+		  <button @click="searchUser" class="btn btn-lg btn-danger">Search</button>
+		</div>
+	</div>
+
+	<div class="row" v-if="!fetchLoader">
+		<div v-if="userData && userData.id && userId" class="col-12">
+			<h3>User Details</h3>
+			<p>
+				<b>ID:</b> {{ userData.id }}<br>
+				<b>Username:</b> {{ userData.username }}<br>
+				<b>Email:</b> {{ userData.email }}
+			</p>
+
+			<hr>
+			<h3>User Email Logs</h3>
+			<div class="" style="max-height: 500px;overflow-y: auto;">
+				<table v-if="userData.emailLogs" class="table">
+					<tr>
+						<th>Email ID</th>
+						<th>Email Send ID</th>
+						<th>Opens</th>
+						<th>Clicks</th>
+						<th>Date</th>
+					</tr>
+					<tr v-for="log in userData.emailLogs">
+						<td>{{ log.emailId }}</td>
+						<td>{{ log.emailSendId }}</td>
+						<td>{{ log.opens }}</td>
+						<td>{{ log.clicks }}</td>
+						<td>{{ formatDate(log.createdAt) }}</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div class="row mt-5 mb-5">
+				<div style="max-height: 500px;overflow-y: auto;" v-if="userData.userLastVisit" class="col-md-6">
+					<h3>User Last Visits</h3>
+					<table class="table">
+						<tr>
+							<th>URL</th>
+							<th>TIME</th>
+						</tr>
+						<tr v-for="log in userData.userLastVisit">
+							<td>{{ log.url }}</td>
+							<td>{{ formatDate(log.time) }}</td>
+						</tr>
+
+					</table>
+				</div>
+
+				<div style="max-height: 500px;overflow-y: auto;" v-if="userData.lessonTracks" class="col-md-6">
+					<h3>User's Lesson Tracks</h3>
+					<table class="table">
+						<tr>
+							<th>Lesson</th>
+							<th>Progress</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+						</tr>
+						<tr v-for="log in userData.lessonTracks">
+							<td>{{ log.v3Id }}</td>
+							<td>{{ log.progress * 100 }}%</td>
+							<td>{{ formatDate(log.createdAt) }}</td>
+							<td>{{ formatDate(log.updateddAt) }}</td>
+						</tr>
+
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div v-if="(!userData || !userData.id) && !userId" class="col-12">
+			<small class="form-text text-muted">Please enter user's ID or username or email.</small>
+		</div>
+
+		<div v-if="(!userData || !userData.id) && userId" class="col-12">
+			<small class="form-text text-muted">Sorry, can't find record.</small>
+		</div>
+	</div>
+
+
+	<div v-if="fetchLoader">
+		Please wait while searching records...
+	</div>
+</div>
+
+<%- include('../partials/searchUserEmailLogs'); %>

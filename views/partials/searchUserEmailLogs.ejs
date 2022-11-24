@@ -1,0 +1,74 @@
+<script src="/beta/javascripts/moment.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.2.6/vue.js"></script>
+
+<script>
+
+    var lessonDashboardApp = new Vue({
+        
+        el: "#userSearchLogs",
+        data: {
+            vuex: JSON.parse(window.localStorage.getItem('vuex')),
+            userId: "",
+            userData: {},
+            fetchLoader: false
+
+        },
+        methods: {
+
+            getAPIFetch: async function(api) {
+
+                let results = await fetch(api,{
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                    },
+                })
+                .then(resp => resp.json())
+                .then(res => {
+                    this.fetchLoader = false;
+                    return res;
+                })
+
+                return results;
+
+            },
+
+            searchUser: async function() {
+                this.fetchLoader = true;
+                this.userData = await this.getAPIFetch('/new/api/v1/user/log/'+this.userId)
+                console.log(this.userData)
+                // if (this.userData) {
+                // }
+            },
+
+            formatDate : function(date) {
+                return moment(date).format('MMMM Do YYYY, h:mm:ss')
+            }
+
+        },
+        computed: {
+            fetchLessons: async function(){
+                this.lessons = await this.getAPIFetch('/api/v1/dashboard/get-all-lessons?limit=16&skip=0');
+                // this.lessons = {
+                //     "count":4568,
+                //     "lessons":[
+                //         {"id":"4627","title":"Binge watching","slug":"binge-watching","hash_code":"382bda1d90b77322a0caad3edb8de2085d23c6ae","image":"images/1c4e3344a844bd7ace207db188dc4f16d013c770.png","type":"lesson","level":"Upper Intermediate","hosts":"","publication_timestamp":"2022-05-14T23:00:00.000Z","video":"dsniu5u881","mp3_dialogue":"mp3/","mp3_public":"mp3/","mp3_private":"mp3/","mp3_thefix":"mp3/chinesepod_D4627rv.mp3","pdf1":"pdf/chinesepod_D4627.pdf","pdf2":"pdf/chinesepod_D4627trad.pdf"},
+                //         {"id":"4626","title":"Mukbang and Binge Eating","slug":"mukbang-and-binge-eating","hash_code":"aa58d8c13d24f40f6a29afa2d2a1a7494409cc46","image":"images/4db36f9a125036a67434c0b41e649f3f8bb536db.png","type":"lesson","level":"Upper Intermediate","hosts":"","publication_timestamp":"2022-04-27T23:00:00.000Z","video":"wzurnj5qoc","mp3_dialogue":"mp3/","mp3_public":"mp3/chinesepod_D4626pb.mp3","mp3_private":"mp3/chinesepod_D4626pr.mp3","mp3_thefix":"mp3/chinesepod_D4626rv.mp3","pdf1":"pdf/chinesepod_D4626.pdf","pdf2":"pdf/chinesepod_D4626trad.pdf"},
+
+                //     ]
+                // };
+                
+            }
+
+            
+
+        }
+
+    });
+
+
+
+
+</script>

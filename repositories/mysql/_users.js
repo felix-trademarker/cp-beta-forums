@@ -109,6 +109,48 @@ module.exports = {
         });
     },
 
+    searchUser : async function(id){
+        return new Promise(function(resolve, reject) {
+
+            let cond = `username='${id}'
+                        OR email='${id}'`
+            if (!isNaN(id))
+                cond = `id='${id}'`
+
+            var sql =   `SELECT
+                            id, 
+                            username, 
+                            email, 
+                            code as hashCode, 
+                            name,
+                            nationality,
+                            country,
+                            city,
+                            avatar_url as avatarUrl,
+                            interests,
+                            skyper,
+                            sex,
+                            birthday,
+                            mailing_address1 as mailingAddress1,
+                            mailing_address2 as mailingAddress2,
+                            mailing_city as mailingCity,
+                            mailing_state as mailingState,
+                            mailing_country as mailingCountry,
+                            mailing_postal_code as mailingPostalCode,
+                            mobile_phone as mobileNumber,
+                            credit_amount as creditAmount
+                        FROM ${tableName}
+                        WHERE ${cond}
+                        LIMIT 1
+                        `;
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
     getUserBySession : async function(sesIs){
         return new Promise(function(resolve, reject) {
             var sql = "SELECT u.* FROM sessions AS s"

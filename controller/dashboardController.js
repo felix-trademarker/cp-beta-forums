@@ -517,4 +517,18 @@ exports.vocabulary = async function(req, res, next) {
 
 }
 
+exports.userELogs = async function(req, res, next) {
+    
+
+  activityService.logger(req, "User Email Logs");
+
+  res.render('pages/user-email-logs', { 
+    layout: 'layouts/log-layout', 
+    title: '',
+    description: '',
+    keywords: ''
+  });
+
+}
+
 

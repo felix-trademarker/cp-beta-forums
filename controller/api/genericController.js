@@ -353,6 +353,16 @@ exports.getUser = async function(req, res, next) {
   res.json(contents);
 }
 
+exports.getUserLog = async function(req, res, next) {
+
+  // console.log(req.params);
+  let contents = await userService.getUserDataLog(req.params.id)
+
+  // console.log(contents);
+
+  res.json(contents);
+}
+
 exports.getUserslist = async function(req, res, next) {
 
   let page = req.params.page ? req.params.page : 1
