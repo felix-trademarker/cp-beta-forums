@@ -1,5 +1,11 @@
 var express = require('express');
 var genericController = require('../controller/api/genericController')
+const cors = require('cors');
+
+var corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
 
 var router = express.Router();
 
@@ -38,7 +44,7 @@ router.get('/list/users', genericController.getUserslist);
 router.get('/list/users/:page/:limit', genericController.getUserslist);
 
 // add user email log 
-router.post('/email/log/', genericController.addEmailLog);
+router.post('/email/log/', cors(), genericController.addEmailLog);
 
 
 router.get('/list/lessons', genericController.getLessonslist);
