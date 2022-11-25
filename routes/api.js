@@ -37,6 +37,9 @@ router.get('/user/log/:id', genericController.getUserLog);
 router.get('/list/users', genericController.getUserslist);
 router.get('/list/users/:page/:limit', genericController.getUserslist);
 
+// add user email log 
+router.post('/email/log/', genericController.addEmailLog);
+
 
 router.get('/list/lessons', genericController.getLessonslist);
 router.get('/list/lessons/:page/:limit', genericController.getLessonslist);

@@ -363,6 +363,13 @@ exports.getUserLog = async function(req, res, next) {
   res.json(contents);
 }
 
+exports.addEmailLog = async function(req, res, next) {
+
+  let response = await userService.addUserEmailLog(req.body)
+
+  res.json(response);
+}
+
 exports.getUserslist = async function(req, res, next) {
 
   let page = req.params.page ? req.params.page : 1

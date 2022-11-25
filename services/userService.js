@@ -128,7 +128,23 @@ exports.getUserDataLog = async function(id) {
 
   
     return returnedData
-  }
+}
+
+exports.addUserEmailLog = async function(params) {
+
+    let insertData = {
+        user_id: params.userId,
+        email_id: params.emailId,
+        email_send_id: params.emailSendId,
+        opens: 0,
+        clicks: 0,
+        createdAt: moment().format(),
+    }
+
+    let response = await rpoUsersSQL.addUserEmailLogs(insertData)
+
+    return response;
+}
 
 exports.getUserCourses = async function(id) {
     

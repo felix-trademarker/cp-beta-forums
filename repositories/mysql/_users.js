@@ -450,6 +450,19 @@ module.exports = {
         });
     },
 
+    addUserEmailLogs : async function(data){
+        return new Promise(function(resolve, reject) {
+            var sql = `INSERT INTO email_logs (user_id, email_id, email_send_id, opens, clicks, createdAt)
+                       VALUES (${data.user_id}, '${data.email_id}', '${data.email_send_id}', 0, 0,now())`
+            conCpodLogging.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+
     getUserLessonTracks : async function(id){
         return new Promise(function(resolve, reject) {
             var sql = `SELECT 
