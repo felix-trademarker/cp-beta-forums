@@ -15,11 +15,15 @@ const expressLayouts = require('express-ejs-layouts');
 var cron = require('node-cron');
 var flash = require('express-flash-2');
 
+const cors = require('cors');
+
 // let migrationService = require('./services/migrationService')
 // let lessonService = require('./services/lessonService')
 
 
 var app = express();
+
+app.use(cors())
 
 app.use(fileUpload());
 app.use(bodyParser.json())
@@ -119,18 +123,8 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
 
   // ROUTE HANDLER ============ <<
 
-  app.use((req, res, next) => {
-    //allow access from every, elminate CORS
-    res.setHeader('Access-Control-Allow-Origin','*');
-    res.removeHeader('x-powered-by');
-    //set the allowed HTTP methods to be requested
-    res.setHeader('Access-Control-Allow-Methods','POST');
-    //headers clients can use in their requests
-    res.setHeader('Access-Control-Allow-Headers','Content-Type');
-    //allow request to continue and be handled by routes
-    next();
-  });
-  
+
+
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
