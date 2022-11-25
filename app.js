@@ -15,7 +15,7 @@ const expressLayouts = require('express-ejs-layouts');
 var cron = require('node-cron');
 var flash = require('express-flash-2');
 
-
+const cors = require('cors');
 
 // let migrationService = require('./services/migrationService')
 // let lessonService = require('./services/lessonService')
@@ -23,7 +23,7 @@ var flash = require('express-flash-2');
 
 var app = express();
 
-
+app.use(cors())
 app.use(fileUpload());
 app.use(bodyParser.json())
 app.use(cookieParser())
