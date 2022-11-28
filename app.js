@@ -19,7 +19,7 @@ const cors = require('cors');
 
 // let migrationService = require('./services/migrationService')
 // let lessonService = require('./services/lessonService')
-
+let userService = require('./services/userService')
 
 var app = express();
 
@@ -83,6 +83,8 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
     // migrationService.content2()
 
     // lessonService.testGetUserProgress()
+
+    userService.migrateRawUser()
   
   cron.schedule('*/20 * * * * mon-fri', () => {
     // migrationService.updateLessonContents()

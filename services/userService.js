@@ -6,6 +6,31 @@ let rpoUsersSQL = require('../repositories/mysql/_users')
 let moment = require('moment');
 const {unserialize} = require('php-serialize');
 
+// temp function to be remove later
+exports.migrateRawUser = async function() {
+    flag = true;
+    page = 1
+    limit = 10000 
+    let users;
+    do {
+        console.log("fetching records...");
+        users = await rpoUsersSQL.getSQL(page, limit)
+
+        console.log("Found ", users.length )
+        console.log("start migration");
+        for(let i=0; i < users.length; i++){
+            await rpoUsers158.upsert({id:users[i].id},users[i])
+            // await rpoUsers158.put(users[i])
+            console.log("== migrate " + i + "/"+ limit +" page " + page +" ==")
+        }
+
+        if (users.length <= 0) flag = false 
+
+        page++
+    }while(flag);
+    
+}
+
 // USED IN FETCHING USER LESSON PROGRESS
 exports.getUserProgress = async function(req) {
     

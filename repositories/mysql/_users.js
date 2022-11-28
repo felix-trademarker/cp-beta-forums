@@ -50,6 +50,17 @@ module.exports = {
     // ADD CUSTOM FUNCTION BELOW ========================
     // ==================================================
 
+    getAllSQL : async function(){
+        return new Promise(function(resolve, reject) {
+            var sql = "SELECT * FROM " + tableName
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
 	getSQL : async function(page,limit){
         return new Promise(function(resolve, reject) {
             var sql = "SELECT * FROM " + tableName
