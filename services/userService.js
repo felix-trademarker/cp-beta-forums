@@ -1,34 +1,58 @@
 
-let rpoUsers158 = require('../repositories/_users158')
+let rpoUsers158 = require('../repositories/_mysql.users')
 let rpoLessonProgressAws = require('../repositories/awsLessonProgress')
 let rpoUsersSQL = require('../repositories/mysql/_users')
+
+let rpoMigrations = require('../repositories/migrations')
 
 let moment = require('moment');
 const {unserialize} = require('php-serialize');
 
 // temp function to be remove later
 exports.migrateRawUser = async function() {
-    flag = true;
-    page = 1
-    limit = 10000 
-    let users;
-    do {
-        console.log("fetching records...");
-        users = await rpoUsersSQL.getSQL(page, limit)
 
-        console.log("Found ", users.length )
-        console.log("start migration");
-        for(let i=0; i < users.length; i++){
-            await rpoUsers158.upsert({id:users[i].id},users[i])
-            // await rpoUsers158.put(users[i])
-            console.log("== migrate " + i + "/"+ limit +" page " + page +" ==")
-        }
+    let page = 1
+    let limit = 200
+    let objVersions = 'usersMail' 
 
-        if (users.length <= 0) flag = false 
+    let lastMigrated = await rpoMigrations.getLastMigrate(objVersions)
 
-        page++
-    }while(flag);
-    
+    // console.log(lastMigrated);
+
+    if (lastMigrated.length > 0) {
+        page = lastMigrated[0].page + 1
+        limit = lastMigrated[0].limit
+    }
+
+    let migrationData = {
+        obj : objVersions,
+        page: page,
+        limit: limit,
+        created_at : moment().format()
+    }
+
+    let users = await rpoUsersSQL.getSQL(page, limit)
+
+    // console.log(users.length);
+    if (!users || users.length <= 0) {
+        console.log("no record found!");
+        return false;
+    }
+
+    // users.forEach(async (user) => {
+    for (let i=0; i < users.length; i++) { let user = users[i]
+        user.mail = await rpoUsersSQL.getUserEmailLogs(user.id)
+        await rpoUsers158.upsert({id:user.id},user)
+        
+        console.log("== migrate user ID:" + user.id +" page " + page +" ==")
+    }
+    // });
+        
+    await rpoMigrations.upsert({obj: migrationData.obj},migrationData)
+
+    console.log("####### MIGRATED PAGE "+ page, migrationData);
+
+    // this.migrateRawUser()
 }
 
 // USED IN FETCHING USER LESSON PROGRESS
