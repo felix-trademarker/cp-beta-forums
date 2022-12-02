@@ -74,6 +74,39 @@ module.exports = {
         });
     },
 
+    getSQLFormatted : async function(page,limit){
+        return new Promise(function(resolve, reject) {
+            var sql = `SELECT id, 
+                        username, 
+                        email, 
+                        code as hashCode, 
+                        name,
+                        nationality,
+                        country,
+                        city,
+                        avatar_url as avatarUrl,
+                        interests,
+                        skyper,
+                        sex,
+                        birthday,
+                        mailing_address1 as mailingAddress1,
+                        mailing_address2 as mailingAddress2,
+                        mailing_city as mailingCity,
+                        mailing_state as mailingState,
+                        mailing_country as mailingCountry,
+                        mailing_postal_code as mailingPostalCode,
+                        mobile_phone as mobileNumber,
+                        credit_amount as creditAmount FROM ${tableName}
+                        LIMIT ${limit}
+                        OFFSET ${(page -1) * limit}`
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
     getUserByEmailSQL : async function(email){
         return new Promise(function(resolve, reject) {
             var sql = "SELECT * FROM " + tableName

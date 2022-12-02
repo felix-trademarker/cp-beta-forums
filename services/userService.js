@@ -1,5 +1,5 @@
 
-let rpoUsers158 = require('../repositories/_mysql.users')
+let rpoUsers158 = require('../repositories/_users158')
 let rpoLessonProgressAws = require('../repositories/awsLessonProgress')
 let rpoUsersSQL = require('../repositories/mysql/_users')
 
@@ -13,7 +13,7 @@ exports.migrateRawUser = async function() {
 
     let page = 1
     let limit = 200
-    let objVersions = 'usersMail' 
+    let objVersions = 'usersMailv2' 
 
     let lastMigrated = await rpoMigrations.getLastMigrate(objVersions)
 
@@ -31,7 +31,7 @@ exports.migrateRawUser = async function() {
         created_at : moment().format()
     }
 
-    let users = await rpoUsersSQL.getSQL(page, limit)
+    let users = await rpoUsersSQL.getSQLFormatted(page, limit)
 
     // console.log(users.length);
     if (!users || users.length <= 0) {
