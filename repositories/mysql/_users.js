@@ -494,6 +494,34 @@ module.exports = {
         });
     },
 
+    getUserEmailLogsTotal : async function(){
+        return new Promise(function(resolve, reject) {
+            var sql = `SELECT 
+                        COUNT(*) as total
+                        FROM email_logs`
+            conCpodLogging.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
+    getUserEmailLogs : async function(offset){
+        return new Promise(function(resolve, reject) {
+            var sql = `SELECT
+                        user_id
+                        FROM email_logs 
+                        LIMIT 100 
+                        OFFSET ${offset}`
+            conCpodLogging.query(sql, function (err, result) {
+                if (err) reject(err);
+
+                resolve(result)
+            });
+        });
+    },
+
     addUserEmailLogs : async function(data){
         return new Promise(function(resolve, reject) {
             var sql = `INSERT INTO email_logs (user_id, email_id, email_send_id, opens, clicks, createdAt)

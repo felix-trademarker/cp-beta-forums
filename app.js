@@ -84,11 +84,16 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
 
     // lessonService.testGetUserProgress()
 
-    // userService.migrateRawUser()
+    
   
-  cron.schedule("0 */1 * * * *", () => {
-    // console.log('cron');
+  cron.schedule("0 */20 * * * *", () => {
+    // add users data to mongo
     userService.migrateRawUser()
+  });
+
+  cron.schedule("0 * */1 * * *", () => {
+    // console.log('cron');
+    userService.updateUserEmailLogs()
   });
 
   if (err) console.log(err);

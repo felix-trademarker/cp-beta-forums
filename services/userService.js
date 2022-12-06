@@ -39,7 +39,7 @@ exports.migrateRawUser = async function() {
         return false;
     }
 
-    // users.forEach(async (user) => {
+
     for (let i=0; i < users.length; i++) { let user = users[i]
         user.mail = await rpoUsersSQL.getUserEmailLogs(user.id)
         await rpoUsers158.upsert({id:user.id},user)
@@ -55,6 +55,57 @@ exports.migrateRawUser = async function() {
     // this.migrateRawUser()
 }
 
+exports.updateUserEmailLogs = async function() {
+
+    // get last email log
+    let totalNumber = await rpoUsersSQL.getUserEmailLogsTotal()
+    
+    if (totalNumber && totalNumber.length <= 0) return false; 
+
+    let page = 1
+    let limit = totalNumber[0].total - 100
+    let objVersions = 'emailLogs' 
+    let lastMigrated = await rpoMigrations.getLastMigrate(objVersions)
+
+    if (lastMigrated.length > 0) {
+        page = lastMigrated[0].page
+        limit = lastMigrated[0].limit
+    }
+
+    let migrationData = {
+        obj : objVersions,
+        page: page,
+        limit: totalNumber,
+        created_at : moment().format()
+    }
+
+    let userIds = await rpoUsersSQL.getUserEmailLogs(limit)
+
+    for (let i=0; i < userIds.length; i++) { 
+        
+        let userId = userIds[i]
+        let users = await rpoUsersSQL.getUserByIdSQL(userId.user_id)
+
+        if (users && users.length > 0) {
+            let user = users[0]
+            user.mail = await rpoUsersSQL.getUserEmailLogs(userId.user_id)
+            await rpoUsers158.upsert({id:user.id},user)
+
+            console.log("UPDATE USER MAIL LOGS", user.id)
+        }
+        
+        
+    }
+
+
+    // // });
+        
+    await rpoMigrations.upsert({obj: migrationData.obj},migrationData)
+
+    // console.log("####### MIGRATED PAGE "+ page, migrationData);
+
+    // this.migrateRawUser()
+}
 // USED IN FETCHING USER LESSON PROGRESS
 exports.getUserProgress = async function(req) {
     
