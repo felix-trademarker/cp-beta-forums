@@ -62,7 +62,7 @@ exports.updateUserEmailLogs = async function() {
     // get last email log
     let totalNumber = await rpoUsersSQL.getUserEmailLogsTotal()
     
-    if (totalNumber && totalNumber.length <= 0) return false; 
+    if (!totalNumber || totalNumber.length <= 0) return false; 
 
     let page = 1
     let limit = totalNumber[0].total - 100
@@ -82,6 +82,11 @@ exports.updateUserEmailLogs = async function() {
     }
 
     let userIds = await rpoUsersSQL.getUserEmailLogs(limit)
+
+    if (!userIds || userIds.length <= 0) {
+        console.log("=== NO NEW EMAIL LOG FOUND ===");
+        return false;
+    }
 
     for (let i=0; i < userIds.length; i++) { 
         
