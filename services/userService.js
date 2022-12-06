@@ -11,6 +11,8 @@ const {unserialize} = require('php-serialize');
 // temp function to be remove later
 exports.migrateRawUser = async function() {
 
+    console.log("=== Checking new users and migrate to mongo158 ===");
+
     let page = 1
     let limit = 200
     let objVersions = 'usersMailv2' 
@@ -56,7 +58,7 @@ exports.migrateRawUser = async function() {
 }
 
 exports.updateUserEmailLogs = async function() {
-
+    console.log("=== Checking new email logs ===");
     // get last email log
     let totalNumber = await rpoUsersSQL.getUserEmailLogsTotal()
     
