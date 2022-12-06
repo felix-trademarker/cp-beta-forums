@@ -86,12 +86,12 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
 
     
   
-  cron.schedule("* */20 * * * *", () => {
+  cron.schedule("0 */20 * * * *", () => {
     // add users data to mongo
     userService.migrateRawUser()
   });
 
-  cron.schedule("* * */1 * * *", () => {
+  cron.schedule("0 0 */1 * * *", () => {
     // console.log('cron');
     userService.updateUserEmailLogs()
   });
