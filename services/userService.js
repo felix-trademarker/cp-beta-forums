@@ -75,7 +75,7 @@ exports.updateUserEmailLogs = async function() {
     let migrationData = {
         obj : objVersions,
         page: page,
-        limit: totalNumber,
+        limit: totalNumber[0].total,
         created_at : moment().format()
     }
 
