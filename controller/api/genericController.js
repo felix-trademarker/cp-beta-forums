@@ -16,6 +16,8 @@ let userService = require('../../services/userService')
 let orderService = require('../../services/orderService')
 let groupService = require('../../services/groupService')
 
+let axios = require('axios')
+
 let hanzi = require("hanzi");
 
 exports.fetchSubTopic = async function(req, res, next) {
@@ -476,5 +478,13 @@ exports.getClasses = async function(req, res, next) {
   let classes = await lessonService.getClasses(id)
 
   res.json(classes);
+
+}
+
+exports.getUser = async function(req, res, next) {
+
+  let currentUser = await axios.get('https://www.chinesepod.com/api/v1/entrance/get-user')
+
+  res.json(currentUser);
 
 }

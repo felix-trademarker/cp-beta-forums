@@ -57,5 +57,7 @@ router.get('/order/:id', genericController.getOrder);
 
 router.get('/group/:id', genericController.getGroup);
 
+router.get('/entrance/get-user', genericController.getUser);
+
 
 module.exports = router;
