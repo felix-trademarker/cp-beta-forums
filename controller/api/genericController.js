@@ -485,7 +485,7 @@ exports.getUser = async function(req, res, next) {
 
   console.log("fetching users info from main server...");
   let currentUser = await axios.get('https://www.chinesepod.com/api/v1/entrance/get-user')
-  console.log(currentUser.data);
+  console.log(currentUser);
   res.json(currentUser.data);
 
 }
