@@ -962,55 +962,6 @@
         console.log(`[${pointStrs.join(', ')}]`);
     }
 
-    window.onload = function () {
-
-        // if (lessonDashboardApp.vocab.length) 
-        // lessonDashboardApp.vocab.forEach((vocab, i) => {
-        //     let hanziCount = vocab.t.length
-            
-        //     for (let x=0; x < hanziCount; x++) {
-
-        //         let elT = document.getElementById('target-t-'+x+'-'+vocab.id)
-        //         let elS = document.getElementById('target-t-'+x+'-'+vocab.id)
-                
-
-
-        //         let writert = HanziWriter.create('target-t-'+x+'-'+vocab.id, vocab.t[x], {
-        //             width: 100,
-        //             height: 100,
-        //             renderer: 'svg',
-        //             radicalColor: '#166E16',
-        //             onCorrectStroke: printStrokePoints,
-        //             onMistake: printStrokePoints,
-        //             showCharacter: false,
-        //         });
-
-        //         let writers = HanziWriter.create('target-s-'+x+'-'+vocab.id, vocab.s[x], {
-        //             width: 100,
-        //             height: 100,
-        //             renderer: 'svg',
-        //             radicalColor: '#166E16',
-        //             onCorrectStroke: printStrokePoints,
-        //             onMistake: printStrokePoints,
-        //             showCharacter: false,
-        //         });
-
-        //         document.querySelector('.js-animate-t-'+x+'-'+vocab.id).addEventListener('click', function () {
-        //             writert.animateCharacter();
-        //         });
-
-        //         document.querySelector('.js-animate-s-'+x+'-'+vocab.id).addEventListener('click', function () {
-        //             writers.animateCharacter();
-        //         });
-                
-        //     }
-
-        // })
-
-
-
-    };
-
 
 	$( function() {
 		$( ".rearrange-list" ).sortable({
@@ -1026,14 +977,5 @@
         })
 	} );
 	
-    // test drag
-    // $(document).ready(function () {
-    //     $(".sortableList").sortable({
-    //     revert: true,
-
-    //     });
-    // })
-
-    
 
 </script>

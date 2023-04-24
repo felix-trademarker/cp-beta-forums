@@ -35,47 +35,33 @@
 
 				
 			<div class="col-lg-9">
+			<%
+				let imageUrl = ""
+				if (content.image.includes("https")) {
+					imageUrl = content.image
+				} else {
+					imageUrl = "https://s3contents.chinesepod.com/"+ content.v3_id + "/" + content.hash_code +"/"+ content.image
+				}
+
+			%>
 
 				<div class="tab-content" >
 					<% if(content.video){ %>
 
-					<div class="tab-pane fade show active" id="nav-video" role="tabpanel" aria-labelledby="nav-video-tab">
-						<div class="video-main">
+						<video id="plyr_player" class="img-fluid" playsinline crossorigin data-poster="<%= imageUrl %>" >
 
-							<div class="card mb-0">
+							<source src="https://d3glhinmyc42ep.cloudfront.net/9a37789e-7d6e-4431-9577-d47250b721b4/hls/iv5u7bls7o.m3u8" type="application/x.mpegURL" />
+						  
+		
+						</video>
 
-								<div class="protected"> 
-									<script src="https://fast.wistia.com/embed/medias/<%= content.video %>.jsonp" async></script>
-									<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
-									<div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
-										<div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
-											<div class="wistia_embed wistia_async_<%= content.video %> videoFoam=true" style="height:100%;position:relative;width:100%">
-												<div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;">
-													<img src="https://fast.wistia.com/embed/medias/<%= content.video %>/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" />
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-						</div>
-					</div>
 					<% } %>
 
 					<div class="tab-pane fade <%= !content.video ? 'show active' : '' %>" id="nav-audio" role="tabpanel" aria-labelledby="nav-audio-tab">
 						<div class="video-main">
 
 							<div class="card mb-0">
-								<%
-								let imageUrl = ""
-								if (content.image.includes("https")) {
-									imageUrl = content.image
-								} else {
-									imageUrl = "https://s3contents.chinesepod.com/"+ content.v3_id + "/" + content.hash_code +"/"+ content.image
-								}
-
-								%>
+								
 
 								<img alt="<%= content.title %>" class="card-img" src="<%= imageUrl %>" lazy="loaded">
 								<div id="lessonOverlay" class="card-img-overlay d-flex align-items-center ">

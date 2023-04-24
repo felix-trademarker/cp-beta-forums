@@ -131,3 +131,7 @@ if (Notification.permission === 'granted') {
         }
     })
 }
+
+const player = new Plyr('#plyr_player');
+
+
