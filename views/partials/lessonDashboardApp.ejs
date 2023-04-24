@@ -998,7 +998,7 @@
                     const defaultOptions = {};
 
                     const hls = new Hls();
-                    hls.loadSource("https://d2arcxjkuir81y.cloudfront.net/assets/b4940f73-768a-4241-82ed-d34b720b5457/HLS/4209.v.intermediate.animalproverbs.muttononthemenu.simp.m3u8");
+                    hls.loadSource(source);
 
                     hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
                         // Transform available levels into an array of integers (height values).
