@@ -788,6 +788,8 @@
                 this.lesson = await this.getAPIFetch('https://www.chinesepod.com/api/v1/lessons/get-lesson?slug=<%= slug %>');
                 // this.lesson = {"id":"1670","title":"Asking Height and Weight","slug":"asking-height-and-weight","introduction":"Just by being a foreigner in China, you're a fair target for all sorts of personal questions.  So don't be surprised when you're asked how tall you are, or how much you weigh.  In this lesson, learn to answer these questions.  Remember: for personal questions like these, truth is optional.","hash_code":"02e7a24f936f36a5c290b8863db5f3cfdaff5053","image":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/images/3ls6s94iIcxyGbfnvXJVAg.jpg","type":"lesson","level":"Elementary","hosts":"Jason,Jenny","publication_timestamp":"2011-05-12T06:00:00.000Z","saved":false,"studied":false,"video":null,"mp3_dialogue":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/chinesepod_B1670dg.mp3","mp3_public":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/chinesepod_B1670pb.mp3","mp3_private":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/chinesepod_B1670pr.mp3","mp3_thefix":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/mp3/chinesepod_B1670rv.mp3","pdf1":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/pdf/chinesepod_B1670.pdf","pdf2":"https://s3contents.chinesepod.com/1670/02e7a24f936f36a5c290b8863db5f3cfdaff5053/pdf/chinesepod_B1670trad.pdf","extra":false}
                 if (this.lesson && this.lesson.id) {
+                    
+                    this.mountVideo
 
                     let courseId = '<%= courseId %>'
                     
@@ -980,184 +982,184 @@
 
         
 
-        mountVideo: async function() {
-        // if (this.lessonData && this.lessonData.sources) {
-            this.isActive = 'video';
+            mountVideo: async function() {
+            // if (this.lessonData && this.lessonData.sources) {
+                this.isActive = 'video';
 
-            const video = document.querySelector('#videoplyr-s3');
-            this.hlsNativeSupport =
-            video && video.canPlayType('application/vnd.apple.mpegURL');
+                const video = document.querySelector('#videoplyr-s3');
+                this.hlsNativeSupport =
+                video && video.canPlayType('application/vnd.apple.mpegURL');
 
-            console.log(this.lesson);
+                console.log(this.lesson);
 
-            if (this.lesson.sources.hls && this.hlsSupport) {
-                const source = this.lesson.sources.hls['simplified'];
+                if (this.lesson.sources.hls && this.hlsSupport) {
+                    const source = this.lesson.sources.hls['simplified'];
 
-                const defaultOptions = {};
+                    const defaultOptions = {};
 
-                const hls = new Hls();
-                hls.loadSource(source);
+                    const hls = new Hls();
+                    hls.loadSource(source);
 
-                hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-                    // Transform available levels into an array of integers (height values).
-                    const availableQualities = hls.levels.map(l => l.height);
+                    hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+                        // Transform available levels into an array of integers (height values).
+                        const availableQualities = hls.levels.map(l => l.height);
 
-                    // Add new qualities to option
-                    defaultOptions.quality = {
-                    default: availableQualities[3],
-                    options: [...availableQualities],
-                    // this ensures Plyr to use Hls to update quality level
-                    forced: true,
-                    onChange: e => updateQuality(e)
+                        // Add new qualities to option
+                        defaultOptions.quality = {
+                        default: availableQualities[3],
+                        options: [...availableQualities],
+                        // this ensures Plyr to use Hls to update quality level
+                        forced: true,
+                        onChange: e => updateQuality(e)
+                        };
+
+                        this.videoplyr = new Plyr('#videoplyr-s3', defaultOptions);
+
+                        this.videoplyr.on('ready', () => {
+                        this.hidePlayer = false;
+                        this.floatingTogglePlayback();
+                        });
+                        this.videoplyr.on('timeupdate', event => {
+                        if (window.hls.currentLevel > -1) {
+                            this.videoplyr.quality =
+                            availableQualities[window.hls.currentLevel];
+                        }
+                        this.onTimeupdate(event);
+                        });
+                        this.videoplyr.on('seeking', this.onSeeking);
+                        this.videoplyr.on('seeked', this.onSeeked);
+                        this.videoplyr.on('playing', this.onPlaying);
+                        this.videoplyr.on('pause', this.onPause);
+                        this.videoplyr.on('ended', this.handleFinished);
+                        // this.videoplyr.on('stalled', console.log);
+                        // this.videoplyr.on('canplay', console.log);
+                        this.videoplyr.on('waiting', event => {
+                        const startBuffer = this.videoplyr.buffered;
+                        setTimeout(() => {
+                            console.log('Player Buffering');
+                            console.log({
+                            startBuffer,
+                            currentBuffer: this.videoplyr.buffered
+                            });
+                            if (startBuffer === this.videoplyr.buffered) {
+                            setAutomaticQuality();
+                            }
+                        }, 20000);
+                        });
+                    });
+                    hls.attachMedia(video);
+                    window.hls = hls;
+
+                    const updateQuality = newQuality => {
+                        window.hls.levels.forEach((level, levelIndex) => {
+                        if (level.height === newQuality) {
+                            if (window.hls.currentLevel !== levelIndex) {
+                            console.log('Found quality match with ' + newQuality);
+                            window.hls.currentLevel = levelIndex;
+                            }
+                        }
+                        });
                     };
 
-                    this.videoplyr = new Plyr('#videoplyr-s3', defaultOptions);
-
-                    this.videoplyr.on('ready', () => {
-                    this.hidePlayer = false;
-                    this.floatingTogglePlayback();
-                    });
-                    this.videoplyr.on('timeupdate', event => {
-                    if (window.hls.currentLevel > -1) {
-                        this.videoplyr.quality =
-                        availableQualities[window.hls.currentLevel];
+                    function setAutomaticQuality() {
+                        console.log('Current level: ' + window.hls.currentLevel);
+                        window.hls.currentLevel = -1;
+                        console.log('New level: ' + window.hls.currentLevel);
                     }
-                    this.onTimeupdate(event);
+
+                    this.$gtag.event('select_content', {
+                        event_category: 'engagement',
+                        event_label: 's3-player'
+                    }); 
+                } else if (this.lesson.sources.hls && this.hlsNativeSupport) {
+                    this.videoplyr = new Plyr('#videoplyr-s3');
+                    this.videoplyr.on('ready', () => {
+                        this.hidePlayer = false;
+                        this.floatingTogglePlayback();
                     });
+                    this.videoplyr.on('timeupdate', this.onTimeupdate);
                     this.videoplyr.on('seeking', this.onSeeking);
                     this.videoplyr.on('seeked', this.onSeeked);
                     this.videoplyr.on('playing', this.onPlaying);
                     this.videoplyr.on('pause', this.onPause);
                     this.videoplyr.on('ended', this.handleFinished);
-                    // this.videoplyr.on('stalled', console.log);
-                    // this.videoplyr.on('canplay', console.log);
-                    this.videoplyr.on('waiting', event => {
-                    const startBuffer = this.videoplyr.buffered;
-                    setTimeout(() => {
-                        console.log('Player Buffering');
-                        console.log({
-                        startBuffer,
-                        currentBuffer: this.videoplyr.buffered
-                        });
-                        if (startBuffer === this.videoplyr.buffered) {
-                        setAutomaticQuality();
-                        }
-                    }, 20000);
-                    });
-                });
-                hls.attachMedia(video);
-                window.hls = hls;
 
-                const updateQuality = newQuality => {
-                    window.hls.levels.forEach((level, levelIndex) => {
-                    if (level.height === newQuality) {
-                        if (window.hls.currentLevel !== levelIndex) {
-                        console.log('Found quality match with ' + newQuality);
-                        window.hls.currentLevel = levelIndex;
-                        }
-                    }
+                    this.$gtag.event('select_content', {
+                        event_category: 'engagement',
+                        event_label: 's3-player-native'
                     });
-                };
-
-                function setAutomaticQuality() {
-                    console.log('Current level: ' + window.hls.currentLevel);
-                    window.hls.currentLevel = -1;
-                    console.log('New level: ' + window.hls.currentLevel);
+                // } else if (this.lessonData.sources.wistia) {
+                // if (!window._wq) {
+                //     let wistiaScript = document.createElement('script');
+                //     wistiaScript.setAttribute(
+                //     'src',
+                //     'https://fast.wistia.net/assets/external/E-v1.js'
+                //     );
+                //     document.head.appendChild(wistiaScript);
+                // }
+                // window._wq = window._wq || [];
+                // _wq.push({
+                //     id: this.videoSource(this.lessonData.sources.wistia),
+                //     onReady: video => {
+                //     this.videoPlayer = video;
+                //     video.bind('timechange', async t => {
+                //         let current = Math.floor(((t / video.duration()) * 100) / 5) * 5;
+                //         this.floatingProgress = Math.round((t / video.duration()) * 100);
+                //         await this.logProgress(current);
+                //     });
+                //     video.bind('play', () => {
+                //         if (this.hasFinished) {
+                //         this.hasFinished = false;
+                //         }
+                //         this.isPlaying = true;
+                //     });
+                //     video.bind('pause', () => {
+                //         this.isPlaying = false;
+                //     });
+                //     video.bind('end', () => {
+                //         this.hasFinished = true;
+                //     });
+                //     }
+                // });
+                // this.$gtag.event('select_content', {
+                //     event_category: 'engagement',
+                //     event_label: 'wistia'
+                // });
+                // } else {
+                // this.videoplyr = new Plyr('#videoplyr-free');
+                // this.videoplyr.on('ready', this.floatingTogglePlayback);
+                // this.videoplyr.on('timeupdate', this.onTimeupdate);
+                // this.videoplyr.on('seeking', this.onSeeking);
+                // this.videoplyr.on('seeked', this.onSeeked);
+                // this.videoplyr.on('playing', this.onPlaying);
+                // this.videoplyr.on('pause', this.onPause);
+                // this.videoplyr.on('ended', this.handleFinished);
+                // this.$gtag.event('select_content', {
+                //     event_category: 'engagement',
+                //     event_label: 'free-player'
+                // });
                 }
 
                 this.$gtag.event('select_content', {
-                    event_category: 'engagement',
-                    event_label: 's3-player'
-                }); 
-            } else if (this.lesson.sources.hls && this.hlsNativeSupport) {
-                this.videoplyr = new Plyr('#videoplyr-s3');
-                this.videoplyr.on('ready', () => {
-                    this.hidePlayer = false;
-                    this.floatingTogglePlayback();
+                event_category: 'engagement',
+                event_label: 'video'
                 });
-                this.videoplyr.on('timeupdate', this.onTimeupdate);
-                this.videoplyr.on('seeking', this.onSeeking);
-                this.videoplyr.on('seeked', this.onSeeked);
-                this.videoplyr.on('playing', this.onPlaying);
-                this.videoplyr.on('pause', this.onPause);
-                this.videoplyr.on('ended', this.handleFinished);
-
-                this.$gtag.event('select_content', {
-                    event_category: 'engagement',
-                    event_label: 's3-player-native'
-                });
-            // } else if (this.lessonData.sources.wistia) {
-            // if (!window._wq) {
-            //     let wistiaScript = document.createElement('script');
-            //     wistiaScript.setAttribute(
-            //     'src',
-            //     'https://fast.wistia.net/assets/external/E-v1.js'
-            //     );
-            //     document.head.appendChild(wistiaScript);
             // }
-            // window._wq = window._wq || [];
-            // _wq.push({
-            //     id: this.videoSource(this.lessonData.sources.wistia),
-            //     onReady: video => {
-            //     this.videoPlayer = video;
-            //     video.bind('timechange', async t => {
-            //         let current = Math.floor(((t / video.duration()) * 100) / 5) * 5;
-            //         this.floatingProgress = Math.round((t / video.duration()) * 100);
-            //         await this.logProgress(current);
-            //     });
-            //     video.bind('play', () => {
-            //         if (this.hasFinished) {
-            //         this.hasFinished = false;
-            //         }
-            //         this.isPlaying = true;
-            //     });
-            //     video.bind('pause', () => {
-            //         this.isPlaying = false;
-            //     });
-            //     video.bind('end', () => {
-            //         this.hasFinished = true;
-            //     });
-            //     }
-            // });
-            // this.$gtag.event('select_content', {
-            //     event_category: 'engagement',
-            //     event_label: 'wistia'
-            // });
-            // } else {
-            // this.videoplyr = new Plyr('#videoplyr-free');
-            // this.videoplyr.on('ready', this.floatingTogglePlayback);
-            // this.videoplyr.on('timeupdate', this.onTimeupdate);
-            // this.videoplyr.on('seeking', this.onSeeking);
-            // this.videoplyr.on('seeked', this.onSeeked);
-            // this.videoplyr.on('playing', this.onPlaying);
-            // this.videoplyr.on('pause', this.onPause);
-            // this.videoplyr.on('ended', this.handleFinished);
-            // this.$gtag.event('select_content', {
-            //     event_category: 'engagement',
-            //     event_label: 'free-player'
-            // });
+
+                this.player.on('timeupdate', this.onTimeupdate);
+                this.player.on('seeking', this.onSeeking);
+                this.player.on('seeked', this.onSeeked);
+                this.player.on('playing', this.onPlaying);
+                this.player.on('pause', this.onPause);
             }
 
-            this.$gtag.event('select_content', {
-            event_category: 'engagement',
-            event_label: 'video'
-            });
-        // }
-
-            this.player.on('timeupdate', this.onTimeupdate);
-            this.player.on('seeking', this.onSeeking);
-            this.player.on('seeked', this.onSeeked);
-            this.player.on('playing', this.onPlaying);
-            this.player.on('pause', this.onPause);
-        }
-
-    },
+        },
 
 
     })
 
-     lessonDashboardApp.fetchLessons
-    lessonDashboardApp.mountVideo
+    lessonDashboardApp.fetchLessons
+    // lessonDashboardApp.mountVideo
 
     function printStrokePoints(data) {
         var pointStrs = data.drawnPath.points.map((point) => `{x: ${point.x}, y: ${point.y}}`);
