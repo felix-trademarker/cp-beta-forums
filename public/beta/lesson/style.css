@@ -337,9 +337,10 @@ small a {
 }
 
 button.active{
-    background: #e1001e !important;
+    background: #5e72e4 !important;
     --bs-text-opacity: 1;
     color: #fff !important;
+    border-color: #5e72e4;
 }
 
 /* EXERCISE STYLES */
@@ -580,3 +581,9 @@ span.answer {
     display: inline-block;
     width:60px;
 }
+
+
+.audio-player-controls{
+    width: 300px;
+}
+
