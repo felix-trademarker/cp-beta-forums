@@ -287,7 +287,7 @@ small a {
 }
 
 .btn-block+.btn-block {
-    margin-top: 0.5rem;
+    margin-top: 0;
 }
 
 .btn-facebook {
