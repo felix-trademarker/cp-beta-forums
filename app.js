@@ -93,7 +93,7 @@ conn.connectToServer( function( err, client ) { // MAIN MONGO START
 
   cron.schedule("0 0 */1 * * *", () => {
     // console.log('cron');
-    userService.updateUserEmailLogs()
+    // userService.updateUserEmailLogs()
   });
 
   if (err) console.log(err);
