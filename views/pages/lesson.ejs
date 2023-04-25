@@ -188,7 +188,7 @@
 									<div class="row">
 										<h5 class="card-title text-uppercase text-muted mb-0"> In this Lesson</h5>
 										<div class="ml-auto">
-											<a href="/explore?search=&amp;elementary=true" class="">
+											<a href="/explore?search=&amp;<%= levelSlug.replace(' ', '-') %>=true" class="">
 												<span class="badge float-right badge-default badge-lg <%= levelSlug.replace(' ', '-') %>">{{ lesson.level }}</span>
 											</a>
 											<span class="badge float-right mr-2 badge-default badge-lg <%= levelSlug.replace(' ', '-') %>">ID: {{ lesson.id }}</span>
