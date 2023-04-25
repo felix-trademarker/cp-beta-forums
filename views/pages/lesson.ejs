@@ -23,13 +23,10 @@
 			<div class="col-lg-3">
 
 				<div class="my-btn-group d-flex align-items-center mt-2 gap-3 mb-4 mb-lg-0">
-					<button @click="saveLesson" type="button" class="btn btn-icon btn-block btn-secondary text-danger"
-						v-bind:class="{ text-danger: lesson.saved }" class="btn btn-icon btn-block btn-secondary">
+					<button @click="saveLesson" type="button" v-bind:class="{ text-danger: lesson.saved }" class="btn btn-icon btn-block btn-secondary">
 						<i class="m-0 fas fa-bookmark"></i> <strong>Saved</strong>
 					</button>
-					<button @click="studyCompleted" type="button"
-						v-bind:class="{ text-danger: (lesson.studied > 0 ? false : true) }"
-						class="btn btn-icon btn-block btn-secondary">
+					<button @click="studyCompleted" type="button" v-bind:class="{ text-danger: (lesson.studied > 0 ? false : true) }" class="btn btn-icon btn-block btn-secondary">
 						<i class="m-0 far fa-check-circle"></i> <strong>Completed</strong>
 					</button>
 				</div>
@@ -145,10 +142,6 @@
 					<!-- <button type="button" class="btn btn-block ">
 						<strong>Review</strong>
 					</button> -->
-				</div>
-
-				<div class="in-this-lesson">
-					<p v-if="lesson"> {{ lesson.introduction.trim() }} </p>
 				</div>
 				
 			</div>
