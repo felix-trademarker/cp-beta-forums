@@ -108,7 +108,7 @@ module.exports = {
     getContentSlug : async function(slug){
         return new Promise(function(resolve, reject) {
             var sql = "SELECT * FROM " + tableName
-            sql += " WHERE slug='" + slug + "'"
+            sql += " WHERE slug='" + encodeURIComponent(slug) + "'"
             con.query(sql, function (err, result) {
                 if (err) reject(err);
 
