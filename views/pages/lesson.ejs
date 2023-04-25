@@ -40,7 +40,7 @@
 		<div class="row">
 
 
-			<div class="col-lg-<%= (course.length > 0 ? '9' : '8 m-auto') %>" >
+			<div class="col-lg-<%= (course.length > 0 ? 9 : 8) %>" v-bind:class="{ m-auto: (course.length > 0 ? false : true) }">
 			<%
 				let imageUrl = ""
 				if (content.image.includes("https")) {
@@ -53,14 +53,9 @@
 
 				<div class="tab-content">
 					<% if(content.video){ %>
-					<div class="tab-pane fade <%= content.video ? 'show active' : '' %>" id="nav-video" role="tabpanel"
-						aria-labelledby="nav-video-tab">
-						<div class="video-main">
 
-							<video id="videoplyr-s3" class="img-fluid" playsinline crossorigin data-poster="<%= imageUrl %>"></video>
-
-						</div>
-					</div>
+					<video id="videoplyr-s3" class="img-fluid" playsinline crossorigin
+						data-poster="<%= imageUrl %>"></video>
 
 					<% } %>
 
@@ -130,7 +125,7 @@
 					<% if(content.video){ %>
 					<button data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab"
 						aria-controls="nav-video" aria-selected="true" type="button"
-						class="btn btn-block <%= content.video ? 'btn-primary' : 'btn-secondary' %>">
+						class="btn me-3 px-5 py-2 isactive">
 						<strong>Video Lesson</strong>
 					</button>
 					<% } %>
@@ -138,14 +133,14 @@
 					<% if(content.mp3_private) { %>
 					<button data-bs-toggle="tab" data-bs-target="#nav-audio" type="button" role="tab"
 						aria-controls="nav-audio" aria-selected="false" type="button"
-						class="btn btn-block <%= !content.video ? 'btn-primary' : 'btn-secondary' %>">
+						class="btn bg-white px-5 me-3 py-2 <%= !content.video ? 'isactive' : '' %>">
 						<strong>Audio Lesson</strong>
 					</button>
 					<% } %>
 
-					<!-- <button type="button" class="btn btn-block ">
+					<button type="button" class="btn bg-white px-5 py-2">
 						<strong>Review</strong>
-					</button> -->
+					</button>
 				</div>
 
 				<div class="in-this-lesson">
