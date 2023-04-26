@@ -42,19 +42,18 @@
 
 			<div class="col-lg-<%= (course && course.length > 0 ? '9' : '8 m-auto') %>">
 				<%
-				let imageUrl = ""
-				if (content && content.image && content.image.includes("https")) {
-					imageUrl = content.image
-				} else {
-					imageUrl = ""
-				}
+					let imageUrl = ""
+					if (content && content.image && content.image.includes("https")) {
+						imageUrl = content.image
+					} else {
+						imageUrl = ""
+					}
 
-			%>
+				%>
 
 				<div class="tab-content">
-					<% if(content && content.video){ %>
-					<div class="tab-pane fade" id="nav-video" role="tabpanel"
-						aria-labelledby="nav-video-tab">
+
+					<div id="nav-video" v-bind:class="{'d-none': (isActive == 'video' ? false : true) }">
 						<div class="video-main">
 
 							<video id="videoplyr-s3" class="img-fluid" playsinline crossorigin
@@ -63,32 +62,27 @@
 						</div>
 					</div>
 
-					<% } %>
-
-					<% if(content && content.mp3_private){ %>
-					<div class="tab-pane fade" id="nav-audio" role="tabpanel"
-						aria-labelledby="nav-audio-tab">
+					<div id="nav-audio" v-bind:class="{'d-none': (isActive == 'audio' ? false : true) }">
 						<div class="video-main">
-
 							<div class="card mb-0">
-
-
-								<img alt="<%= content.title %>" class="card-img" src="<%= imageUrl %>" lazy="loaded">
+								<img alt="<%= content.title %>" class="card-img" :src="lesson.image" lazy="loaded">
 								<div id="lessonOverlay" class="card-img-overlay d-flex align-items-center ">
 									<div class="mx-auto">
 										<div class="audio-player-controls">
 											<div class="col-12">
 												<div class="row">
-													<div class="col-4">
-														<!-- <button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
-															<i class="fi flaticon-040-backward text-white jump emphasize-dark"></i>
-														</button> -->
-													</div>
-													<div class="col-4">
+													<!-- <div class="col-4">
 														<button type="button"
-															class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default play-audio">
-															<i class="play-btn bi bi-play-fill"></i>
-															<audio id="">
+															class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+															<i
+																class="fi flaticon-040-backward text-white jump emphasize-dark"></i>
+														</button>
+													</div> -->
+													<div class="col-12">
+														
+														<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default play-audio">
+															<i class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
+															<audio>
 																<%
 																let audioURL = ""
 																if (content.mp3_private.includes("https")) {
@@ -104,26 +98,131 @@
 														</button>
 
 													</div>
-													<div class="col-4">
-														<!-- <button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
-															<i class="fi flaticon-032-forwards text-white jump emphasize-dark"></i>
-														</button> -->
-													</div>
+													<!-- <div class="col-4">
+														<button type="button"
+															class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+															<i
+																class="fi flaticon-032-forwards text-white jump emphasize-dark"></i>
+														</button>
+													</div> -->
 												</div>
 											</div>
 										</div>
 									</div>
-
-
 								</div>
-
-
-
 							</div>
 
 						</div>
 					</div>
-					<% } %>
+
+					<div id="nav-review" v-bind:class="{'d-none': (isActive == 'review' ? false : true) }">
+						<div class="review-main">
+
+							<div class="card mb-0">
+								<img alt="<%= content.title %>" class="card-img" :src="lesson.image" lazy="loaded">
+								<div id="lessonOverlay" class="card-img-overlay d-flex align-items-center ">
+									<div class="mx-auto">
+										<div class="audio-player-controls">
+											<div class="col-12">
+												<div class="row">
+													<!-- <div class="col-4">
+														<button type="button"
+															class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+															<i
+																class="fi flaticon-040-backward text-white jump emphasize-dark"></i>
+														</button>
+													</div> -->
+													<div class="col-12">
+														
+														<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default play-audio">
+															<i class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
+															<audio>
+																<%
+																let audioURLR = ""
+																if (content.mp3_thefix.includes("https")) {
+																	audioURLR = content.mp3_thefix
+																} else {
+																	audioURLR = "https://s3contents.chinesepod.com/"+ content.v3_id + "/" + content.hash_code +"/"+ content.mp3_thefix
+																}
+						
+																%>
+																<source src="<%= audioURLR %>" type="audio/mp3">
+																Your browser does not support the audio element.
+															</audio>
+														</button>
+
+													</div>
+													<!-- <div class="col-4">
+														<button type="button"
+															class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+															<i
+																class="fi flaticon-032-forwards text-white jump emphasize-dark"></i>
+														</button>
+													</div> -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div id="nav-review" v-bind:class="{'d-none': (isActive == 'dialogue' ? false : true) }">
+						<div class="review-main">
+
+							<div class="card mb-0">
+								<img alt="<%= content.title %>" class="card-img" :src="lesson.image" lazy="loaded">
+								<div id="lessonOverlay" class="card-img-overlay d-flex align-items-center ">
+									<div class="mx-auto">
+										<div class="audio-player-controls">
+											<div class="col-12">
+												<div class="row">
+													<!-- <div class="col-4">
+														<button type="button"
+															class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+															<i
+																class="fi flaticon-040-backward text-white jump emphasize-dark"></i>
+														</button>
+													</div> -->
+													<div class="col-12">
+														
+														<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default play-audio">
+															<i class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
+															<audio>
+																<%
+																let audioURLD = ""
+																if (content.mp3_dialogue.includes("https")) {
+																	audioURLD = content.mp3_dialogue
+																} else {
+																	audioURLD = "https://s3contents.chinesepod.com/"+ content.v3_id + "/" + content.hash_code +"/"+ content.mp3_dialogue
+																}
+						
+																%>
+																<source src="<%= audioURLD %>" type="audio/mp3">
+																Your browser does not support the audio element.
+															</audio>
+														</button>
+
+													</div>
+													<!-- <div class="col-4">
+														<button type="button"
+															class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default">
+															<i
+																class="fi flaticon-032-forwards text-white jump emphasize-dark"></i>
+														</button>
+													</div> -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
 
 				</div>
 
@@ -133,36 +232,52 @@
 							<div class="col-auto mt-2">
 								<label class="custom-toggle">
 									<input type="checkbox">
-									<span data-label-off="No" data-label-on="Yes" class="custom-toggle-slider rounded-circle"></span>
+									<span data-label-off="No" data-label-on="Yes"
+										class="custom-toggle-slider rounded-circle"></span>
 								</label>
 							</div>
 							<div class="col small pt-1" style="display: flex; align-items: center;">
 								<span>Automatically mark lessons as completed</span>
 								<span class="ml-1">
 									<span class="el-popover__reference-wrapper">
-										<i class="fa fa-info-circle el-popover__reference" aria-describedby="el-popover-2537" tabindex="0"></i>
+										<i class="fa fa-info-circle el-popover__reference"
+											aria-describedby="el-popover-2537" tabindex="0"></i>
 									</span>
 								</span>
 							</div>
 						</div>
 					</div>
 					<div class="col-12">
-						<div id="access-different-recorded-materials" role="tablist" class="nav row">
-							<div class="col-6 col-md-4 mt-2">
-								<button data-bs-toggle="tab" data-bs-target="#nav-video" role="tab" aria-controls="nav-video" aria-selected="true" type="button" class="btn btn-block btn-secondary active">
+						<div id="access-different-recorded-materials" class="row">
+
+							<div v-if="lesson.video" class="col-6 col-md-4 mt-2">
+								<button @click="setActive('video')" type="button"
+									:class="'btn btn-block ' + (isActive == 'video' ? 'btn-primary':'btn-secondary')">
 									<i class="fas fa-film"></i> Video Lesson
 								</button>
 							</div>
-							<div class="col-6 col-md-4 mt-2">
-								<button data-bs-toggle="tab" data-bs-target="#nav-audio" role="tab" aria-controls="nav-audio" aria-selected="false" type="button" class="btn btn-block btn-secondary">
+
+							<div v-if="lesson.mp3_private" class="col-6 col-md-4 mt-2">
+								<button @click="setActive('audio')" type="button"
+									:class="'btn btn-block ' + (isActive == 'audio' ? 'btn-primary':'btn-secondary')">
 									<i class="fas fa-podcast"></i> Audio Lesson
 								</button>
 							</div>
-							<div class="col-6 col-md-4 mt-2">
-								<!-- <button data-bs-toggle="tab" data-bs-target="#nav-review" role="tab" aria-controls="nav-video" aria-selected="false" type="button" class="btn btn-block btn-secondary">
-									<i class="ni icon-vocabulary"></i> Review
-								</button> -->
+							
+							<div v-if="lesson.mp3_dialogue" class="col-6 col-md-4 mt-2">
+								<button @click="setActive('dailogue')" type="button"
+									:class="'btn btn-block ' + (isActive == 'review' ? 'btn-primary':'btn-secondary')">
+									<i class="ni icon-speaking"></i> Dialogue
+								</button>
 							</div>
+
+							<div v-if="lesson.mp3_thefix" class="col-6 col-md-4 mt-2">
+								<button @click="setActive('review')" type="button"
+									:class="'btn btn-block ' + (isActive == 'review' ? 'btn-primary':'btn-secondary')">
+									<i class="ni icon-vocabulary"></i> Review
+								</button>
+							</div>
+
 						</div>
 					</div>
 				</div>
