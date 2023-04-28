@@ -806,7 +806,11 @@
             fetchLessons: async function(){
 
                 let authToken = await this.getToken();
-                console.log(authToken);
+                // console.log(authToken);
+
+                if (!authToken && !authToken.token) {
+                    window.location = "/login";
+                }
 
                 if (!this.vuex.token) {
                     console.log('login');
