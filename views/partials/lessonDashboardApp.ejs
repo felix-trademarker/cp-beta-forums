@@ -51,7 +51,7 @@
             newDeckCategory: "",
             isActive: "video",
             hlsNativeSupport: true,
-            authToken: this.getToken()
+            authToken: null
 
         },
         methods: {
@@ -806,8 +806,8 @@
         computed: {
             fetchLessons: async function(){
 
-                // let authToken = await this.getToken();
-                // console.log(authToken);
+                this.authToken = await this.getToken();
+                console.log(authToken);
 
                 if (!this.authToken || !this.authToken.token) {
                     window.location = "/login";
