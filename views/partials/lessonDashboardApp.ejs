@@ -807,7 +807,7 @@
             fetchLessons: async function(){
 
                 this.authToken = await this.getToken();
-                console.log(authToken);
+                console.log(this.authToken);
 
                 if (!this.authToken || !this.authToken.token) {
                     window.location = "/login";
