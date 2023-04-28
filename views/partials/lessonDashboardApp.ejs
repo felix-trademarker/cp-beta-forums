@@ -50,7 +50,8 @@
             selectedDeckId: 0,
             newDeckCategory: "",
             isActive: "video",
-            hlsNativeSupport: true
+            hlsNativeSupport: true,
+            authToken: this.getToken()
 
         },
         methods: {
@@ -75,7 +76,7 @@
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                        'Authorization': 'Bearer '+ (this.authToken ? this.authToken.token : '')
                     },
                 })
                 .then(resp => resp.json())
@@ -95,7 +96,7 @@
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                        'Authorization': 'Bearer '+ (this.authToken ? this.authToken.token : '')
                     },
                     method: "POST",
                     body: JSON.stringify(params)
@@ -125,7 +126,7 @@
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                        'Authorization': 'Bearer '+ (this.authToken ? this.authToken.token : '')
                     },
                     method: "PATCH",
                     body: JSON.stringify(params)
@@ -155,7 +156,7 @@
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
                         'Content-Type': 'application/json,text/plain',
-                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                        'Authorization': 'Bearer '+ (this.authToken ? this.authToken.token : '')
                     },
                     method: "PUT",
                     body: JSON.stringify(params)
@@ -185,7 +186,7 @@
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                        'Authorization': 'Bearer '+ (this.authToken ? this.authToken.token : '')
                     },
                     method: "PUT",
                     body: JSON.stringify(params)
@@ -214,7 +215,7 @@
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+ (this.vuex ? this.vuex.token : '')
+                        'Authorization': 'Bearer '+ (this.authToken ? this.authToken.token : '')
                     },
                     method: "DELETE",
                     body: JSON.stringify(params)
@@ -805,20 +806,22 @@
         computed: {
             fetchLessons: async function(){
 
-                let authToken = await this.getToken();
+                // let authToken = await this.getToken();
                 // console.log(authToken);
 
-                if (!authToken && !authToken.token) {
+                if (!this.authToken || !this.authToken.token) {
                     window.location = "/login";
+
+                    return;
                 }
 
-                if (!this.vuex.token) {
-                    console.log('login');
-                    window.location = "/login";
-                } else {
-                    console.log('continue');
-                    // window.location = "/login";
-                }
+                // if (!this.vuex.token) {
+                //     console.log('login');
+                //     window.location = "/login";
+                // } else {
+                //     console.log('continue');
+                //     // window.location = "/login";
+                // }
 
                 this.lesson = await this.getAPIFetch('https://www.chinesepod.com/api/v1/lessons/get-lesson?slug=<%= slug %>');
                 // this.lesson = {"id":"4279","title":"中国的职场文化","slug":"%E4%B8%AD%E5%9B%BD%E7%9A%84%E8%81%8C%E5%9C%BA%E6%96%87%E5%8C%96","introduction":"\r\n\r\n你曾在中国工作过吗？你是否也觉得中国的工作文化和自己国家的工作文化有很大的差异呢？我们一起来看看中国人一般都如何处理合约问题，以及他们又为什么这么重视聚餐文化和酒桌文化吧！","hash_code":"51492463b0875d1a36c6bb9a6b2290725c3b80d5","image":"https://s3contents.chinesepod.com/4279/51492463b0875d1a36c6bb9a6b2290725c3b80d5/images/67c2d83fe26648a2ccbbaa3eb6bdbfd675505870.jpg","type":"lesson","level":"Upper Intermediate","hosts":"Lyn,Joy","publication_timestamp":"2020-01-20T10:45:00.000Z","saved":false,"studied":false,"video":"ennz8eke92","mp3_dialogue":"","mp3_public":"https://s3contents.chinesepod.com/4279/51492463b0875d1a36c6bb9a6b2290725c3b80d5/mp3/chinesepod_D4279pb.mp3","mp3_private":"https://s3contents.chinesepod.com/4279/51492463b0875d1a36c6bb9a6b2290725c3b80d5/mp3/chinesepod_D4279pr.mp3","mp3_thefix":"https://s3contents.chinesepod.com/4279/51492463b0875d1a36c6bb9a6b2290725c3b80d5/mp3/chinesepod_D4279rv.mp3","pdf1":"https://s3contents.chinesepod.com/4279/51492463b0875d1a36c6bb9a6b2290725c3b80d5/pdf/chinesepod_D4279.pdf","pdf2":"https://s3contents.chinesepod.com/4279/51492463b0875d1a36c6bb9a6b2290725c3b80d5/pdf/chinesepod_D4279trad.pdf","extra":false,"sources":{"updatedAt":1623233348017,"id":"4279","wistia":{"simplified":"ennz8eke92"},"vimeo":null,"youtube":{"simplified":"0VPIgKThplc","traditional":"n5H-SKqq5qs"},"podcast":null,"dialogue":null,"review":null,"recap":null,"hls":{"simplified":"https://d3glhinmyc42ep.cloudfront.net/8b27d2e0-77f0-4cbb-8b3d-2a1ad3a957a9/hls/ennz8eke92.m3u8"}}}
