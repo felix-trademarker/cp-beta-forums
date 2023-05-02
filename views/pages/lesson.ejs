@@ -80,9 +80,9 @@
 													</div> -->
 													<div class="col-12">
 														
-														<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default play-audio">
-															<i class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
-															<audio>
+														<button @click="audioPlayerClick('audio-lesson')" type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default btn-audio">
+															<i id="audio-lesson-i" class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
+															<audio id="audio-lesson">
 																<%
 																let audioURL = ""
 																if (content.mp3_private.includes("https")) {
@@ -134,9 +134,9 @@
 													</div> -->
 													<div class="col-12">
 														
-														<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default play-audio">
-															<i class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
-															<audio>
+														<button @click="audioPlayerClick('review-lesson')" type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default btn-audio">
+															<i id="review-lesson-i" class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
+															<audio id="review-lesson">
 																<%
 																let audioURLR = ""
 																if (content.mp3_thefix.includes("https")) {
@@ -169,7 +169,7 @@
 						</div>
 					</div>
 
-					<div id="nav-review" v-bind:class="{'d-none': (isActive == 'dialogue' ? false : true) }">
+					<div id="nav-dialogue" v-bind:class="{'d-none': (isActive == 'dialogue' ? false : true) }">
 						<div class="review-main">
 
 							<div class="card mb-0">
@@ -188,9 +188,9 @@
 													</div> -->
 													<div class="col-12">
 														
-														<button type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default play-audio">
-															<i class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
-															<audio>
+														<button @click="audioPlayerClick('dialogue-lesson')" type="button" class="btn bg-transparent border-0 shadow-none p-0 m-0 btn-default btn-audio">
+															<i id="dialogue-lesson-i" class="text-white play-button emphasize-dark fi flaticon-013-play"></i>
+															<audio id="dialogue-lesson">
 																<%
 																let audioURLD = ""
 																if (content.mp3_dialogue.includes("https")) {
@@ -258,7 +258,7 @@
 							</div>
 
 							<div v-if="lesson.mp3_private" class="col-6 col-md-4 mt-2">
-								<button @click="setActive('audio')" type="button"
+								<button @click="setActive('audio');" type="button"
 									:class="'btn btn-block ' + (isActive == 'audio' ? 'btn-primary':'btn-secondary')">
 									<i class="fas fa-podcast"></i> Audio Lesson
 								</button>
