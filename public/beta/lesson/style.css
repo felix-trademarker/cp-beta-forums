@@ -587,3 +587,13 @@ span.answer {
     width: 300px;
 }
 
+.sidenav::-webkit-scrollbar{
+    display: none;
+    
+}
+
+.sidenav{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+  

@@ -26,14 +26,14 @@ toggle_show_hide.forEach((toggle, i) => {
             spanToShow.style.display = 'block';
             spanToHide.style.display = 'none';
 
-            toggle.innerHTML = '<i class="bi bi-eye-fill"></i>';
+            toggle.innerHTML = '<button type="button" class="btn float-right btn-icon-only m-0 mb-1 btn-secondary"><i class="bi bi-eye-fill"></i></button>';
         } else {
             isTranslationTextHidden = true;
 
             spanToShow.style.display = 'none';
             spanToHide.style.display = 'block';
 
-            toggle.innerHTML = '<i class="bi bi-eye-slash-fill"></i>';
+            toggle.innerHTML = '<button type="button" class="btn float-right btn-icon-only m-0 mb-1 btn-secondary"><i class="bi bi-eye-slash-fill"></i></button>';
         }
     }
 });
@@ -48,13 +48,13 @@ play_audio.forEach((audio, i) => {
         if (audio_player.duration > 0 && !audio_player.paused) {
             audio_player.pause();
             if (icon){
-                icon.classList.add('bi-play-fill')
-                icon.classList.remove('bi-pause-fill')
+                icon.classList.add('fa-volume-up')
+                icon.classList.remove('fa-times')
             } 
         } else {
             if (icon){
-                icon.classList.add('bi-pause-fill')
-                icon.classList.remove('bi-play-fill')
+                icon.classList.add('fa-times')
+                icon.classList.remove('fa-volume-up')
             } 
             audio_player.play();
         }
