@@ -43,15 +43,17 @@ let play_audio = document.querySelectorAll('.play-audio');
 
 play_audio.forEach((audio, i) => {
     audio.onclick = () => {
+
+        console.log("this");
         let audio_player = audio.querySelector('audio');
         let icon = audio.querySelector('i');
-        if (audio_player.duration > 0 && !audio_player.paused) {
+        if (audio_player.duration > 0 && !audio_player.paused) { console.log("paused")
             audio_player.pause();
             if (icon){
                 icon.classList.add('fa-volume-up')
                 icon.classList.remove('fa-times')
             } 
-        } else {
+        } else { console.log("play")
             if (icon){
                 icon.classList.add('fa-times')
                 icon.classList.remove('fa-volume-up')

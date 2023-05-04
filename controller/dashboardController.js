@@ -419,8 +419,8 @@ exports.lesson = async function(req, res, next) {
   let courseDetails={};
   // get contents using slug
   let content = await rpoContents.getContentSlug(slug)
-  console.log("slug", slug);
-  console.log("contents", content);
+  // console.log("slug", slug);
+  // console.log("contents", content);
   if (!content && content.length <= 0) {
     console.log("empty try searching using V3 ID", slug);
     content = await rpoContents.getContentV3(slug)
@@ -449,7 +449,7 @@ exports.lesson = async function(req, res, next) {
 
   content = content && content.length > 0 ? content[0] : null
   // let courseId=
-  console.log("render page");
+  // console.log("render page");
   res.render('pages/lesson', {
     layout: 'layouts/lesson-layout', 
     title: (content ? content.title : 'ChinesePod Lesson Page'),

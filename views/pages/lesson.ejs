@@ -355,7 +355,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<ul role="tablist" class="nav nav-pills nav-pills-primary nav-fill flex-sm-row nav-wrapper">
-						<li data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
+						<li v-if="dialogue" data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
 							<a data-bs-toggle="tab" data-bs-target="#nav-dialogue2" role="tablist" href="#nav-dialogue2" class="nav-link active">
 								<div>
 									<span>
@@ -365,7 +365,7 @@
 								</div>
 							</a>
 						</li>
-						<li data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
+						<li v-if="vocab" data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
 							<a data-bs-toggle="tab" data-bs-target="#nav-vocab" role="tablist" href="#nav-vocab" class="nav-link">
 								<div>
 									<span>
@@ -375,7 +375,7 @@
 								</div>
 							</a>
 						</li>
-						<li data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
+						<li v-if="downloads" data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
 							<a data-bs-toggle="tab" data-bs-target="#nav-downloads" role="tablist" href="#nav-downloads" class="nav-link">
 								<div>
 									<span>
@@ -385,7 +385,7 @@
 								</div>
 							</a>
 						</li>
-						<li data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
+						<li v-if="expansion" data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
 							<a data-bs-toggle="tab" data-bs-target="#nav-expansion" role="tablist" href="#nav-expansion" class="nav-link">
 								<div>
 									<span>
@@ -395,7 +395,7 @@
 								</div>
 							</a>
 						</li>
-						<li data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
+						<li v-if="questions" data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
 							<a data-bs-toggle="tab" data-bs-target="#nav-exercise" role="tablist" href="#nav-exercise" class="nav-link">
 								<div>
 									<span>
@@ -405,13 +405,13 @@
 								</div>
 							</a>
 						</li>
-						<li data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
+						<li v-if="comments" data-toggle="tab" role="tablist" aria-expanded="true" class="nav-item active mt-2 mx-1">
 							<a data-bs-toggle="tab" data-bs-target="#nav-comments" role="tablist" href="#nav-comments" class="nav-link">
 								<div>
 									<span>
 										<i class="ni ni-lg ni-chat-round"></i>
 										<span class="d-none d-md-block">
-											<span class="badge badge-primary badge-lg">18</span>
+											<span class="badge badge-primary badge-lg">{{ comments.count }}</span>
 											Comments
 										</span>
 									</span>
@@ -452,21 +452,17 @@
 													<div class="row align-items-center">
 														<div class="mandarin-chars col-10 col-sm-11">
 															<span v-for="sentence in dia.sentence" v-if="sentence.s">
-
+															
 																<span class="mandarin-char position-relative">
-																	<span class="c-hand"
-																		v-if="vuex.userInfo.charSet == 'simplified'">{{ sentence.s }}</span>
-																	<span class="c-hand"
-																		v-if="vuex.userInfo.charSet == 'traditional'">{{ sentence.t }}</span>
-																	<div
-																		class="mandarin-char-tooltip position-absolute start-0 rounded p-3 bg-light">
-																		<div class="addVocab c-hand"
-																			@click="addVocab(sentence)"><i
-																				class="fa fa-plus"></i></div>
-																		<div v-if="vuex.userInfo.charSet == 'simplified'"
-																			class="mb-2">{{ sentence.s }}</div>
-																		<div v-if="vuex.userInfo.charSet == 'traditional'"
-																			class="mb-2">{{ sentence.t }}</div>
+																	<span class="c-hand" v-if="vuex.userInfo.charSet == 'simplified'">{{ sentence.s }}</span>
+																	<span class="c-hand" v-if="vuex.userInfo.charSet == 'traditional'">{{ sentence.t }}</span>
+
+																	<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3">
+																		<div class="addVocab c-hand" @click="addVocab(sentence)">
+																			<i class="fa fa-plus"></i>
+																		</div>
+																		<div v-if="vuex.userInfo.charSet == 'simplified'" class="mb-2">{{ sentence.s }}</div>
+																		<div v-if="vuex.userInfo.charSet == 'traditional'" class="mb-2">{{ sentence.t }}</div>
 																		<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
 																		<div class="border-top pt-1" v-html="sentence.en"></div>
 																	</div>
@@ -573,7 +569,7 @@
 												<th style="width:25%">English</th>
 												<th>
 													<div class="save-all-container" v-if="decks">
-														<span class="btn btn-primary mb-2"><i class="fa fa-plus"></i>
+														<span class="btn btn-icon btn-fab btn-secondary"><i class="fa fa-plus"></i>
 															Save all</span>
 														<div class="deck-list">
 															<ul>
@@ -592,8 +588,8 @@
 										<tbody>
 											<tr v-for="voc in vocab">
 
-												<td> animate hanzi here
-													<div v-if="false"  class="hanziContainer">
+												<td>
+													<div class="hanziContainer">
 														<div v-if="vuex.userInfo.charSet === 'traditional'"
 															v-for="ndx in voc.t.length" :id="'target-t-'+ndx+'-'+voc.id"
 															:class="'js-animate-t-'+ndx+'-'+voc.id">
@@ -611,26 +607,32 @@
 												<td>{{ voc.p }}</td>
 												<td>{{ voc.en }}</td>
 												<td>
-													<div v-if="voc.audio" style="display:inline-block;color:#dc3545"
-														class="play-audio icon fs-5">
-														<i class="fa fa-play c-hand"></i>
-														<audio>
-															<source
-																:src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+voc.audio"
-																type="audio/mp3">
-															Your browser does not support the audio element.
-														</audio>
-													</div>
+													<div class="row justify-content-end pr-md-3 pr-lg-4">
+														<div v-if="voc.audio" class="col-12 col-md-3 col-auto mb-1">
+															<button class="play-audio btn btn-icon-only ml-1 btn-secondary btn-sm ">
+																<i class="fas fa-volume-up"></i>
+															</button>
+															<audio>
+																<source
+																	:src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+voc.audio"
+																	type="audio/mp3">
+																Your browser does not support the audio element.
+															</audio>
+														</div>
 
-													<div style="display:inline-block;color:#f7b500"
-														@click="copyClipboard( (vuex.userInfo.charSet == 'traditional' ? voc.t : voc.s ) + ' - ' + voc.p + ' - ' + voc.en )"
-														class="icon c-hand">
-														<i class="fa fa-copy"></i>
-													</div>
+														<div @click="copyClipboard( (vuex.userInfo.charSet == 'traditional' ? voc.t : voc.s ) + ' - ' + voc.p + ' - ' + voc.en )"
+															class="col-12 col-md-3 col-auto mb-1">
+															<button class="btn btn-icon-only ml-1 btn-secondary btn-sm ">
+																<i class="fa fa-copy"></i>
+															</button>
+														</div>
 
-													<div style="display:inline-block;color:#198754"
-														@click="addVocab(voc)" class="icon c-hand">
-														<i class="fa fa-plus"></i>
+														<div class="col-12 col-md-3 col-auto mb-1"
+															@click="addVocab(voc)" class="icon c-hand">
+															<button class="btn btn-icon-only ml-1 btn-secondary btn-sm ">
+																<i class="fa fa-plus"></i>
+															</button>
+														</div>
 													</div>
 
 												</td>
@@ -660,11 +662,10 @@
 						</div>
 
 						<div class="tab-pane fade" id="nav-expansion" role="tabpanel" aria-labelledby="nav-expansion-tab">
-							expansion section
-							<div v-if="false"  class="expansion-main">
-								<div class="expansion py-3">
+							<div class="card-body expansion">
 
-									<div class="mb-3">
+								<div >
+									<div >
 										<button type="button" @click="printContent('expansion')"
 											class="btn d-block float-right btn-light btn-sm"><i
 												class="fas fa-print"></i> Print</button>
@@ -676,77 +677,87 @@
 											class="btn float-right btn-light btn-sm">Trad: 漢字</button>
 										<h2 class="h2">Expansion</h2>
 									</div>
+								</div>
 
-									<ul v-if="expansion"
-										class="list-group d-block d-sm-flex w-100 list-group-horizontal"
-										style="flex-wrap: wrap;">
-										<li v-for="exp in expansion" class="list-group-item w-50 w-md-50 p-4"
-											style="border-width:1px !important">
-											<h4
-												style="background: #e11e1d;padding: 5px;border-radius: 4px;display: inline-block;color: #fff;">
-												{{ exp.phrase }}</h4>
-											<div v-for="examples in exp.examples" class="mb-3">
-												<div
-													class="mandarin-chars-main d-flex align-items-center justify-content-between">
-													<div class="mandarin-chars">
+								<div class="py-2">
 
-														<span v-for="sentence in examples.sentence" v-if="sentence.s"
-															class="mandarin-char position-relative">
-															<span class="fs-2 c-hand">{{ sentence.s }}</span>
-															<div
-																class="mandarin-char-tooltip position-absolute start-0 rounded p-3 mt-2 bg-light fs-5">
-																<div class="addVocab c-hand"
-																	@click="addVocab(sentence)"><i
-																		class="fa fa-plus"></i></div>
-																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }"
-																	class="fs-2 mb-2 c-hand">{{ sentence.s }}</div>
-																<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }"
-																	class="fs-2 mb-2 c-hand">{{ sentence.t }}</div>
-																<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
-																<div class="border-top pt-1">{{ sentence.en }}</div>
-															</div>
-														</span>
+									<div v-if="expansion" class="list-group d-block d-sm-flex w-100 list-group-horizontal" style="flex-wrap: wrap;">
+										<div v-for="exp in expansion" class="col-lg-8 offset-lg-2" >
+											<h4 class="text-uppercase ls-1 py-3 mb-0">{{ exp.phrase }}</h4>
 
+											<div class="card card-pricing bg-lighter border-0 mb-4">
+												<div class="card-header bg-transparent">
+													<div class="row align-items-center">
+														<div class="mandarin-chars col-10 col-sm-11">
 
-													</div>
-													<div style="color:#dc3545" class="play-audio icon fs-5">
-														<i class="fa fa-play"></i>
-														<audio>
-															<source
-																:src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+examples.audio"
-																type="audio/mp3">
-															Your browser does not support the audio element.
-														</audio>
+															<span v-for="sentence in exp.examples" v-if="sentence.s" class="mandarin-char position-relative">
+																<span class="fs-2 c-hand">{{ sentence.s }}</span>
+																<div class="mandarin-char-tooltip position-absolute start-0 rounded p-3">
+																	<div class="addVocab c-hand" @click="addVocab(sentence)">
+																		<i class="fa fa-plus"></i>
+																	</div>
+																	<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'simplified' ? false : true) }" class="fs-2 mb-2 c-hand">{{ sentence.s }}</div>
+																	<div v-bind:class="{'d-none': (vuex.userInfo.charSet == 'traditional' ? false : true) }" class="fs-2 mb-2 c-hand">{{ sentence.t }}</div>
+																	<div class="mb-2">{{ pinyinConvert(sentence.p) }}</div>
+																	<div class="border-top pt-1">{{ sentence.en }}</div>
+																</div>
+															</span>
+															
+														</div>
+														<div class="col-2 col-sm-1 text-right play-audio">
+															<button type="button" class="btn float-right btn-icon-only m-0 mb-1 btn-secondary">
+																<i class="fas fa-volume-up"></i>
+															</button>
+															<audio>
+																<source
+																	:src="'https://s3contents.chinesepod.com/'+lesson.id+'/'+lesson.hash_code+'/'+examples.audio"
+																	type="audio/mp3">
+																Your browser does not support the audio element.
+															</audio>
+														</div>
 													</div>
 												</div>
-												<div class="translation-group fs-5">
-													<div
-														class="pinyin-writing-main d-flex align-items-center justify-content-between">
-														<div class="pinyin-writing show-hide-txt my-3">
+												
+												<div class="card-body">
+													<div class="row align-items-center">
+									
+														<div class="col-10 col-sm-11 pinyin-writing show-hide-txt my-3">
 															<span>...</span>
 															<span>{{ pinyinConvert(examples.p) }}</span>
 														</div>
-														<div class="icon toggle-show-hide fs-5">
-															<i class="bi bi-eye-slash-fill"></i>
+														<div class="col-2 col-sm-1 toggle-show-hide text-right">
+															<button type="button" class="btn float-right btn-icon-only m-0 mb-1 btn-secondary">
+																<i class="bi bi-eye-slash-fill"></i>
+															</button>
 														</div>
+								
 													</div>
-													<div
-														class="english-translation-main d-flex align-items-center justify-content-between">
-														<div class="english-translation show-hide-txt">
+												</div>
+
+												<div class="card-footer bg-transparent">
+
+													<div class="row align-items-center">
+														<div class="col-10 col-sm-11 english-translation show-hide-txt">
 															<span>...</span>
 															<span>{{ examples.en }}</span>
 														</div>
-														<div class="icon toggle-show-hide fs-5">
-															<i class="bi bi-eye-slash-fill"></i>
+									
+														<div class="col-2 col-sm-1  toggle-show-hide text-right">
+															<button type="button" class="btn float-right btn-icon-only m-0 mb-1 btn-secondary">
+																<i class="bi bi-eye-slash-fill"></i>
+															</button>
 														</div>
+												
 													</div>
+
 												</div>
-												<hr>
 											</div>
 
-										</li>
+											
 
-									</ul>
+										</div>
+
+									</div>
 
 									<div id="printable-expansion" class="d-none">
 										<img src="https://www.chinesepod.com/home/img/logo.a070ebf6.png"
@@ -771,8 +782,8 @@
 									<p v-if="!expansion" class="warning">Vocabulary not found</p>
 
 								</div>
+							
 							</div>
-
 						</div>
 
 						<div class="tab-pane fade" id="nav-grammar" role="tabpanel" aria-labelledby="nav-grammar-tab">
@@ -900,8 +911,8 @@
 						</div>
 
 						<div class="tab-pane fade" id="nav-exercise" role="tabpanel" aria-labelledby="nav-exercise-tab">
-							exercise section
-							<div v-if="false"  class="exercise-main">
+
+							<div class="exercise-main">
 								<div class="exercise py-3">
 
 									<div class="mb-3">
@@ -990,103 +1001,47 @@
 						</div>
 
 						<div class="tab-pane fade" id="nav-comments" role="tabpanel" aria-labelledby="nav-comments-tab">
-							comments section
-							<div v-if="false"  class="comments-form mt-4">
+							
+							
 
-								<div class="comment-bar">
-
-									<div class="right">
-										<div class="form-floating cmnt-textarea">
-
-											<textarea class="form-control cmnt-comment" v-model="commentMessage"
-												placeholder="Leave a comment here" id="commentTextArea"></textarea>
-											<label for="floatingTextarea">Write your comment</label>
-											<b style="font-style: italic;font-size: 12px;" v-if="replyUsername">Reply to
-												{{ replyUsername }}</b>
+							<div v-if="comments && comments.comments" v-for="comment in comments.comments" class="comments-wrapper">
+								<div v-if="comment" class="comment-main">
+									<div class="media media-comment col-12 ">
+										<div>
+											<img class="avatar avatar-lg media-comment-avatar rounded-circle bg-light" alt="Profile picture" v-if="comment.avatar_url" class="avatar-img" :src="comment.avatar_url">
+											<img class="avatar avatar-lg media-comment-avatar rounded-circle bg-light" alt="Profile picture" v-if="!comment.avatar_url" class="avatar-img" src="https://www.chinesepod.com/home/img/symbol-black-center.d7c26c3a.svg">
+										</div>
+										<div class="media-body col-12">
+											<div class="media-comment-text">
+												<h6 class="h5 mt-0">{{ comment.username }}</h6><small class="text-muted">{{ comment.created_at }}</small>
+												<p class="text-sm lh-160 comment-item" v-html="comment.content"></p>
+												<div class="icon-actions">
+													<a @click="replyComment(comment.username,comment.id,0)" href="#commentMessage" class="like active">
+														<i class="fas fa-reply"></i>
+														<span class="text-muted">Reply</span>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
-								<div class="comment-submitbtn">
-									<input class="btn btn-primary" type="submit" value="Comment" @click="addComment()">
-								</div>
-
-							</div>
-
-							<div v-if="comments && comments.comments" v-for="comment in comments.comments"
-								class="comments-wrapper">
-								<div class="comment-main">
-									<div class="left">
-										<div class="comment-avatar">
-											<img v-if="comment.avatar_url" class="avatar-img" :src="comment.avatar_url">
-											<img v-if="!comment.avatar_url" class="avatar-img"
+								<div class="replyContainer" v-if="comment.nestedComments" v-for="reply in comment.nestedComments">
+									<div class="media media-comment offset-1 col-11">
+										<div>
+											<img v-if="reply.avatar_url" class="avatar avatar-lg media-comment-avatar rounded-circle bg-light"
+												:src="reply.avatar_url">
+											<img v-if="!reply.avatar_url" class="avatar avatar-lg media-comment-avatar rounded-circle bg-light"
 												src="https://www.chinesepod.com/home/img/symbol-black-center.d7c26c3a.svg">
 										</div>
-									</div>
-									<div class="right">
-										<div class="name">{{ comment.username }} <span
-												class="date-time">{{ comment.created_at }}</span></div>
-
-										<div class="comment-txt" v-html="comment.content"></div>
-
-										<div class="comment-reacts">
-											<div class="thumbs-up comment-react">
-												<button class="btn btn-primary"
-													@click="replyComment(comment.username,comment.id,0)">
-													<i class="fa fa-reply"></i> Reply
-												</button>
-
-												<button v-if="comment.user_id == vuex.userInfo.userId"
-													class="btn btn-danger"
-													@click="setCommentId(comment.id,comment.content)">
-													<i class="fa fa-pen"></i>
-												</button>
-
-												<button v-if="comment.user_id == vuex.userInfo.userId"
-													class="btn btn-danger" data-bs-toggle="modal"
-													data-bs-target="#confirm-delete" @click="setCommentId(comment.id)">
-													<i class="fa fa-trash"></i>
-												</button>
-
-											</div>
-										</div>
-									</div>
-								</div>
-								<div style="padding-left:85px" class="replyContainer" v-if="comment.nestedComments"
-									v-for="reply in comment.nestedComments">
-									<div class="comment-main">
-										<div class="left">
-											<div class="comment-avatar">
-												<img v-if="comment.avatar_url" class="avatar-img"
-													:src="reply.avatar_url">
-												<img v-if="!reply.avatar_url" class="avatar-img"
-													src="https://www.chinesepod.com/home/img/symbol-black-center.d7c26c3a.svg">
-											</div>
-										</div>
-										<div class="right">
-											<div class="name">{{ reply.username }} <span
-													class="date-time">{{ reply.created_at }}</span></div>
-
-											<div class="comment-txt" v-html="reply.content"></div>
-
-											<div class="comment-reacts">
-												<div class="thumbs-up comment-react">
-													<button class="btn btn-primary"
-														@click="replyComment(reply.username,reply.id,0)">
-														<i class="fa fa-reply"></i> Reply
-														</btn>
-
-														<button v-if="reply.user_id == vuex.userInfo.userId"
-															class="btn btn-danger"
-															@click="setCommentId(reply.id,reply.content)">
-															<i class="fa fa-pen"></i>
-														</button>
-
-														<button v-if="reply.user_id == vuex.userInfo.userId"
-															class="btn btn-danger" data-bs-toggle="modal"
-															data-bs-target="#confirm-delete"
-															@click="setCommentId(comment.id)">
-															<i class="fa fa-trash"></i>
-														</button>
+										<div class="media-body col-12">
+											<div class="media-comment-text">
+												<h6 class="h5 mt-0">{{ reply.username }}</h6><small class="text-muted">{{ reply.created_at }}</small>
+												<p class="text-sm lh-160 comment-item" v-html="reply.content"></p>
+												<div class="icon-actions">
+													<a @click="replyComment(reply.username,reply.id,0)" href="#commentMessage" class="like active">
+														<i class="fas fa-reply"></i>
+														<span class="text-muted">Reply</span>
+													</a>
 												</div>
 											</div>
 										</div>
@@ -1094,43 +1049,168 @@
 								</div>
 
 							</div>
+
+							<hr>
+
+							<div id="commentMessage" >
+								<div class="media align-items-center">
+									<img  alt="Profile Picture" src="https://www.chinesepod.com/home/img/symbol-black-center.d7c26c3a.svg" class="d-none d-sm-block avatar avatar-lg rounded-circle mr-4">
+									<div  class="media-body">
+										<div  class="col-12">
+
+											<div class="text-editor">
+												<textarea class="form-control cmnt-comment" v-model="commentMessage" placeholder="Leave a comment here" id="commentTextArea"></textarea>
+												<label for="floatingTextarea">Write your comment</label>
+												<b style="font-style: italic;font-size: 12px;" v-if="replyUsername">Reply to
+													{{ replyUsername }}</b>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div  class="text-right mt-2">
+									<button type="button" class="btn btn-secondary">Cancel</button>
+									<button @click="addComment()" type="button" class="btn btn-default">Comment</button>
+								</div>
+							</div>
+
 						</div>
 
 						<div class="tab-pane fade show" id="nav-downloads" role="tabpanel" aria-labelledby="nav-downloads-tab">
-							downloads section
-							<div class="" v-if="false" >
-							<ul class="dl-List" v-if="downloads">
-								<li v-if="downloads.downloads.video"><a
-										@click.prevent="downloadURI(downloads.downloads.video,'video')" href="#"
-										class="btn btn-info">Video Lesson</a></li>
-								<li v-if="downloads.downloads.lesson"><a
-										@click.prevent="downloadURI(downloads.downloads.lesson,'lesson')" href="#"
-										class="btn btn-info">Lesson</a></li>
-								<li v-if="downloads.downloads.dialogue"><a
-										@click.prevent="downloadURI(downloads.downloads.dialogue,'dialogue')" href="#"
-										class="btn btn-info">Dialogue</a></li>
-								<li v-if="downloads.downloads.review"><a
-										@click.prevent="downloadURI(downloads.downloads.review,'review')" href="#"
-										class="btn btn-info">Review</a></li>
-								<li v-if="downloads.downloads.pdf1"><a
-										@click.prevent="downloadURI(downloads.downloads.pdf1,'pdf1')" href="#"
-										class="btn btn-info">Notes (Simp)</a></li>
-								<li v-if="downloads.downloads.pdf2"><a
-										@click.prevent="downloadURI(downloads.downloads.pdf2,'pdf2')" href="#"
-										class="btn btn-info">Notes (Trad)</a></li>
-							</ul>
-							<p v-if="fileLoader"
-								style="overflow:hidden;position:relative;border: 1px solid #e11e1d;border-radius: 14px;"
-								class="text-center">
-								<span
-									:style="'display: block;background: #e11e1d;position: absolute;left: 0;top: 0;height:100%;width:'+filePercent+'%;'"></span>
-								<span style="position:relative;z-index:100">Downloading {{ fileDownloadName }}
-									{{ filePercent }}%</span>
-							</p>
-							<p></p>
+							<div class="card-body downloads">
+								<div >
+									<h2 class="h2">Downloads</h2>
+									<div v-if="downloads" class="row is-justify-space-between">
 
-							<p v-if="!downloads">No downloads to show right now.</p>
+										<div v-if="downloads.downloads.video" class="col-sm-6 col-xl-3">
+											<div @click.prevent="downloadURI(downloads.downloads.video,'video')">
+												<div class="card border-0 text-center bg-gray">
+													<div class="card-body">
+														<div class="row">
+															<div class="col">
+																<h4 class="text-uppercase ls-1 text-white py-3 mb-0">Video Lesson</h4>
+															</div>
+															<div class="col-auto my-auto">
+																<button type="button" class="btn btn-light btn-sm">
+																	<i class="ni-lg py-2 fas fa-download"></i>
+																</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div v-if="downloads.downloads.lesson" class="col-sm-6 col-xl-3">
+											<div @click.prevent="downloadURI(downloads.downloads.lesson,'lesson')">
+												<div class="card border-0 text-center bg-gray">
+													<div class="card-body">
+														<div class="row">
+															<div class="col">
+																<h4 class="text-uppercase ls-1 text-white py-3 mb-0">Lesson</h4>
+															</div>
+															<div class="col-auto my-auto">
+																<button type="button" class="btn btn-light btn-sm">
+																	<i class="ni-lg py-2 fas fa-download"></i>
+																</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div v-if="downloads.downloads.dialogue" class="col-sm-6 col-xl-3">
+											<div @click.prevent="downloadURI(downloads.downloads.dialogue,'dialogue')">
+												<div class="card border-0 text-center bg-gray">
+													<div class="card-body">
+														<div class="row">
+															<div class="col">
+																<h4 class="text-uppercase ls-1 text-white py-3 mb-0">Dialogue</h4>
+															</div>
+															<div class="col-auto my-auto">
+																<button type="button" class="btn btn-light btn-sm">
+																	<i class="ni-lg py-2 fas fa-download"></i>
+																</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div v-if="downloads.downloads.review" class="col-sm-6 col-xl-3">
+											<div @click.prevent="downloadURI(downloads.downloads.review,'review')">
+												<div class="card border-0 text-center bg-gray">
+													<div class="card-body">
+														<div class="row">
+															<div class="col">
+																<h4 class="text-uppercase ls-1 text-white py-3 mb-0">Review</h4>
+															</div>
+															<div class="col-auto my-auto">
+																<button type="button" class="btn btn-light btn-sm">
+																	<i class="ni-lg py-2 fas fa-download"></i>
+																</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div v-if="downloads.downloads.pdf1" class="col-sm-6 col-xl-3">
+											<div @click.prevent="downloadURI(downloads.downloads.pdf1,'pdf1')">
+												<div class="card border-0 text-center bg-gray">
+													<div class="card-body">
+														<div class="row">
+															<div class="col">
+																<h4 class="text-uppercase ls-1 text-white py-3 mb-0">Notes (Simp)</h4>
+															</div>
+															<div class="col-auto my-auto">
+																<button type="button" class="btn btn-light btn-sm">
+																	<i class="ni-lg py-2 fas fa-download"></i>
+																</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div v-if="downloads.downloads.pdf2" class="col-sm-6 col-xl-3">
+											<div @click.prevent="downloadURI(downloads.downloads.pdf2,'pdf2')">
+												<div class="card border-0 text-center bg-gray">
+													<div class="card-body">
+														<div class="row">
+															<div class="col">
+																<h4 class="text-uppercase ls-1 text-white py-3 mb-0">Notes (Trad)</h4>
+															</div>
+															<div class="col-auto my-auto">
+																<button type="button" class="btn btn-light btn-sm">
+																	<i class="ni-lg py-2 fas fa-download"></i>
+																</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+								
+									</div>
+
+									<p v-if="fileLoader"
+										style="overflow:hidden;position:relative;border: 1px solid #e11e1d;border-radius: 14px;"
+										class="text-center">
+										<span
+											:style="'display: block;background: #e11e1d;position: absolute;left: 0;top: 0;height:100%;width:'+filePercent+'%;'"></span>
+										<span style="position:relative;z-index:100">Downloading {{ fileDownloadName }}
+											{{ filePercent }}%</span>
+									</p>
+
+									<p v-if="!downloads">No downloads to show right now.</p>
+								</div>
 							</div>
+
+							
 						</div>
 					</div>
 					<!-- tabs end -->
